@@ -10123,17 +10123,13 @@ var resultSearchTemplate = exports.resultSearchTemplate = "\n    {{#items}}\n   
 /***/ (function(module, exports) {
 
 const apisearchConfig = {
-    appId: "4186e76c",
-    index: "6de535c5",
-    token: "7975ac41-6cbf-4a48-afd0-30746219bc3b",
-    queryToken: "e3aee575-2b0a-4a95-b0ce-88fa316c4eff",
-    hostname: "api.apisear.ch",
-    queryHostname: "apisearch.global.ssl.fastly.net",
-    protocol: "https"
-}
+    hostname: '127.0.0.1:8999',
+    appId: '6b9ec59f',
+    index: '81b65094',
+    token: '28c1677b-15be-45fe-b633-7dd59b450099'
+};
 
 module.exports = apisearchConfig;
-
 
 /***/ }),
 /* 6 */
