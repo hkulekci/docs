@@ -1,3 +1,0 @@
-#!/usr/bin/env node
-
-const docgen = require("./generator/index");
