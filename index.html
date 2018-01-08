@@ -373,7 +373,7 @@ from everywhere, make all your applications work with the same entry point.</li>
 new account at <a href="https://admin.apisearch.io">https://admin.apisearch.io</a>. If the
 website is not opened for new registrations and you want to request a new
 invitation, then don’t hesitate to write us at <a href="mailto:invitations@puntmig.com">invitations@puntmig.com</a>.</p>
-<p><img src="/assets/media/login.png" alt="Login"></p>
+<p><img src="/assets/media/login.png#inline" alt="Login"></p>
 <p>As a user you could be able to</p>
 <ul>
 <li>Manage your own information and custom your panel</li>
@@ -395,7 +395,7 @@ override the one defined per user</li>
 <p>When you create a new app, you’re not creating anything in our Elasticsearch
 databases. An app is only a virtual aggregation, so you will be able to create
 as many apps as you want without much impact at all.</p>
-<p><img src="/assets/media/new-app.png" alt="Login"></p>
+<p><img src="/assets/media/new-app.png#inline" alt="Login"></p>
 <p>Once a new app is created, you will have an app_id, important to create external
 integrations. You will be able to find it in your app panel in the admin
 website. This app_id will never change and is unique, and because apisearch work
@@ -422,7 +422,120 @@ fresh setup, we will not worry about this. If you have some interest in how to
 configure your index, please visit the configuration part of the documentation.</p>
 <p>Once you have a fresh new index, we can start uploading some data.</p>
 <h2 id="add-some-data"><a name="add-some-data" class="fa fa-link" href="#"></a>Add some data</h2>
+<p>In Apisearch you can work with some accepted and common formats. Some of them
+are basically implemented because are multi platform, like CSV or JSON, but some
+of them are specifically implemented because are human friendly, like Yaml. In
+this chapter we will use this last one.</p>
+<p>Let’s add some fake items in our index. You will find a simple <em>Add Items</em>
+button in your index main page. In that page, you will be able to add items
+manually, or import an existing file. You will find some information about how
+to export and import your index in our <a href="faqs/admin.html">FAQS ahout the admin</a>.</p>
+<p>You items would look like this.</p>
+<pre><code class="language-yaml"><span class="hljs-attr">header:</span>
+<span class="hljs-attr">    metadata:</span> <span class="hljs-string">[name,</span> <span class="hljs-string">description,</span> <span class="hljs-string">image]</span>
+<span class="hljs-attr">    indexed_metadata:</span> <span class="hljs-string">[sku,</span> <span class="hljs-string">type]</span>
+<span class="hljs-attr">    searchable_metadata:</span> <span class="hljs-string">[name,</span> <span class="hljs-string">description]</span>
+<span class="hljs-attr">item_1:</span>
+<span class="hljs-attr">    id:</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">    sku:</span> <span class="hljs-number">74398742973428</span>
+<span class="hljs-attr">    name:</span> <span class="hljs-string">T-shirt</span> <span class="hljs-string">future</span>
+<span class="hljs-attr">    description:</span> <span class="hljs-string">T-shirt</span> <span class="hljs-string">from</span> <span class="hljs-string">the</span> <span class="hljs-string">future</span>
+<span class="hljs-attr">    type:</span> <span class="hljs-string">t-shirt</span>
+<span class="hljs-attr">    image:</span> <span class="hljs-string">/img/t-shirt1.jpg</span>
+<span class="hljs-attr">item_2:</span>
+<span class="hljs-attr">    id:</span> <span class="hljs-number">2</span>
+<span class="hljs-attr">    sku:</span> <span class="hljs-number">43289748932744</span>
+<span class="hljs-attr">    name:</span> <span class="hljs-string">Alabama</span> <span class="hljs-string">T-shirt</span>
+<span class="hljs-attr">    description:</span> <span class="hljs-string">Model</span> <span class="hljs-string">from</span> <span class="hljs-string">Alabama.</span> <span class="hljs-string">Will</span> <span class="hljs-string">show</span> <span class="hljs-string">you</span> <span class="hljs-string">how</span> <span class="hljs-string">amazing</span> <span class="hljs-string">can</span> <span class="hljs-string">it</span> <span class="hljs-string">be</span>
+<span class="hljs-attr">    type:</span> <span class="hljs-string">t-shirt</span>
+<span class="hljs-attr">    image:</span> <span class="hljs-string">/img/t-shirt2.jpg</span>
+<span class="hljs-attr">item_3:</span>
+<span class="hljs-attr">    id:</span> <span class="hljs-number">3</span>
+<span class="hljs-attr">    sku:</span> <span class="hljs-number">43289748932744</span>
+<span class="hljs-attr">    name:</span> <span class="hljs-string">Model</span> <span class="hljs-string">R</span>
+<span class="hljs-attr">    description:</span> <span class="hljs-string">R</span> <span class="hljs-string">from</span> <span class="hljs-string">Romania.</span> <span class="hljs-string">Will</span> <span class="hljs-string">shine</span> <span class="hljs-string">in</span> <span class="hljs-string">th</span> <span class="hljs-string">dark</span>
+<span class="hljs-attr">    type:</span> <span class="hljs-string">t-shirt</span>
+<span class="hljs-attr">    image:</span> <span class="hljs-string">/img/t-shirt3.jpg</span>
+<span class="hljs-attr">item_4:</span>
+<span class="hljs-attr">    id:</span> <span class="hljs-number">4</span>
+<span class="hljs-attr">    sku:</span> <span class="hljs-number">37897489278798</span>
+<span class="hljs-attr">    name:</span> <span class="hljs-string">Customizable</span> <span class="hljs-string">T-shirt</span>
+<span class="hljs-attr">    description:</span> <span class="hljs-string">Customize</span> <span class="hljs-string">your</span> <span class="hljs-string">t-shirt</span>
+<span class="hljs-attr">    type:</span> <span class="hljs-string">t-shirt</span>
+<span class="hljs-attr">    image:</span> <span class="hljs-string">/img/t-shirt4.jpg</span>
+</code></pre>
+<p>With that code, you would add 2 items with these fields, and with the
+particularity that:</p>
+<ul>
+<li>You could filter your data by sku and type fields</li>
+<li>You could search your data by name and description fields</li>
+<li>Fields name, description and image would only be saved, but would not be
+filtered by them</li>
+</ul>
 <h2 id="create-my-first-search-bar"><a name="create-my-first-search-bar" class="fa fa-link" href="#"></a>Create my first search bar</h2>
+<p>Finally. Let’s check some important steps here</p>
+<ul>
+<li>We have an App with an id</li>
+<li>We have an Index with an id</li>
+<li>We have some generated tokens. At least, one with read-only permissions</li>
+<li>We have some data indexed</li>
+</ul>
+<p>So, what’s next? Let’s create a simple search widget, where we can search by a
+text field. This widget will be simple, but in the future you could add some
+extra UI widgets in order to make your environment more powerful and complex.</p>
+<p>To create your first search bar, first of all you should add our JS library as
+a javascript line in your html.</p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.jsdelivr.net/npm/apisearch-ui/dist/apisearch-ui.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+<p>Then, let’s build our searcher. The first step is to build a simple Apisearch
+client. In order to identify properly your credentials, check how to create
+properly the Client. Remember to fill this data with yours.</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Create instance</span>
+<span class="hljs-keyword">const</span> ui = apisearchUI({
+    <span class="hljs-attr">appId</span>: <span class="hljs-string">'xxx'</span>,
+    <span class="hljs-attr">indexId</span>: <span class="hljs-string">'yyy'</span>,
+    <span class="hljs-attr">apiKey</span>: <span class="hljs-string">'zzz'</span>
+});
+</code></pre>
+<p>OK. Client done. Let’s start by doing a simple skeleton in your html code. That
+skeleton should be enough for you to make as many customizations as you need,
+and to make the search engine very website friendly.</p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"search-container"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"results-container"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>That will be enough. Let’s create the required widgets to make it work. Two
+widgets needed. The first one for the searcher itself, and the second one for
+the results container.</p>
+<pre><code class="language-javascript">ui.addWidgets(
+    ui.widgets.simpleSearch({
+        <span class="hljs-attr">target</span>: <span class="hljs-string">'.search-container'</span>,
+    }),
+    ui.widgets.result({
+        <span class="hljs-attr">target</span>: <span class="hljs-string">'.result-container'</span>,
+        <span class="hljs-attr">template</span>: {
+            <span class="hljs-attr">itemsList</span>: <span class="hljs-string">'&lt;ul&gt;{{#items}} &lt;li&gt;{{metadata.name}}&lt;/li&gt; {{/items}}&lt;/ul&gt;'</span>,
+        }
+    })
+);
+</code></pre>
+<p>That simple. This will make the magic.
+Once your widget is properly defined, we need just another last step.<br>
+Initialize the widgets.</p>
+<pre><code class="language-javascript">ui.init();
+</code></pre>
+<h2 id="next-steps"><a name="next-steps" class="fa fa-link" href="#"></a>Next steps</h2>
+<p>You have created your first search widget. And we’re so happy you did it. Now we
+offer you some links in case you want to continue digging into the project. We
+enriched so much our FAQS with interesting information, so don’t hesitate to
+take a look at them</p>
+<ul>
+<li><a href="integrations.html">How can I integrate with Apisearch</a></li>
+<li><a href="ui.html">A little bit more about UI</a></li>
+<li><a href="faqs.html">FAQS</a></li>
+</ul>
+<p>Furthermore, if you don’t find an specific topic, you can use our search bar
+from every single corner of our documentation. It is build on top of Apisearch
+as well, so we encourage you to use each time you need to find something.</p>
 
                     <!-- /Content -->
 
@@ -501,6 +614,13 @@ configure your index, please visit the configuration part of the documentation.<
                            href="#create-my-first-search-bar"
                         >
                             Create my first search bar
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#next-steps"
+                        >
+                            Next steps
                         </a>
                     </li>
                 </ul>
