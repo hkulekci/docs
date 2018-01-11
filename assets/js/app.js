@@ -10130,10 +10130,9 @@ const apisearchConfig = {
     hostname: "api.apisear.ch",
     queryHostname: "apisearch.global.ssl.fastly.net",
     protocol: "https"
-}
+};
 
 module.exports = apisearchConfig;
-
 
 /***/ }),
 /* 6 */
