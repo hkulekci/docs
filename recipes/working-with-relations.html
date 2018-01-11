@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Symfony Bundle</title>
+    <title>Working with relations</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Apisearch integrations - Symfony Apisearch Bundle">
+    <meta name="description" content="Recipes - Working with relations">
     <meta name="author" content="Apisearch team">
     <meta name="keywords" content="Apisearch, Elasticsearch search engine, fast search demo, Apisearch official website">
 
@@ -94,10 +94,10 @@
                                 <a href="/docs">Apisearch docs</a>
                             </li>
                                 <li class="c-breadcrumb__item breadcrumb-item">
-                                    <a href="#">Integrations</a>
+                                    <a href="#">Recipes</a>
                                 </li>
                             <li class="c-breadcrumb__item--active breadcrumb-item active" aria-current="page">
-                                Symfony Bundle
+                                Working with relations
                             </li>
                         </ol>
                     </nav>
@@ -108,9 +108,9 @@
                     <nav class="c-languageSelector">
                         <ol class="c-languageSelector__list">
                                 <li class="c-languageSelector__item">
-                                    <span data-lang="yml"
+                                    <span data-lang="php"
                                           class="c-languageSelector__link">
-                                        yml
+                                        php
                                     </span>
                                 </li>
                         </ol>
@@ -363,326 +363,14 @@
             <main class="col-sm-8 col-md-9 col-lg-8 ml-sm-auto mr-lg-auto pt-3" role="main">
                 <section class="c-content">
                     <!-- Content -->
-                    <h1 id="symfony-bundle"><a name="symfony-bundle" class="fa fa-link" href="#"></a>Symfony Bundle</h1>
-<p>This library aims to provide to any Symfony &gt;=3.0 developer a nice configuration
-way to create, configure and inject Apisearch php repositories. Check the
-<a href="http://github.com/puntmig/php-search">PHP library documentation</a> for plain PHP
-documentation.</p>
-<ul>
-<li><a href="#install">Install</a></li>
-<li><a href="#repository">Repository</a></li>
-<li><a href="#event-repository">Event Repository</a></li>
-<li><a href="#transformers">Transformers</a></li>
-<li><a href="#twig-macros">Twig macros</a></li>
-<li><a href="#filter-values">Filter values</a></li>
-<li><a href="#reset-index-command">Reset index command</a></li>
-</ul>
-<h2 id="install"><a name="install" class="fa fa-link" href="#"></a>Install</h2>
-<h2 id="repository"><a name="repository" class="fa fa-link" href="#"></a>Repository</h2>
-<p>In this chapter we will see how to create a new repository instance in order to
-create a nice connection with the remote server. This repository will be always
-created by the Symfony container, so we only have to define some parameters to
-make it happen.</p>
-<p>Let’s open the configuration file.</p>
-<pre><code class="language-yml"><span class="hljs-attr">apisearch:</span>
-<span class="hljs-attr">    repositories:</span>
-<span class="hljs-attr">        search:</span>
-<span class="hljs-attr">            app_id:</span> <span class="hljs-string">d78s7ds89</span>
-<span class="hljs-attr">            token:</span> <span class="hljs-string">dcdbc971-9872-a798-c7ac-59e64957d4bd</span>
-<span class="hljs-attr">            indexes:</span>
-<span class="hljs-attr">                default:</span> <span class="hljs-string">d789d7s89</span>
-<span class="hljs-attr">        comments:</span>
-<span class="hljs-attr">            app_id:</span> <span class="hljs-string">ds9d7s8978</span>
-<span class="hljs-attr">            token:</span> <span class="hljs-number">1</span><span class="hljs-string">d992ee9-0eb4-096c-3e1e-bc1eba256360</span>
-<span class="hljs-attr">            indexes:</span>
-<span class="hljs-attr">                ca:</span> <span class="hljs-number">87</span><span class="hljs-string">dsd78s78</span>
-<span class="hljs-attr">                es:</span> <span class="hljs-string">d7s8d78s97</span>
-<span class="hljs-attr">                en:</span> <span class="hljs-number">347893</span><span class="hljs-string">b43b</span>
-</code></pre>
-<p>By default, this configuration creates a TransformableRepository instance,
-wrapping a HttpRepository instance configured by given endpoint and api secret.</p>
-<p>The bundle will generate one repository per index, and will always follow the
-same pattern <code>apisearch.repository_{app_name}.{index_name}</code>. In the example
-posted, the container would generate 4 different connection repositories</p>
-<ul>
-<li>apisearch.repository_search.default</li>
-<li>apisearch.repository_comments.ca</li>
-<li>apisearch.repository_comments.es</li>
-<li>apisearch.repository_comments.en</li>
-</ul>
-<p>The first repository will use the token assigned to search repository, and the
-other 3, will use the second token.
-You can use all these service by injecting them in your service or containers.</p>
-<pre><code class="language-yml"><span class="hljs-attr">services:</span>
-
-<span class="hljs-attr">    my_service:</span>
-<span class="hljs-attr">        class:</span> <span class="hljs-string">My\Service\Namespace</span>
-<span class="hljs-attr">        arguments:</span>
-<span class="hljs-bullet">            -</span> <span class="hljs-string">"@apisearch.repository_search.default"</span>
-</code></pre>
-<p>You can disable HTTP clients if you’re not going to work with the HTTP layer.
-That will be great if you are under testing environment. In that case, you will
-be able to work with a very restrictive environment. That means that complex
-queries cannot be tested.</p>
-<pre><code class="language-yml"><span class="hljs-attr">apisearch:</span>
-<span class="hljs-attr">    repositories:</span>
-<span class="hljs-attr">        search:</span>
-<span class="hljs-attr">            app_id:</span> <span class="hljs-string">d78s7ds89</span>
-<span class="hljs-attr">            token:</span> <span class="hljs-string">dcdbc971-9872-a798-c7ac-59e64957d4bd</span>
-<span class="hljs-attr">            indexes:</span>
-<span class="hljs-attr">                default:</span> <span class="hljs-string">d789d7s89</span>
-<span class="hljs-attr">            http:</span> <span class="hljs-literal">false</span>
-</code></pre>
-<p>From now, this documentation will talk about using HTTP layer.
-You can create a test client by telling through configuration. If the repository
-is created with a test environment, then a special HttpClient will be created to
-work with the testing client provided by Symfony client. Of course, in that
-case, we don’t need any endpoint.</p>
-<pre><code class="language-yml"><span class="hljs-attr">apisearch:</span>
-<span class="hljs-attr">    repositories:</span>
-<span class="hljs-attr">        search_test:</span>
-<span class="hljs-attr">            app_id:</span> <span class="hljs-string">d78s7ds89</span>
-<span class="hljs-attr">            token:</span> <span class="hljs-string">dcdbc971-9872-a798-c7ac-59e64957d4bd</span>
-<span class="hljs-attr">            indexes:</span>
-<span class="hljs-attr">                default:</span> <span class="hljs-string">d789d7s89</span>
-<span class="hljs-attr">            test:</span> <span class="hljs-literal">true</span>
-</code></pre>
-<p>You can use as well another Repository implementation. Yours for example. This
-service must be defined in the container, and you should define the service name
-without the <code>@</code> symbol.</p>
-<pre><code class="language-yml"><span class="hljs-attr">apisearch:</span>
-<span class="hljs-attr">    repositories:</span>
-<span class="hljs-attr">        search:</span>
-<span class="hljs-attr">            app_id:</span> <span class="hljs-string">d78s7ds89</span>
-<span class="hljs-attr">            token:</span> <span class="hljs-string">dcdbc971-9872-a798-c7ac-59e64957d4bd</span>
-<span class="hljs-attr">            indexes:</span>
-<span class="hljs-attr">                default:</span> <span class="hljs-string">d789d7s89</span>
-<span class="hljs-attr">            search:</span>
-<span class="hljs-attr">                repository_server:</span> <span class="hljs-string">my_repository_service</span>
-</code></pre>
-<h2 id="event-repository"><a name="event-repository" class="fa fa-link" href="#"></a>Event Repository</h2>
-<p>You can use the event repository as well. The container will build exactly the
-same number of services than the regular repository, but instead of
-<code>.repository_</code>, the services are built by using the <code>.event_repository_</code> syntax.</p>
-<ul>
-<li>apisearch.event_repository_search.default</li>
-<li>apisearch.event_repository_comments.ca</li>
-<li>apisearch.event_repository_comments.es</li>
-<li>apisearch.event_repository_comments.en</li>
-</ul>
-<p>You can inject them as well the way Symfony says.</p>
-<pre><code class="language-yml"><span class="hljs-attr">services:</span>
-
-<span class="hljs-attr">    my_service:</span>
-<span class="hljs-attr">        class:</span> <span class="hljs-string">My\Service\Namespace</span>
-<span class="hljs-attr">        arguments:</span>
-<span class="hljs-bullet">            -</span> <span class="hljs-string">"@apisearch.event_repository_search"</span>
-</code></pre>
-<p>You can use as well another Event Repository implementation. Yours for example.
-This service must be defined in the container, and you should define the service
-name without the <code>@</code> symbol.</p>
-<pre><code class="language-yml"><span class="hljs-attr">search_bundle:</span>
-<span class="hljs-attr">    repositories:</span>
-<span class="hljs-attr">        search:</span>
-<span class="hljs-attr">            app_id:</span> <span class="hljs-string">d78s7ds89</span>
-<span class="hljs-attr">            token:</span> <span class="hljs-string">dcdbc971-9872-a798-c7ac-59e64957d4bd</span>
-<span class="hljs-attr">            indexes:</span>
-<span class="hljs-attr">                default:</span> <span class="hljs-string">d789d7s89</span>
-<span class="hljs-attr">            event:</span>
-<span class="hljs-attr">                repository_server:</span> <span class="hljs-string">my_event_repository_service</span>
-</code></pre>
-<h2 id="transformers"><a name="transformers" class="fa fa-link" href="#"></a>Transformers</h2>
-<p>How your entities are mapped as an Item?</p>
-<p>That may be a simple question with a simple answer, but in fact, that will be
-your maximum <em>pain</em> when integrating with Apisearch. And working with
-Transformers is so easy and intuitive, so nothing to worry about.</p>
-<ul>
-<li>Will you write items?</li>
-</ul>
-<p>If you do, then it makes sense to write a WriteTransformer implementation for
-each model type. For example. In your project you work with Products, and you
-want to index them all. But what is your product composed by? Do you have a name
-or a description? Are they going to be searchable by these values? Maybe a SKU?</p>
-<p>Well, by implementing a WriteTransformer, you receive your entity instance, and
-you must be capable to receive, on one hand an Item instance, and on the other
-hand an ItemUUID instance as well. That simple.</p>
-<ul>
-<li>Will you read items?</li>
-</ul>
-<p>That question can have several answers.</p>
-<p>The first one is that you will read them, but you need to work, always, using
-a Product instance. That makes sense if your Product is completely dumped in the
-Apisearch servers, and by receiving a simple Item instance, you can really
-create this Product instance.</p>
-<p>When this scenario is not possible at all? Well, when you work with read model
-and write model at the same time. If you want to work with Doctrine entities
-when printing results because you want to iterate over her dependencies, then
-maybe you should reconsider how to change that.</p>
-<p>When the scenario is possible, and your Product object is part of your read
-model, then we have a solution for you. Then your WriteTransformer
-implementation could implement, at the same time, ReadTransformer.</p>
-<p>In that case, you receive an Item instance and you should be able to return an
-instance of your read model. A simple Product value object (remember, not the
-doctrine one, not an entity retrieved by the entity manager).</p>
-<h3 id="register-your-transformers"><a name="register-your-transformers" class="fa fa-link" href="#"></a>Register your transformers</h3>
-<p>You can actually register some Transformers in order to be able to use the
-TransformableRepository. If you don’t have any, don’t worry, this Repository
-class allows you as well to work with native Item methods.</p>
-<p>Let’s work with the ProductTransformer, so when we index or delete any object by
-using the advanced model-agnostic methods, the Transformer is enabled and used.
-As you will see, creating a transformer is too simple to make this part of the
-documentation much longer.</p>
-<pre><code class="language-yml"><span class="hljs-attr">services:</span>
-
-<span class="hljs-attr">    product_transformer:</span>
-<span class="hljs-attr">        class:</span> <span class="hljs-string">App\Transformer\ProductTransformer</span>
-<span class="hljs-attr">        tags:</span>
-<span class="hljs-bullet">            -</span> <span class="hljs-string">{</span> <span class="hljs-attr">name:</span> <span class="hljs-string">apisearch.write_transformer</span> <span class="hljs-string">}</span>
-<span class="hljs-bullet">            -</span> <span class="hljs-string">{</span> <span class="hljs-attr">name:</span> <span class="hljs-string">apisearch.read_transformer</span> <span class="hljs-string">}</span>
-</code></pre>
-<p>That’s it. The first one to subscribe this transformer as a WriteTransformer and
-the second one to subscriber it as a ReadTransformer. Remember to implement both
-interfaces if needed.</p>
-<h3 id="saving-entities"><a name="saving-entities" class="fa fa-link" href="#"></a>Saving entities</h3>
-<p>By using the TransformableRepository, you will be able to work with yet another
-2 extra methods.</p>
-<ul>
-<li>addObject</li>
-<li>deleteObject</li>
-</ul>
-<p>Both methods will use Transformers to work with your model, but call API
-endpoints with the only entity we really understand in our servers. Item.</p>
-<h2 id="twig-macros"><a name="twig-macros" class="fa fa-link" href="#"></a>Twig macros</h2>
-<p>This package provides you as well a set of basic macros for your aggregations.
-Let’s imagine that our controller makes a great Query with 2 aggregations and
-gets from the repository a Result object. We have aggregated our repository by
-color and by size.</p>
-<pre><code class="language-php"><span class="hljs-comment">/**
- * Our controller
- */</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SearchController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>
-</span>{
-    <span class="hljs-comment">/**
-     * Search action
-     *
-     * <span class="hljs-doctag">@return</span> Response
-     */</span>
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">searchAction</span><span class="hljs-params">()</span> : <span class="hljs-title">Response</span>
-    </span>{
-        $query = Query::createMatchAll()
-            -&gt;aggregateBy(<span class="hljs-string">'size'</span>, <span class="hljs-string">'size'</span>, Filter::AT_LEAST_ONE)
-            -&gt;aggregateBy(<span class="hljs-string">'color'</span>, <span class="hljs-string">'color'</span>, Filter::AT_LEAST_ONE)
-            
-        $result = <span class="hljs-keyword">$this</span>
-            -&gt;get(<span class="hljs-string">'apisearch.repository_search'</span>)
-            -&gt;query($query);
-            
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'MyBundle:Search:search.html.twig'</span>, [
-            <span class="hljs-string">'result'</span> =&gt; $result,
-        ]);
-    }
-}
-</code></pre>
-<p>Then, this Result object is passed to the view, and we want a basic aggregation
-print, in order to check that good results are being printed properly.</p>
-<p>If you go to the PHP documentation and check how a Result object is actually
-built internally, you’ll notice that, in fact, any kind of view can be build on
-top of that object. You can take this base macros as an example as well.</p>
-<pre><code class="language-jinja"><span class="xml"></span><span class="hljs-template-tag">{% <span class="hljs-name">import</span> "ApisearchBundle:Macros:aggregations.html.twig" <span class="hljs-keyword">as</span> _aggregations %}</span><span class="xml">
-
-</span><span class="hljs-template-variable">{{ _aggregations.printAggregation(result, 'size') }}</span><span class="xml">
-</span><span class="hljs-template-variable">{{ _aggregations.printAggregation(result, 'color') }}</span><span class="xml">
-</span></code></pre>
-<p>That simple macro will print something like that</p>
-<pre><code><span class="hljs-selector-tag">Size</span>
-<span class="hljs-selector-attr">[ ]</span> <span class="hljs-selector-tag">M</span>   (<span class="hljs-number">10</span>)
-<span class="hljs-selector-attr">[ ]</span> <span class="hljs-selector-tag">L</span>   (<span class="hljs-number">12</span>)
-<span class="hljs-selector-attr">[ ]</span> <span class="hljs-selector-tag">XL</span>  (<span class="hljs-number">6</span>)
-
-<span class="hljs-selector-tag">Color</span>
-<span class="hljs-selector-attr">[ ]</span> <span class="hljs-selector-tag">Blue</span> (<span class="hljs-number">1</span>)
-<span class="hljs-selector-attr">[ ]</span> <span class="hljs-selector-tag">Red</span>  (<span class="hljs-number">2</span>)
-</code></pre>
-<p>Each line will create the right url, with parameters applied or removed.</p>
-<h2 id="filter-values"><a name="filter-values" class="fa fa-link" href="#"></a>Filter values</h2>
-<p>As you can see, any filter is applied in the last example, and this is because,
-even if we applied a filter clicking by one of these links, filters are not
-retrieved from the request and added in the query.</p>
-<p>Let’s fix it by changing our controller.</p>
-<pre><code class="language-php"><span class="hljs-comment">/**
- * Our controller
- */</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SearchController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>
-</span>{
-    <span class="hljs-comment">/**
-     * Search action
-     *
-     * <span class="hljs-doctag">@param</span> Request $request
-     *
-     * <span class="hljs-doctag">@return</span> Response
-     */</span>
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">searchAction</span><span class="hljs-params">(Request $request)</span> : <span class="hljs-title">Response</span>
-    </span>{
-        $requestQuery = $request-&gt;query;
-        $query = Query::createMatchAll()
-            -&gt;filterBy(<span class="hljs-string">'size'</span>, <span class="hljs-string">'size'</span>, $requestQuery-&gt;get(<span class="hljs-string">'size'</span>, []), Filter::AT_LEAST_ONE)
-            -&gt;aggregateBy(<span class="hljs-string">'size'</span>, <span class="hljs-string">'size'</span>)
-            -&gt;filterBy(<span class="hljs-string">'color'</span>, <span class="hljs-string">'color'</span>, $requestQuery-&gt;get(<span class="hljs-string">'color'</span>, []), Filter::AT_LEAST_ONE)
-            -&gt;aggregateBy(<span class="hljs-string">'color'</span>, <span class="hljs-string">'color'</span>)
-            
-        $result = <span class="hljs-keyword">$this</span>
-            -&gt;get(<span class="hljs-string">'apisearch.repository_search'</span>)
-            -&gt;query($query);
-            
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'MyBundle:Search:search.html.twig'</span>, [
-            <span class="hljs-string">'result'</span> =&gt; $result,
-        ]);
-    }
-}
-</code></pre>
-<p>By default, the filter/aggregation name will be the name of the parameter, so if
-you add a HTTP query parameter called color with value an array with value
-<code>blue</code>, then the Query object will take <code>blue</code> filter. Then, your aggregations
-will look like this, and all your results will contain, minimum, color blue.</p>
-<pre><code><span class="hljs-selector-tag">Size</span>
-<span class="hljs-selector-attr">[ ]</span> <span class="hljs-selector-tag">M</span>   (<span class="hljs-number">10</span>)
-<span class="hljs-selector-attr">[ ]</span> <span class="hljs-selector-tag">L</span>   (<span class="hljs-number">12</span>)
-<span class="hljs-selector-attr">[ ]</span> <span class="hljs-selector-tag">XL</span>  (<span class="hljs-number">6</span>)
-
-<span class="hljs-selector-tag">Color</span>
-<span class="hljs-selector-attr">[x]</span> <span class="hljs-selector-tag">Blue</span> (<span class="hljs-number">1</span>)
-<span class="hljs-selector-attr">[ ]</span> <span class="hljs-selector-tag">Red</span>  (<span class="hljs-number">2</span>)
-</code></pre>
-<h2 id="reset-index-command"><a name="reset-index-command" class="fa fa-link" href="#"></a>Reset index command</h2>
-<p>By default this bundle enables to a pre-configured command, so you can reset any
-of your configured repositories by only adding as argument the repository name.</p>
-<pre><code class="language-bash">Usage:
-  puntmig:search:reset-index &lt;repository&gt; [&lt;language&gt;]
-
-Arguments:
-  repository            Repository name
-  language              Language base <span class="hljs-keyword">for</span> the repository
-
-Options:
-  -h, --<span class="hljs-built_in">help</span>            Display this <span class="hljs-built_in">help</span> message
-  -q, --quiet           Do not output any message
-  ...
-  
-Help:
-  Reset your search index. Prepared a clean instance of the index and remove 
-  existing objects
-</code></pre>
-<p>as you can see, you can define as well the language.</p>
-<pre><code class="language-bash">php bin/console puntmig:search:reset-index search
-php bin/console puntmig:search:reset-index search ca
-</code></pre>
+                    <h1 id="working-with-relations"><a name="working-with-relations" class="fa fa-link" href="#"></a>Working with relations</h1>
 
                     <!-- /Content -->
 
                     <hr>
                     <a class="c-content__editOnGithub"
                        target="_blank"
-                       href="https://github.com/apisearch-io/docs/tree/master/src/content/integrations/symfony-bundle.md">
+                       href="https://github.com/apisearch-io/docs/tree/master/src/content/recipes/working-with-relations.md">
                         <i class="fa fa-github" aria-hidden="true"></i>
                         Edit this page!
                     </a>
@@ -702,72 +390,9 @@ php bin/console puntmig:search:reset-index search ca
 
                     <li class="c-toc__navItem c-toc__navItem--1 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#symfony-bundle"
+                           href="#working-with-relations"
                         >
-                            Symfony Bundle
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#install"
-                        >
-                            Install
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#repository"
-                        >
-                            Repository
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#event-repository"
-                        >
-                            Event Repository
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#transformers"
-                        >
-                            Transformers
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#register-your-transformers"
-                        >
-                            Register your transformers
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#saving-entities"
-                        >
-                            Saving entities
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#twig-macros"
-                        >
-                            Twig macros
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#filter-values"
-                        >
-                            Filter values
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#reset-index-command"
-                        >
-                            Reset index command
+                            Working with relations
                         </a>
                     </li>
                 </ul>
