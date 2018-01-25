@@ -245,6 +245,14 @@
                             <ul class="c-sidebar__nav c-sidebar__nav--sub-1 nav nav-pills flex-column">
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/ui/installation.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Installation
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
                                            href="/ui/widgets.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -387,73 +395,12 @@ It provides a list of common widgets like a search box, a result list, filters,
 sorting dropdown, pagination, and many more explained below.</p>
 <p>All your data must be previously indexed using the Apisearch tools. For more
 information say hi to: <a href="mailto:hello@puntmig.com">hello@puntmig.com</a></p>
-<h2 id="install"><a name="install" class="fa fa-link" href="#"></a>Install</h2>
-<h3 id="npm-yarn"><a name="npm-yarn" class="fa fa-link" href="#"></a>npm &amp; yarn</h3>
-<pre><code class="language-shell">npm install apisearch-ui --save
-<span class="hljs-meta">#</span><span class="bash"> or</span>
-yarn add apisearch-ui
-</code></pre>
-<h3 id="html-tag-script"><a name="html-tag-script" class="fa fa-link" href="#"></a>html tag &lt;script&gt;</h3>
-<p>You can either download the library and use a relative path to
-your assets folder, or use a CDN like jsDelivr.</p>
-<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.jsdelivr.net/npm/apisearch-ui/dist/apisearch-ui.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-</code></pre>
-<h2 id="usage"><a name="usage" class="fa fa-link" href="#"></a>Usage</h2>
-<p>This simple setup allows you to build a full text search
-input with a result container using a custom template
-engine.</p>
-<pre><code class="language-javascript"><span class="hljs-comment">// Create instance</span>
-<span class="hljs-keyword">const</span> ui = apisearchUI({
-    <span class="hljs-attr">appId</span>: <span class="hljs-string">'music'</span>,
-    <span class="hljs-attr">apiKey</span>: <span class="hljs-string">'1cc7a3e0-bda5-11e7-abc4-cec278b6b50a'</span>
-});
-
-<span class="hljs-comment">// Append widgets</span>
-ui.addWidgets(
-    ui.widgets.simpleSearch({
-        <span class="hljs-attr">target</span>: <span class="hljs-string">'.search-container'</span>,
-    }),
-    ui.widgets.result({
-        <span class="hljs-attr">target</span>: <span class="hljs-string">'.result-container'</span>,
-        <span class="hljs-attr">template</span>: {
-            <span class="hljs-attr">itemsList</span>: <span class="hljs-string">'&lt;ul&gt;{{#items}} &lt;li&gt;{{metadata.name}}&lt;/li&gt; {{/items}}&lt;/ul&gt;'</span>,
-        }
-    })
-);
-
-<span class="hljs-comment">// Initialize it</span>
-ui.init();
-</code></pre>
-<p>All widgets are passed using <code>.addWidget(widget)</code> method,
-or using <code>.addWidgets(...widgets)</code> to add widgets in a bulk mode,
-like in the example below.</p>
-<p>Once your setup is done, you just call the <code>.init()</code> method to
-start all the magic!</p>
-<blockquote>
-<p>Check out this for more examples:
-<a href="https://github.com/puntmig/javascript-search-ui/tree/master/examples">apisearch-ui/examples</a>!</p>
-</blockquote>
-<h2 id="initialization"><a name="initialization" class="fa fa-link" href="#"></a>Initialization</h2>
-<p>Before configuring your widgets, first you need to create
-a new instance of <code>apisearchUI</code>. This will be the core
-of your UI search engines are <code>appId</code> and <code>apiKey</code>, the <code>options</code>
-parameters are totally optional.</p>
-<p>This is the anatomy of the ApisearchUI configuration:</p>
-<pre><code class="language-javascript"><span class="hljs-keyword">const</span> ui = apisearchUI({
-    <span class="hljs-attr">appId</span>: !string,
-    <span class="hljs-attr">apiKey</span>: !string,
-    <span class="hljs-attr">options</span>: {
-        <span class="hljs-attr">endpoint</span>: ?string,
-        <span class="hljs-attr">apiVersion</span>: ?string,
-        <span class="hljs-attr">timeout</span>: ?int[<span class="hljs-number">10000</span>],
-        <span class="hljs-attr">inMemoryCache</span>: ?bool[<span class="hljs-literal">true</span>],
-    }
-});
-</code></pre>
-<p>Once your instance and widgets are defined, don’t
-forget to initialize it!</p>
-<pre><code class="language-javascript">ui.init();
-</code></pre>
+<h3 id="table-of-contents"><a name="table-of-contents" class="fa fa-link" href="#"></a>Table of contents</h3>
+<ul>
+<li><a href="ui/installation.html">Installation</a></li>
+<li><a href="ui/widgets.html">Widgets</a></li>
+<li><a href="ui/examples.html">Examples</a></li>
+</ul>
 
                     <!-- /Content -->
 

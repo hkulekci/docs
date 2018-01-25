@@ -245,6 +245,14 @@
                             <ul class="c-sidebar__nav c-sidebar__nav--sub-1 nav nav-pills flex-column">
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/ui/installation.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Installation
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
                                            href="/ui/widgets.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -482,10 +490,10 @@ without the <code>@</code> symbol.</p>
 same number of services than the regular repository, but instead of
 <code>.repository_</code>, the services are built by using the <code>.event_repository_</code> syntax.</p>
 <ul>
-<li>apisearch.event_repository_search.default</li>
-<li>apisearch.event_repository_comments.ca</li>
-<li>apisearch.event_repository_comments.es</li>
-<li>apisearch.event_repository_comments.en</li>
+<li><code>apisearch.event_repository_search.default</code></li>
+<li><code>apisearch.event_repository_comments.ca</code></li>
+<li><code>apisearch.event_repository_comments.es</code></li>
+<li><code>apisearch.event_repository_comments.en</code></li>
 </ul>
 <p>You can inject them as well the way Symfony says.</p>
 <pre><code class="language-yml"><span class="hljs-attr">services:</span>
