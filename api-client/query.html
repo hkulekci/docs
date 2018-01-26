@@ -1106,11 +1106,11 @@ value.</p>
 </code></pre>
 <h2 id="enabling-suggestions"><a name="enabling-suggestions" class="fa fa-link" href="#"></a>Enabling suggestions</h2>
 <p>Suggestions can be enabled or disabled by using these flag methods.</p>
-<pre><code class="language-php">Query::create(<span class="hljs-string">''</span>)
+<pre><code class="language-php">$query = Query::create(<span class="hljs-string">''</span>)
     -&gt;disableAggregations()
 ;
 
-Query::create(<span class="hljs-string">''</span>)
+$query = Query::create(<span class="hljs-string">''</span>)
     -&gt;enableAggregations()
 ;
 </code></pre>
@@ -1125,6 +1125,25 @@ Query::create(<span class="hljs-string">''</span>)
 </code></pre>
 <p>Please, read <a href="#reading-suggestions">Reading Suggestions</a> to know a little bit
 more about suggestions.</p>
+<h2 id="enabling-highlights"><a name="enabling-highlights" class="fa fa-link" href="#"></a>Enabling highlights</h2>
+<p>Highlights can be enabled or disabled by using these flag methods.</p>
+<pre><code class="language-php">$query = Query::create(<span class="hljs-string">''</span>)
+    -&gt;enableHighlights()
+;
+
+$query = Query::create(<span class="hljs-string">''</span>)
+    -&gt;disableHighlights()
+;
+</code></pre>
+<pre><code class="language-javascript"><span class="hljs-keyword">let</span> query = api
+    .query.createMatchAll()
+    .enableHighlights()
+;
+<span class="hljs-keyword">let</span> query = api
+    .query.createMatchAll()
+    .disableHighlights()
+;
+</code></pre>
 <h2 id="excluding-some-elements"><a name="excluding-some-elements" class="fa fa-link" href="#"></a>Excluding some elements</h2>
 <p>Having some kind of black list would be useful as well. For example, when
 printing a related carousel given an item, and filtering by the type,
@@ -1283,6 +1302,13 @@ composition between the ID and the type.</p>
                            href="#enabling-suggestions"
                         >
                             Enabling suggestions
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#enabling-highlights"
+                        >
+                            Enabling highlights
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">

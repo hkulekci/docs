@@ -130,6 +130,12 @@
                                         php
                                     </span>
                                 </li>
+                                <li class="c-languageSelector__item">
+                                    <span data-lang="javascript"
+                                          class="c-languageSelector__link">
+                                        javascript
+                                    </span>
+                                </li>
                         </ol>
                     </nav>
                     <!-- /language selector -->
@@ -394,14 +400,34 @@ elements from our dataset (Product, Category…) but as well a set of
 aggregations, result of our filters.</p>
 <pre><code class="language-php">$result = $repository-&gt;query($query);
 </code></pre>
+<pre><code class="language-javascript"><span class="hljs-keyword">let</span> api = apisearch({<span class="hljs-comment">/* your credentials */</span>});
+
+<span class="hljs-keyword">let</span> query = api.query.create(<span class="hljs-string">'your query text'</span>);
+api.search(query, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result, error</span>) </span>{
+    <span class="hljs-keyword">if</span> (error) {
+        <span class="hljs-built_in">console</span>.log(error);
+        <span class="hljs-keyword">return</span>;
+    }
+    
+    <span class="hljs-built_in">console</span>.log(result);
+});
+</code></pre>
 <p>You can retrieve as well all elements in a single array, respecting the order
 defined by the Query.</p>
 <pre><code class="language-php">$results = $result-&gt;getItems();
+</code></pre>
+<pre><code class="language-javascript">api.search(query, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(result.items);
+});
 </code></pre>
 <p>If you queried by a UUID, for example, or even in any query, you can easily
 retrieve the first (and more useful when is the only expected) result by using
 this method</p>
 <pre><code class="language-php">$results = $result-&gt;getFirstItem();
+</code></pre>
+<pre><code class="language-javascript">api.search(query, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(result.items[<span class="hljs-number">0</span>]);
+});
 </code></pre>
 <p>Each of these methods will return an array of hydrated instances of our model (
 not yours. If you want your model instances, you need to create manual
