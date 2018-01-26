@@ -405,6 +405,8 @@ searches.</p>
   <span class="hljs-attr">placeholder</span>: ?string,
   <span class="hljs-attr">autofocus</span>: ?bool[<span class="hljs-literal">false</span>],
   <span class="hljs-attr">startSearchOn</span>: ?integer[<span class="hljs-number">0</span>],
+  <span class="hljs-attr">clearSearch</span>: ?bool[<span class="hljs-literal">true</span>],
+  <span class="hljs-attr">withContainer</span>: ?bool[<span class="hljs-literal">true</span>],
   <span class="hljs-attr">classNames</span>: {
       <span class="hljs-attr">container</span>: ?string,
       <span class="hljs-attr">input</span>: ?string,
@@ -421,6 +423,9 @@ searches.</p>
 <li><code>placeholder</code>: the default html input placeholder.</li>
 <li><code>autofocus</code>: when set to <code>true</code>, the cursor is focused on the input.</li>
 <li><code>startSearchOn</code>: is the minimum number of characters to start searching.</li>
+<li><code>clearSearch</code>: to show a clear search button to reset your search.</li>
+<li><code>withContainer</code>: to wrap the search input with a div container.
+This is mandatory if you want a “clearSearch” button.</li>
 <li><code>classNames</code>:
 <ul>
 <li><code>container</code>: refers to the parent <code>div</code> that contains the widget.</li>
@@ -436,6 +441,7 @@ you are looking for just below the search input.</p>
     <span class="hljs-attr">target</span>: !string,
     <span class="hljs-attr">placeholder</span>: ?string,
     <span class="hljs-attr">autofocus</span>: ?bool[<span class="hljs-literal">false</span>],
+    <span class="hljs-attr">clearSearch</span>: ?bool[<span class="hljs-literal">true</span>],
     <span class="hljs-attr">classNames</span>: {
         <span class="hljs-attr">container</span>: ?string,
         <span class="hljs-attr">input</span>: ?string,
@@ -455,6 +461,7 @@ you are looking for just below the search input.</p>
 <li><code>placeholder</code>: the default html input placeholder.</li>
 <li><code>autofocus</code>: when set to <code>true</code>, the cursor is focused on the input.</li>
 <li><code>startSearchOn</code>: is the minimum number of characters to start searching.</li>
+<li><code>clearSearch</code>: to show a clear search button to reset your search.</li>
 <li><code>classNames</code>:
 <ul>
 <li><code>container</code>: refers to the parent <code>div</code> class that
