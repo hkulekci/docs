@@ -405,8 +405,9 @@ input with a result container using a custom template
 engine.</p>
 <pre><code class="language-javascript"><span class="hljs-comment">// Create instance</span>
 <span class="hljs-keyword">const</span> ui = apisearchUI({
-    <span class="hljs-attr">appId</span>: <span class="hljs-string">'music'</span>,
-    <span class="hljs-attr">apiKey</span>: <span class="hljs-string">'1cc7a3e0-bda5-11e7-abc4-cec278b6b50a'</span>
+    <span class="hljs-attr">appId</span>: <span class="hljs-string">'241ly34R'</span>,
+    <span class="hljs-attr">indexId</span>: <span class="hljs-string">'yT656u37'</span>,
+    <span class="hljs-attr">token</span>: <span class="hljs-string">'1cc7a3e0-bda5-11e7-abc4-cec278b6b50a'</span>
 });
 
 <span class="hljs-comment">// Append widgets</span>
@@ -442,7 +443,8 @@ start all the magic!</p>
 <p>This is the anatomy of the ApisearchUI configuration:</p>
 <pre><code class="language-javascript"><span class="hljs-keyword">const</span> ui = apisearchUI({
     <span class="hljs-attr">appId</span>: !string,
-    <span class="hljs-attr">apiKey</span>: !string,
+    <span class="hljs-attr">indexId</span>: !string,
+    <span class="hljs-attr">token</span>: !string,
     <span class="hljs-attr">options</span>: {
         <span class="hljs-attr">endpoint</span>: ?string,
         <span class="hljs-attr">apiVersion</span>: ?string,
