@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Installation</title>
+    <title>Search UI</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="ApisearchUI installation.">
+    <meta name="description" content="ApisearchUI documentation page.">
     <meta name="author" content="Apisearch team">
     <meta name="keywords" content="Apisearch, Elasticsearch search engine, fast search demo, Apisearch official website">
 
@@ -114,7 +114,7 @@
                                     <a href="#">UI</a>
                                 </li>
                             <li class="c-breadcrumb__item--active breadcrumb-item active" aria-current="page">
-                                Installation
+                                Search UI
                             </li>
                         </ol>
                     </nav>
@@ -245,26 +245,26 @@
                             <ul class="c-sidebar__nav c-sidebar__nav--sub-1 nav nav-pills flex-column">
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/ui/installation.html"
+                                           href="/ui/search-ui.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Installation
+                                            Search UI
                                         </a>
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/ui/widgets.html"
+                                           href="/ui/autocomplete-ui.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Widgets
+                                            Autocomplete UI
                                         </a>
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/ui/examples.html"
+                                           href="/ui/events-ui.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Examples
+                                            Events UI
                                         </a>
                                     </li>
                             </ul>
@@ -388,10 +388,15 @@
             <main class="col-sm-8 col-md-9 col-lg-8 ml-sm-auto mr-lg-auto pt-3" role="main">
                 <section class="c-content">
                     <!-- Content -->
-                    <h1 id="installation"><a name="installation" class="fa fa-link" href="#"></a>Installation</h1>
+                    <h1 id="search-ui"><a name="search-ui" class="fa fa-link" href="#"></a>Search UI</h1>
+<p>This library is a set of tools to build a custom search experience for your
+website, e-commerce, docs site, or any other web application you can imagine.
+It provides a list of common widgets like a search box, a result list, filters,
+sorting dropdown, pagination, and many more explained below.</p>
+<h2 id="installation"><a name="installation" class="fa fa-link" href="#"></a>Installation</h2>
 <p><strong>npm &amp; yarn</strong></p>
 <pre><code class="language-shell">npm install apisearch-ui --save
-<span class="hljs-meta">#</span><span class="bash"> or</span>
+// or
 yarn add apisearch-ui
 </code></pre>
 <p><strong>html tag &lt;script&gt;</strong></p>
@@ -405,9 +410,9 @@ input with a result container using a custom template
 engine.</p>
 <pre><code class="language-javascript"><span class="hljs-comment">// Create instance</span>
 <span class="hljs-keyword">const</span> ui = apisearchUI({
-    <span class="hljs-attr">appId</span>: <span class="hljs-string">'241ly34R'</span>,
-    <span class="hljs-attr">indexId</span>: <span class="hljs-string">'yT656u37'</span>,
-    <span class="hljs-attr">token</span>: <span class="hljs-string">'1cc7a3e0-bda5-11e7-abc4-cec278b6b50a'</span>
+    <span class="hljs-attr">appId</span>: <span class="hljs-string">'your_app_id'</span>,
+    <span class="hljs-attr">indexId</span>: <span class="hljs-string">'your_index_id'</span>,
+    <span class="hljs-attr">token</span>: <span class="hljs-string">'your_app_QUERY_token'</span>
 });
 
 <span class="hljs-comment">// Append widgets</span>
@@ -427,9 +432,8 @@ ui.addWidgets(
 ui.init();
 </code></pre>
 <p>Before configuring your widgets, first you need to create
-a new instance of <code>apisearchUI</code>. This will be the core
-of your UI search engines are <code>appId</code> and <code>apiKey</code>, the <code>options</code>
-parameters are totally optional.</p>
+a new instance of <code>apisearchUI</code>, passing an <code>appId</code>,
+an <code>indexId</code> and an <strong>events</strong> <code>token</code>.</p>
 <p>All widgets are passed using <code>.addWidget(widget)</code> method,
 or using <code>.addWidgets(...widgets)</code> to add widgets in a bulk mode,
 like in the example below.</p>
@@ -437,7 +441,7 @@ like in the example below.</p>
 start all the magic!</p>
 <blockquote>
 <p>Check out this for more examples:
-<a href="https://github.com/puntmig/javascript-search-ui/tree/master/examples">apisearch-ui/examples</a>!</p>
+<a href="https://github.com/apisearch-io/search-ui/tree/master/examples">apisearch-ui/examples</a>!</p>
 </blockquote>
 <h2 id="anatomy"><a name="anatomy" class="fa fa-link" href="#"></a>Anatomy</h2>
 <p>This is the anatomy of the ApisearchUI configuration:</p>
@@ -449,17 +453,445 @@ start all the magic!</p>
         <span class="hljs-attr">endpoint</span>: ?string,
         <span class="hljs-attr">apiVersion</span>: ?string,
         <span class="hljs-attr">timeout</span>: ?int[<span class="hljs-number">10000</span>],
+        <span class="hljs-attr">overrideQueries</span>: ?bool[<span class="hljs-literal">true</span>],
         <span class="hljs-attr">inMemoryCache</span>: ?bool[<span class="hljs-literal">true</span>]
     }
 });
 </code></pre>
+<h2 id="widgets"><a name="widgets" class="fa fa-link" href="#"></a>Widgets</h2>
+<p>Widgets are nothing but a small pieces of html connected between them that let
+you build a fully customized search experience. They can be used as a search input,
+a result set, a pagination component, different kind of filters, and many more.</p>
+<h3 id="simple-search"><a name="simple-search" class="fa fa-link" href="#"></a>Simple Search</h3>
+<p>The simple search input widget is to perform text based
+searches.</p>
+<p>This widget points to <code>searchable_metadata</code> and
+<code>exact_matching_metadata</code> field of the indexed items.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> simpleSearchWidget = ui.widgets.simpleSearch({ 
+  <span class="hljs-attr">target</span>: !string,
+  <span class="hljs-attr">placeholder</span>: ?string,
+  <span class="hljs-attr">autofocus</span>: ?bool[<span class="hljs-literal">false</span>],
+  <span class="hljs-attr">startSearchOn</span>: ?integer[<span class="hljs-number">0</span>],
+  <span class="hljs-attr">clearSearch</span>: ?bool[<span class="hljs-literal">true</span>],
+  <span class="hljs-attr">withContainer</span>: ?bool[<span class="hljs-literal">true</span>],
+  <span class="hljs-attr">classNames</span>: {
+      <span class="hljs-attr">container</span>: ?string,
+      <span class="hljs-attr">input</span>: ?string,
+      <span class="hljs-attr">clearSearch</span>: ?string
+  },
+  <span class="hljs-attr">template</span>: {
+      <span class="hljs-attr">clearSearch</span>: ?string
+  }
+});
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>target</code>: is the dom selector, it can be an id or a class.</li>
+<li><code>placeholder</code>: the default html input placeholder.</li>
+<li><code>autofocus</code>: when set to <code>true</code>, the cursor is focused on the input.</li>
+<li><code>startSearchOn</code>: is the minimum number of characters to start searching.</li>
+<li><code>clearSearch</code>: to show a clear search button to reset your search.</li>
+<li><code>withContainer</code>: to wrap the search input with a div container.
+This is mandatory if you want a “clearSearch” button.</li>
+<li><code>classNames</code>:
+<ul>
+<li><code>container</code>: refers to the parent <code>div</code> that contains the widget.</li>
+<li><code>input</code>: refers to the html input.</li>
+</ul>
+</li>
+</ul>
+<h3 id="suggested-search"><a name="suggested-search" class="fa fa-link" href="#"></a>Suggested Search</h3>
+<p>The suggested search input goes one step further. You can
+get auto-completed suggestions list related to the text
+you are looking for just below the search input.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> suggestedSearchWidget = ui.widgets.suggestedSearch({ 
+    <span class="hljs-attr">target</span>: !string,
+    <span class="hljs-attr">placeholder</span>: ?string,
+    <span class="hljs-attr">autofocus</span>: ?bool[<span class="hljs-literal">false</span>],
+    <span class="hljs-attr">clearSearch</span>: ?bool[<span class="hljs-literal">true</span>],
+    <span class="hljs-attr">classNames</span>: {
+        <span class="hljs-attr">container</span>: ?string,
+        <span class="hljs-attr">input</span>: ?string,
+        <span class="hljs-attr">clearSearch</span>: ?string,
+        <span class="hljs-attr">box</span>: ?string,
+        <span class="hljs-attr">suggestion</span>: ?string,
+        <span class="hljs-attr">activeSuggestion</span>: ?string
+    },
+    <span class="hljs-attr">template</span>: {
+        <span class="hljs-attr">clearSearch</span>: ?string
+    }
+});
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>target</code>: is the dom selector, it can be an id or a class.</li>
+<li><code>placeholder</code>: the default html input placeholder.</li>
+<li><code>autofocus</code>: when set to <code>true</code>, the cursor is focused on the input.</li>
+<li><code>startSearchOn</code>: is the minimum number of characters to start searching.</li>
+<li><code>clearSearch</code>: to show a clear search button to reset your search.</li>
+<li><code>classNames</code>:
+<ul>
+<li><code>container</code>: refers to the parent <code>div</code> class that
+contains the widget.</li>
+<li><code>input</code>: refers to the html input.</li>
+<li><code>box</code>: refers to the suggestions box.</li>
+<li><code>suggestion</code>: refers to the suggestion item.</li>
+<li><code>activeSuggestion</code>: refers to the active suggestion.</li>
+</ul>
+</li>
+</ul>
+<h3 id="sort-by"><a name="sort-by" class="fa fa-link" href="#"></a>Sort By</h3>
+<p>The sort by widget allows to order the result set as you like.</p>
+<p>This widget points to <code>indexed_metadata</code> field.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> sortByWidget = ui.widgets.sortBy({
+    <span class="hljs-attr">target</span>: !string,
+    <span class="hljs-attr">options</span>: [
+        {<span class="hljs-attr">name</span>: !string, <span class="hljs-attr">value</span>: !string},
+        {<span class="hljs-attr">name</span>: !string, <span class="hljs-attr">value</span>: !string},
+        <span class="hljs-comment">// ...</span>
+    ],
+    <span class="hljs-attr">classNames</span>: {
+        <span class="hljs-attr">container</span>: ?string,
+        <span class="hljs-attr">select</span>: ?string
+    }
+});
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>target</code>: is the dom selector, it can be an id or a class.</li>
+<li><code>options</code>: is the list of options in a selector. The <code>name</code> refers
+to the html text shown, and <code>value</code> is the value of the option itself.</li>
+<li><code>classNames</code>:
+<ul>
+<li><code>container</code>: refers to the parent <code>div</code> class that
+contains the widget.</li>
+<li><code>select</code>: refers to the select input.</li>
+</ul>
+</li>
+</ul>
+<h3 id="multiple-filter"><a name="multiple-filter" class="fa fa-link" href="#"></a>Multiple Filter</h3>
+<p>The filter widget allows you to refine your search.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> multipleFilterWidget = ui.widgets.multipleFilter({
+    <span class="hljs-attr">target</span>: !string,
+    <span class="hljs-attr">name</span>: !string,
+    <span class="hljs-attr">filterField</span>: !string,
+    <span class="hljs-attr">aggregationField</span>: ?string[filterField],
+    <span class="hljs-attr">applicationType</span>: ?integer[<span class="hljs-number">8</span>],
+    <span class="hljs-attr">fetchLimit</span>: ?integer[<span class="hljs-number">5</span>],      
+    <span class="hljs-attr">viewLimit</span>: ?integer[fetchLimit], <span class="hljs-comment">// if default, show more won't be visible</span>
+    sortBy: ?string[<span class="hljs-string">'_count:desc'</span>],
+    <span class="hljs-attr">classNames</span>: {
+        <span class="hljs-attr">container</span>: ?string,
+        <span class="hljs-attr">top</span>: ?string,
+        <span class="hljs-attr">itemsList</span>: ?string,
+        <span class="hljs-attr">item</span>: ?string,
+        <span class="hljs-attr">active</span>: ?string,
+        <span class="hljs-attr">showMoreContainer</span>: ?string
+    },
+    <span class="hljs-attr">template</span>: {
+        <span class="hljs-attr">top</span>: ?string,
+        <span class="hljs-attr">item</span>: !string,
+        <span class="hljs-attr">showMore</span>: ?string[<span class="hljs-string">'+ Show more'</span>],
+        <span class="hljs-attr">showLess</span>: ?string[<span class="hljs-string">'- Show less'</span>]
+    },
+    <span class="hljs-attr">formatData</span>: ?<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">itemData</span>)
+})
+</span></code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>target</code>: is the dom selector, it can be an id or a class.</li>
+<li><code>name</code>: this will be the unique filter identifier inside
+this ApisearchUI instance.</li>
+<li><code>filterField</code>: this will be the field name of the filter
+when was indexed to Apisearch as <code>indexed_metadata</code>.</li>
+<li><code>aggregationField</code>: this will be the aggregation field name
+when was indexed to Apisearch as <code>indexed_metadata</code>.</li>
+<li><code>applicationType</code>: the type of filter. Check out the
+<a href="https://github.com/apisearch-io/javascript-client#filters">javascript client</a>
+docs for more information.</li>
+<li><code>fetchLimit</code>: is the limit of items to be fetched on the server.</li>
+<li><code>viewLimit</code>: If there are 10 fetched items, and viewLimit is 5. Only
+the 5 first numbers will be visible and a “show more” / &quot;show less&quot;
+button will appear.</li>
+<li><code>sortBy</code>: refers to the order/sort of the filter items.</li>
+<li><code>classNames</code>:
+<ul>
+<li><code>container</code>: refers to the parent <code>div</code> class that
+contains the widget.</li>
+<li><code>top</code>: class name of the container that holds the title of the filter.</li>
+<li><code>itemsList</code>: class name of the filter items list.</li>
+<li><code>item</code>: class name of the filter item link.</li>
+<li><code>active</code>: class name of the selected item link.</li>
+<li><code>showMoreContainer</code>: class of the “show more” button container.</li>
+</ul>
+</li>
+<li><code>template</code>:
+<ul>
+<li><code>top</code>: template string for the title of the filter list.</li>
+<li><code>item</code>: template string for the filter item link.</li>
+<li><code>showMore</code>: template string for the “show more” button.</li>
+<li><code>showLess</code>: template string for the “show less” button.</li>
+</ul>
+</li>
+<li><code>formatData</code>: is a callable function that receives all the resulted
+data related to the multiple filter widget:
+<ul>
+<li><code>n</code>: number of aggregations.</li>
+<li><code>isActive</code>: if filter is active.</li>
+<li><code>values</code>: the information of the filter.
+This is useful to transform some information received before being
+passed to the template.</li>
+</ul>
+</li>
+</ul>
+<h3 id="clear-filters-button"><a name="clear-filters-button" class="fa fa-link" href="#"></a>Clear filters button</h3>
+<p>Clear filters widget gives us a button to remove all active
+filters.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> clearFilters = ui.widgets.clearFilters({
+  <span class="hljs-attr">target</span>: !string,
+  <span class="hljs-attr">classNames</span>: {
+      <span class="hljs-attr">container</span>: ?string
+  },
+  <span class="hljs-attr">template</span>: {
+      <span class="hljs-attr">container</span>: ?string[<span class="hljs-string">'Clear filters'</span>]
+  }
+});
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>target</code>: is the dom selector, it can be an id or a class.</li>
+<li><code>classNames</code>:
+<ul>
+<li><code>container</code>: refers to the parent <code>div</code> class that
+contains the widget.</li>
+</ul>
+</li>
+<li><code>template</code>:
+<ul>
+<li><code>container</code>: is the template string for the element.</li>
+</ul>
+</li>
+</ul>
+<h3 id="search-result"><a name="search-result" class="fa fa-link" href="#"></a>Search result</h3>
+<p>The result widget allows you to print a set of results
+based on the search.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> resultWidget = ui.widgets.result({
+    <span class="hljs-attr">target</span>: !string,
+    <span class="hljs-attr">itemsPerPage</span>: ?integer[<span class="hljs-number">10</span>],
+    <span class="hljs-attr">highlightsEnabled</span>: ?bool[<span class="hljs-literal">false</span>],
+    <span class="hljs-attr">promote</span>: [
+        {<span class="hljs-attr">id</span>: !string, <span class="hljs-attr">type</span>: !string},
+        {<span class="hljs-attr">id</span>: !string, <span class="hljs-attr">type</span>: !string},
+        <span class="hljs-comment">//...   </span>
+    ],
+    <span class="hljs-attr">exclude</span>: [
+        {<span class="hljs-attr">id</span>: !string, <span class="hljs-attr">type</span>: !string},
+        {<span class="hljs-attr">id</span>: !string, <span class="hljs-attr">type</span>: !string},
+        <span class="hljs-comment">//...   </span>
+    ],
+    <span class="hljs-attr">classNames</span>: {
+        <span class="hljs-attr">container</span>: ?string
+    },
+    <span class="hljs-attr">template</span>: {
+        <span class="hljs-attr">itemsList</span>: !string,
+        <span class="hljs-attr">placeholder</span>: ?string
+    },
+    <span class="hljs-attr">formatData</span>: ?<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resultData</span>)
+});
+</span></code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>target</code>: is the dom selector, it can be an id or a class.</li>
+<li><code>highlightsEnabled</code>: when <code>true</code>, the text of the item indexed as
+a highlighted, will be accessible from the <code>highlights</code> attribute on
+each resulted element.</li>
+<li><code>exclude</code>: an array of items to be promoted on the result set.</li>
+<li><code>promote</code>: an array of items to be excluded from the result set.</li>
+<li><code>classNames</code>:
+<ul>
+<li><code>container</code>: refers to the parent <code>div</code> class that
+contains the widget.</li>
+</ul>
+</li>
+<li><code>template</code>:
+<ul>
+<li><code>itemsList</code>: is the template string of the iterable set of results.</li>
+<li><code>placeholder</code>: this template will be placed on initial widget render.
+Once a search is performed, this placeholder will disappear.</li>
+</ul>
+</li>
+<li><code>formatData</code>: is a callable function that receives all the resulted
+data, is useful to transform some information received before being passed
+to the template.</li>
+</ul>
+<p>On the <code>itemsList</code> template you have access to this two variables:</p>
+<ul>
+<li><code>items</code>: an array of resulted items.</li>
+<li><code>query</code>: the query text made for the search.
+The variable <code>items</code> will be accessible on the body attribute using
+the <code>{{#items}}{{/items}}</code> iterable. For example, given this array
+of results:</li>
+</ul>
+<pre><code class="language-javascript">{
+    <span class="hljs-attr">items</span>: [
+        {
+            <span class="hljs-attr">uuid</span>: { <span class="hljs-attr">source</span>: <span class="hljs-string">'Ba7XMhGh6yy'</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">'marvel'</span> },
+            <span class="hljs-attr">metadata</span>: {
+                <span class="hljs-attr">name</span>: <span class="hljs-string">'Tony Stark'</span>,
+                <span class="hljs-attr">img</span>: <span class="hljs-string">'https://api.marvel.com/v2/characters/tony-stark'</span>
+            }
+        },
+        {
+            <span class="hljs-attr">uuid</span>: { <span class="hljs-attr">source</span>: <span class="hljs-string">'Ba6mSyvhAJt'</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">'marvel'</span> },
+            <span class="hljs-attr">metadata</span>: {
+                <span class="hljs-attr">name</span>: <span class="hljs-string">'Peter Parker'</span>,
+                <span class="hljs-attr">img</span>: <span class="hljs-string">'https://api.marvel.com/v2/characters/peter-parker'</span>
+            }
+        },
+        <span class="hljs-comment">//...</span>
+    ]
+}
+</code></pre>
+<p>You will be able to build your results like this, and
+passing the string to the <code>body</code> template attribute:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> resultsTemplate = <span class="hljs-string">`
+&lt;ul&gt;
+{{#items}}
+    &lt;li&gt;
+        &lt;img src="{{metadata.img}}" /&gt;
+        &lt;h1&gt;{{metadata.name}}&lt;/h1&gt;
+    &lt;/li&gt;
+{{/items}}
+&lt;/ul&gt;
+{{^items}}
+    No results found for this search: &lt;b&gt;{{query}}&lt;/b&gt; :(
+{{/items}}
+`</span>;
+</code></pre>
+<p>For more information about how this templating system works,
+refer to the <a href="http://twitter.github.io/hogan.js/">twitter’s hogan.js documentation</a>.
+Or check the library examples.</p>
+<h3 id="pagination"><a name="pagination" class="fa fa-link" href="#"></a>Pagination</h3>
+<p>This widget allows to navigate through the results
+with a pagination links.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> resultInformationWidget = ui.widgets.pagination({
+    <span class="hljs-attr">target</span>: !string,
+    <span class="hljs-attr">padding</span>: ?integer[<span class="hljs-number">3</span>],
+    <span class="hljs-attr">goFirstLast</span>: ?bool[<span class="hljs-literal">false</span>],
+    <span class="hljs-attr">classNames</span>: {
+        <span class="hljs-attr">container</span>: ?string,
+        <span class="hljs-attr">item</span>: ?string,
+        <span class="hljs-attr">active</span>: ?string[<span class="hljs-string">'active'</span>],
+        <span class="hljs-attr">disabled</span>: ?string[<span class="hljs-string">'disabled'</span>],
+        <span class="hljs-attr">next</span>: ?string,
+        <span class="hljs-attr">first</span>: ?string,
+        <span class="hljs-attr">previous</span>: ?string,
+        <span class="hljs-attr">last</span>: ?string
+    },
+    <span class="hljs-attr">template</span>: {
+        <span class="hljs-attr">item</span>: ?string[<span class="hljs-string">'{{page}}'</span>],
+        <span class="hljs-attr">next</span>: ?string[<span class="hljs-string">'Next &gt;'</span>],
+        <span class="hljs-attr">previous</span>: ?string[<span class="hljs-string">'&lt; Prev'</span>],
+        <span class="hljs-attr">first</span>: ?string[<span class="hljs-string">'&lt;&lt; First'</span>],
+        <span class="hljs-attr">last</span>: ?string[<span class="hljs-string">'Last &gt;&gt;'</span>]
+    }
+});
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>target</code>: is the dom selector, it can be an id or a class.</li>
+<li><code>padding</code>: is the number of page links that will appear on each side
+of the current page. For example, if padding is set to 2, and current
+page is <code>[5]</code>, the result will be: <code>[&lt;] 3 4 [5] 6 7 [&gt;]</code></li>
+<li><code>classNames</code>:
+<ul>
+<li><code>container</code>: refers to the parent <code>div</code> class that
+contains the widget.</li>
+<li><code>item</code>: class name of the page item.</li>
+<li><code>active</code>: class name of the current page.</li>
+<li><code>disabled</code>: class name of the disabled buttons. when current
+page is the first page, the <code>first</code> and <code>previous</code> buttons will have
+this class.</li>
+<li><code>next</code>: class name of the next page button.</li>
+<li><code>first</code>: class name of the first page button.</li>
+<li><code>previous</code>: class name of the previous page button.</li>
+<li><code>last</code>: class name of the last page button.</li>
+</ul>
+</li>
+<li><code>template</code>:
+<ul>
+<li><code>item</code>: template string of the page item. This property will
+have the page number available using the mustache notation <code>{{page}}</code>.</li>
+<li><code>next</code>: template string of the next page button.</li>
+<li><code>first</code>: template string of the first page button.</li>
+<li><code>previous</code>: template string of the previous page button.</li>
+<li><code>last</code>: template string of the last page button.</li>
+</ul>
+</li>
+</ul>
+<h3 id="information-result-info"><a name="information-result-info" class="fa fa-link" href="#"></a>Information (Result info)</h3>
+<p>The result information widget allows you to provide
+to a user some extra information about the search.
+Currently only can show the <strong>number of hits</strong> of
+the current search and the total <strong>number of items</strong>.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> resultInformationWidget = ui.widgets.information({
+  <span class="hljs-attr">target</span>: !string,
+  <span class="hljs-attr">classNames</span>: {
+      <span class="hljs-attr">container</span>: ?string
+  },
+  <span class="hljs-attr">template</span>: {
+      <span class="hljs-attr">container</span>: !string[<span class="hljs-string">'Found {{total_hits}} of {{total_items}} items'</span>],
+  },
+  <span class="hljs-attr">formatData</span>: ?<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resultInformationData</span>)
+});
+</span></code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>target</code>: is the dom selector, it can be an id or a class.</li>
+<li><code>classNames</code>:
+<ul>
+<li><code>container</code>: refers to the parent <code>div</code> class that
+contains the widget.</li>
+</ul>
+</li>
+<li><code>template</code>:
+<ul>
+<li><code>container</code>: is the template string of the result information.
+The variables <code>{{total_hits}}</code> and <code>{{total_items}}</code> can be used
+on the template.</li>
+</ul>
+</li>
+<li><code>formatData</code>: is a callable function that receives the resulted
+data related to the information widget: <code>total_hits</code> and <code>total_items</code>.
+Is useful to transform some information received before being passed
+to the template.</li>
+</ul>
+<h3 id="multiple-instances"><a name="multiple-instances" class="fa fa-link" href="#"></a>Multiple instances</h3>
+<p>When working with ApisearchUI you have to keep in mind that you
+can work with multiple ApisearchUI instances at once.</p>
+<p>This instances need a client to request all the data from the Apisearch
+servers. The thing is, you can work with only one client if all your
+ApisearchUI instances consume the same data store (index). Or with
+many clients if you want all your ApisearchUI instances to consume from
+many different indexes.</p>
+<h2 id="examples"><a name="examples" class="fa fa-link" href="#"></a>Examples</h2>
+<p>There are infinite possibilities where Apisearch can be used, even the search
+input of this documentation is built on top of Apisearch. Here we’ll show some
+use cases.</p>
+<h3 id="api-music"><a name="api-music" class="fa fa-link" href="#"></a>API Music</h3>
+<p>This is a simple aggregator of music albums built entirely with Apisearch to index
+and query the data, and ApisearchUI to build the super fast experience.</p>
+<blockquote>
+<p>You can play with it on <a href="http://apisearch.io/product.html">apisearch.io</a>! :)</p>
+</blockquote>
+<p><img src="/assets/media/apisearch-music.gif" alt=""></p>
 
                     <!-- /Content -->
 
                     <hr>
                     <a class="c-content__editOnGithub"
                        target="_blank"
-                       href="https://github.com/apisearch-io/docs/tree/source/src/content/ui/installation.md">
+                       href="https://github.com/apisearch-io/docs/tree/source/src/content/ui/search-ui.md">
                         <i class="fa fa-github" aria-hidden="true"></i>
                         Edit this page!
                     </a>
@@ -471,6 +903,13 @@ start all the magic!</p>
             <div class="c-toc col-lg-2 d-none d-lg-block">
                 <ul class="c-toc__nav nav nav-pills flex-column">
                     <li class="c-toc__navItem c-toc__navItem--1 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#search-ui"
+                        >
+                            Search UI
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#installation"
                         >
@@ -489,6 +928,90 @@ start all the magic!</p>
                            href="#anatomy"
                         >
                             Anatomy
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#widgets"
+                        >
+                            Widgets
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#simple-search"
+                        >
+                            Simple Search
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#suggested-search"
+                        >
+                            Suggested Search
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#sort-by"
+                        >
+                            Sort By
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#multiple-filter"
+                        >
+                            Multiple Filter
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#clear-filters-button"
+                        >
+                            Clear filters button
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#search-result"
+                        >
+                            Search result
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#pagination"
+                        >
+                            Pagination
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#information-result-info"
+                        >
+                            Information (Result info)
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#multiple-instances"
+                        >
+                            Multiple instances
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#examples"
+                        >
+                            Examples
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#api-music"
+                        >
+                            API Music
                         </a>
                     </li>
 

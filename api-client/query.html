@@ -251,26 +251,26 @@
                             <ul class="c-sidebar__nav c-sidebar__nav--sub-1 nav nav-pills flex-column">
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/ui/installation.html"
+                                           href="/ui/search-ui.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Installation
+                                            Search UI
                                         </a>
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/ui/widgets.html"
+                                           href="/ui/autocomplete-ui.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Widgets
+                                            Autocomplete UI
                                         </a>
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/ui/examples.html"
+                                           href="/ui/events-ui.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Examples
+                                            Events UI
                                         </a>
                                     </li>
                             </ul>
@@ -1157,15 +1157,16 @@ element only having the UUID.</p>
     -&gt;excludeUUID(<span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'10'</span>, <span class="hljs-string">'product'</span>))
 ;
 </code></pre>
-<p>let query = api
-.query.createMatchAll()
-.filterByTypes(
-[‘product’]
-)
-.excludeUUID(
-api.createObject.uuid(‘10’, ‘product’)
-)<br>
-;</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">let</span> query = api
+    .query.createMatchAll()
+    .filterByTypes(
+         [<span class="hljs-string">'product'</span>]
+    )
+    .excludeUUID(
+        api.createObject.uuid(<span class="hljs-string">'10'</span>, <span class="hljs-string">'product'</span>)
+    )  
+;
+</code></pre>
 <p>In this example we are excluding the Item with ID 10 and ‘product’ as type.
 Remember that an item is always referenced not only by the id but with a
 composition between the ID and the type.</p>
@@ -1180,6 +1181,19 @@ composition between the ID and the type.</p>
         <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'100'</span>, <span class="hljs-string">'product'</span>),
         <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'21'</span>, <span class="hljs-string">'product'</span>),
     ])
+;
+</code></pre>
+<pre><code class="language-javascript"><span class="hljs-keyword">let</span> query = api
+    .query.createMatchAll()
+    .filterByTypes(
+         [<span class="hljs-string">'product'</span>]
+    )
+    .excludeUUIDs(
+        api.createObject.uuid(<span class="hljs-string">'10'</span>, <span class="hljs-string">'product'</span>),
+        api.createObject.uuid(<span class="hljs-string">'5'</span>, <span class="hljs-string">'product'</span>),
+        api.createObject.uuid(<span class="hljs-string">'100'</span>, <span class="hljs-string">'product'</span>),
+        api.createObject.uuid(<span class="hljs-string">'21'</span>, <span class="hljs-string">'product'</span>),
+    )  
 ;
 </code></pre>
 

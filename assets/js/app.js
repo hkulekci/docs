@@ -10735,8 +10735,10 @@ const apisearchConfig = {
     appId: "4186e76c",
     indexId: "6de535c5",
     hostname: "http://api.apisear.ch",
+    // hostname: "http://localhost:8999",
     token: "7975ac41-6cbf-4a48-afd0-30746219bc3b",
     queryHostname: "https://apisearch.global.ssl.fastly.net",
+    // queryHostname: "https://localhost:8999",
     queryToken: "e3aee575-2b0a-4a95-b0ce-88fa316c4eff",
 };
 

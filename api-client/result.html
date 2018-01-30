@@ -251,26 +251,26 @@
                             <ul class="c-sidebar__nav c-sidebar__nav--sub-1 nav nav-pills flex-column">
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/ui/installation.html"
+                                           href="/ui/search-ui.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Installation
+                                            Search UI
                                         </a>
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/ui/widgets.html"
+                                           href="/ui/autocomplete-ui.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Widgets
+                                            Autocomplete UI
                                         </a>
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/ui/examples.html"
+                                           href="/ui/events-ui.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Examples
+                                            Events UI
                                         </a>
                                     </li>
                             </ul>
@@ -435,10 +435,10 @@ transformers.</p>
 <p>The Result instance have some other interesting methods to retrieve some extra
 information of your data set.</p>
 <ul>
-<li>getTotalElements() - get the total items in your universe. If you don’t have
+<li><code>getTotalElements()</code> - get the total items in your universe. If you don’t have
 applied any universe filter, then you will have all of them. Otherwise, you will
 have the number of elements in your universe.</li>
-<li>getTotalHits() - get the total hits produced by your query. This is not the
+<li><code>getTotalHits()</code> - get the total hits produced by your query. This is not the
 number of Items you have in your Result object, but the Items you can reach in
 total by paginating along the result hits.</li>
 </ul>
@@ -451,34 +451,34 @@ interface Traversable). You can access directly to an aggregation by using the
 <p>Let’s analyze what a result Aggregation instance is and how useful can be in our
 filtering application.</p>
 <ul>
-<li>-&gt;getName() - The name of the aggregation. For example, when we create the
+<li><code>-&gt;getName()</code> - The name of the aggregation. For example, when we create the
 manufacturer filter, we create a new aggregation called manufacturers. This is
 the used name.</li>
-<li>-&gt;getCounters() - This method return an array of Counter instances. Explained
+<li><code>-&gt;getCounters()</code> - This method return an array of Counter instances. Explained
 later, but as a TL;DR, this is an object where each option returned by the
 aggregation (in the last example, each manufacturer available for filtering) has
 the information like totals.</li>
-<li>-&gt;isFilter() - The applied filter application type is an exclusive one, like
-MUST_ALL*</li>
-<li>-&gt;hasLevels() - The applied filter application type is a leveled one, like
-MUST_ALL_WITH_LEVELS</li>
-<li>-&gt;getTotalElements - Total elements of the aggregation.</li>
-<li>-&gt;getActiveElements - Array of all the elements active (all elements passed
+<li><code>-&gt;isFilter()</code> - The applied filter application type is an exclusive one, like
+<code>MUST_ALL*</code></li>
+<li><code>-&gt;hasLevels()</code> - The applied filter application type is a leveled one, like
+<code>MUST_ALL_WITH_LEVELS</code></li>
+<li><code>-&gt;getTotalElements()</code> - Total elements of the aggregation.</li>
+<li><code>-&gt;getActiveElements()</code> - Array of all the elements active (all elements passed
 through the filter). Each active element is defined as a counter as well.</li>
-<li>-&gt;sortByName() - Sort all counters by its name. This method has only internal
+<li><code>-&gt;sortByName()</code> - Sort all counters by its name. This method has only internal
 effects and no result is provided</li>
 </ul>
 <h2 id="aggregation-counter"><a name="aggregation-counter" class="fa fa-link" href="#"></a>Aggregation Counter</h2>
 <p>Each aggregation, mainly, is composed by a name and a set of counters. Each one
 has these methods.</p>
 <ul>
-<li>-&gt;getId() - Id of the counter</li>
-<li>-&gt;getName() - Name of the counter. You might want to print this value after a
+<li><code>-&gt;getId()</code> - Id of the counter</li>
+<li><code>-&gt;getName()</code> - Name of the counter. You might want to print this value after a
 possible translation (for example for tags).</li>
-<li>-&gt;getLevel() - Useful for leveled filters. In that case, each counter (for
+<li><code>-&gt;getLevel()</code> - Useful for leveled filters. In that case, each counter (for
 example, each returned available category will have the level). By default, 1.</li>
-<li>-&gt;isUsed() - Does this counter belongs to an active element?</li>
-<li>-&gt;getN() - Number of results in your database having this element (for
+<li><code>-&gt;isUsed()</code> - Does this counter belongs to an active element?</li>
+<li><code>-&gt;getN()</code> - Number of results in your database having this element (for
 example, number of item with the category Adidas). This is the number
 commonly printed in your app.</li>
 </ul>

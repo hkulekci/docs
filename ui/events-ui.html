@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Examples</title>
+    <title>Events UI</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Apisearch examples, real life use cases where Apisearch can improve your search experience.">
+    <meta name="description" content="Apisearch Event charts documentation page.">
     <meta name="author" content="Apisearch team">
     <meta name="keywords" content="Apisearch, Elasticsearch search engine, fast search demo, Apisearch official website">
 
@@ -114,7 +114,7 @@
                                     <a href="#">UI</a>
                                 </li>
                             <li class="c-breadcrumb__item--active breadcrumb-item active" aria-current="page">
-                                Examples
+                                Events UI
                             </li>
                         </ol>
                     </nav>
@@ -124,6 +124,12 @@
                     <!-- language selector -->
                     <nav class="c-languageSelector">
                         <ol class="c-languageSelector__list">
+                                <li class="c-languageSelector__item">
+                                    <span data-lang="javascript"
+                                          class="c-languageSelector__link">
+                                        javascript
+                                    </span>
+                                </li>
                         </ol>
                     </nav>
                     <!-- /language selector -->
@@ -239,26 +245,26 @@
                             <ul class="c-sidebar__nav c-sidebar__nav--sub-1 nav nav-pills flex-column">
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/ui/installation.html"
+                                           href="/ui/search-ui.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Installation
+                                            Search UI
                                         </a>
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/ui/widgets.html"
+                                           href="/ui/autocomplete-ui.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Widgets
+                                            Autocomplete UI
                                         </a>
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/ui/examples.html"
+                                           href="/ui/events-ui.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Examples
+                                            Events UI
                                         </a>
                                     </li>
                             </ul>
@@ -382,24 +388,157 @@
             <main class="col-sm-8 col-md-9 col-lg-8 ml-sm-auto mr-lg-auto pt-3" role="main">
                 <section class="c-content">
                     <!-- Content -->
-                    <h1 id="examples"><a name="examples" class="fa fa-link" href="#"></a>Examples</h1>
-<p>There are infinite possibilities where Apisearch can be used, even the search
-input of this documentation is built on top of Apisearch. Here we’ll show some
-use cases.</p>
-<h2 id="api-music"><a name="api-music" class="fa fa-link" href="#"></a>API Music</h2>
-<p>This is a simple aggregator of music albums built entirely with Apisearch to index
-and query the data, and ApisearchUI to build the super fast experience.</p>
+                    <h1 id="events-ui"><a name="events-ui" class="fa fa-link" href="#"></a>Events UI</h1>
+<h2 id="installation"><a name="installation" class="fa fa-link" href="#"></a>Installation</h2>
+<p><strong>npm &amp; yarn</strong></p>
+<pre><code class="language-shell">npm install apisearch-events-ui --save
+// or
+yarn add apisearch-events-ui
+</code></pre>
+<p><strong>html tag &lt;script&gt;</strong></p>
+<p>You can either download the library and use a relative path to
+your assets folder, or use a CDN like jsDelivr.</p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.jsdelivr.net/npm/apisearch-events-ui/dist/apisearch-events-ui.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+<h2 id="quick-start"><a name="quick-start" class="fa fa-link" href="#"></a>Quick start</h2>
+<p>This simple setup allows you to build a chart that will show
+all queries made in the last 30 days.</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Create instance</span>
+<span class="hljs-keyword">const</span> eventsUI = apisearchEventsUI({
+    <span class="hljs-attr">appId</span>: <span class="hljs-string">'your_app_id'</span>,
+    <span class="hljs-attr">indexId</span>: <span class="hljs-string">'your_index_id'</span>,
+    <span class="hljs-attr">token</span>: <span class="hljs-string">'your_app_EVENTS_token'</span>
+});
+
+<span class="hljs-comment">// Append widgets</span>
+eventsUI.addWidgets(
+    eventsUI.widgets.lastQueries({
+        <span class="hljs-attr">target</span>: <span class="hljs-string">'.last-queries-container'</span>
+    })
+);
+
+<span class="hljs-comment">// Initialize it</span>
+eventsUI.init();
+</code></pre>
+<p>Before customizing your widgets, first you need to create
+a new instance of <code>apisearchEventsUI</code>, passing an <code>appId</code>,
+an <code>indexId</code> and an <strong>events</strong> <code>token</code>.</p>
+<p>All widgets are passed using <code>.addWidget(widget)</code> method,
+or using <code>.addWidgets(...widgets)</code> to add widgets in a bulk mode,
+like in the example below.</p>
+<p>Once your setup is done, you just call the <code>.init()</code> method to
+start all the magic!</p>
 <blockquote>
-<p>You can play with it on <a href="http://apisearch.io/product.html">apisearch.io</a>! :)</p>
+<p>Check out this for more examples:
+<a href="https://github.com/apisearch-io/events-ui/tree/master/examples">apisearch-events-ui/examples</a>!</p>
 </blockquote>
-<p><img src="/assets/media/apisearch-music.gif" alt=""></p>
+<h2 id="anatomy"><a name="anatomy" class="fa fa-link" href="#"></a>Anatomy</h2>
+<p>This is the anatomy of the ApisearchEventsUI configuration:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> ui = apisearchEventsUI({
+    <span class="hljs-attr">appId</span>: !string,
+    <span class="hljs-attr">indexId</span>: !string,
+    <span class="hljs-attr">token</span>: !string,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">endpoint</span>: ?string,
+        <span class="hljs-attr">apiVersion</span>: ?string,
+        <span class="hljs-attr">timeout</span>: ?int[<span class="hljs-number">10000</span>]
+    }
+});
+</code></pre>
+<h2 id="widgets"><a name="widgets" class="fa fa-link" href="#"></a>Widgets</h2>
+<p>Event Widgets are different charts and representations of every event occurred
+on your applications. You can either create your own charts using our Javascript client
+or use this library with predefined charts.</p>
+<p>All charts of this library are built using <a href="http://www.chartjs.org/">Chart.js</a>.</p>
+<h3 id="raw-events"><a name="raw-events" class="fa fa-link" href="#"></a>Raw Events</h3>
+<p>This widget gives you a table list of the last events made on your system.
+There can be three types of events “Query”, “Index”, “Delete”.</p>
+<p>For more information about the events read <a href="http://docs.apisearch.io/api-client/event.html">Api-client/Event</a>.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> rawEventsWidget = eventsUI.widgets.rawEvents({
+    <span class="hljs-attr">target</span>: !string,
+    <span class="hljs-attr">itemsPerPage</span>: ?integer[<span class="hljs-number">10</span>],
+    <span class="hljs-attr">classNames</span>: {
+        <span class="hljs-attr">container</span>: ?string,
+        <span class="hljs-attr">eventsList</span>: ?string
+    },
+    <span class="hljs-attr">template</span>: {
+        <span class="hljs-attr">eventsList</span>: ?string[defaultItemsListTemplate]
+    },
+    <span class="hljs-attr">formatData</span>: ?<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>)
+})
+</span></code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>target</code>: is the dom selector, it can be an id or a class.</li>
+<li><code>itemsPerPage</code>: the number of event items on page.</li>
+<li><code>classNames</code>:
+<ul>
+<li><code>container</code>: refers to the parent <code>div</code> that contains the whole widget.</li>
+<li><code>eventsList</code>: refers to the <code>div</code> that contains the <code>eventsList</code> template.</li>
+</ul>
+</li>
+<li><code>template</code>:
+<ul>
+<li><code>eventsList</code>: is the template of the events list, there is a template by default.
+The template system uses Hogan.js, a mustache-like syntax.</li>
+</ul>
+</li>
+<li><code>formatData</code>: is a callable function that receives every event item from the
+response. Is useful to transform some information received before being passed
+to the <code>eventsList</code> template.</li>
+</ul>
+<h3 id="last-queries"><a name="last-queries" class="fa fa-link" href="#"></a>Last Queries</h3>
+<p>Last Queries widget gives you a line chart with all queries during the last month.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> lastQueriesWidget = eventsUI.widgets.lastQueries({
+    <span class="hljs-attr">target</span>: !string,
+    <span class="hljs-attr">boxWidth</span>: ?integer[<span class="hljs-number">200</span>],
+    <span class="hljs-attr">boxHeight</span>: ?integer[<span class="hljs-number">300</span>],
+    <span class="hljs-attr">chartOptions</span>: ?ChartJSLineChartOptions[lineChartDefaultOptions]
+})
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>target</code>: is the dom selector, it can be an id or a class.</li>
+<li><code>boxWidth</code>: chart container width.</li>
+<li><code>boxHeight</code>: chart container height.</li>
+<li><code>chartOptions</code>: This is the chart configuration and expects a <code>Chart.js</code>
+object configuration. You can check more how a chart is configured
+in <a href="http://www.chartjs.org/docs/latest/">chart.js docs</a></li>
+</ul>
+<h3 id="search-effectiveness"><a name="search-effectiveness" class="fa fa-link" href="#"></a>Search Effectiveness</h3>
+<p>Also known as <strong>Queries with results v.s. Queries without results</strong>.</p>
+<p>Search effectiveness gives you a line chart with two datasets,
+the first one with the queries made in the last month that returned at least one result,
+the second dataset gives you the number of queries that returned 0 results.
+This is useful to compare the effectiveness of your user searches.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> searchEfivenessWidget = eventsUI.widgets.searchEffectiveness({
+    <span class="hljs-attr">target</span>: !string,
+    <span class="hljs-attr">boxWidth</span>: ?integer[<span class="hljs-number">200</span>],
+    <span class="hljs-attr">boxHeight</span>: ?integer[<span class="hljs-number">300</span>],
+    <span class="hljs-attr">chartOptions</span>: ?ChartJSOptions[lineChartDefaultOptions]
+})
+</code></pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>target</code>: is the dom selector, it can be an id or a class.</li>
+<li><code>boxWidth</code>: chart container width.</li>
+<li><code>boxHeight</code>: chart container height.</li>
+<li><code>chartOptions</code>: This is the chart configuration and expects a <code>Chart.js</code>
+object configuration. You can check more how a chart is configured
+in <a href="http://www.chartjs.org/docs/latest/">chart.js docs</a></li>
+</ul>
+<h2 id="examples"><a name="examples" class="fa fa-link" href="#"></a>Examples</h2>
+<p>This is a simple dashboard example made with this library. The left side charts are
+made using the <strong>LastQueries</strong> and <strong>SearchEffectiveness</strong> widgets. On the right side
+the <strong>RawEvents</strong> widget.</p>
+<p><img src="/assets/media/events-dashboard.png" alt=""></p>
 
                     <!-- /Content -->
 
                     <hr>
                     <a class="c-content__editOnGithub"
                        target="_blank"
-                       href="https://github.com/apisearch-io/docs/tree/source/src/content/ui/examples.md">
+                       href="https://github.com/apisearch-io/docs/tree/source/src/content/ui/events-ui.md">
                         <i class="fa fa-github" aria-hidden="true"></i>
                         Edit this page!
                     </a>
@@ -412,16 +551,65 @@ and query the data, and ApisearchUI to build the super fast experience.</p>
                 <ul class="c-toc__nav nav nav-pills flex-column">
                     <li class="c-toc__navItem c-toc__navItem--1 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#examples"
+                           href="#events-ui"
                         >
-                            Examples
+                            Events UI
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#api-music"
+                           href="#installation"
                         >
-                            API Music
+                            Installation
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#quick-start"
+                        >
+                            Quick start
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#anatomy"
+                        >
+                            Anatomy
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#widgets"
+                        >
+                            Widgets
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#raw-events"
+                        >
+                            Raw Events
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#last-queries"
+                        >
+                            Last Queries
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#search-effectiveness"
+                        >
+                            Search Effectiveness
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#examples"
+                        >
+                            Examples
                         </a>
                     </li>
 
