@@ -417,7 +417,7 @@ engine.</p>
 
 <span class="hljs-comment">// Append widgets</span>
 ui.addWidgets(
-    ui.widgets.simpleSearch({
+    ui.widgets.searchInput({
         <span class="hljs-attr">target</span>: <span class="hljs-string">'.search-container'</span>,
     }),
     ui.widgets.result({
@@ -462,12 +462,12 @@ start all the magic!</p>
 <p>Widgets are nothing but a small pieces of html connected between them that let
 you build a fully customized search experience. They can be used as a search input,
 a result set, a pagination component, different kind of filters, and many more.</p>
-<h3 id="simple-search"><a name="simple-search" class="fa fa-link" href="#"></a>Simple Search</h3>
-<p>The simple search input widget is to perform text based
+<h3 id="search-input"><a name="search-input" class="fa fa-link" href="#"></a>Search Input</h3>
+<p>The search input widget is to perform text based
 searches.</p>
 <p>This widget points to <code>searchable_metadata</code> and
 <code>exact_matching_metadata</code> field of the indexed items.</p>
-<pre><code class="language-javascript"><span class="hljs-keyword">const</span> simpleSearchWidget = ui.widgets.simpleSearch({ 
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> searchInputWidget = ui.widgets.searchInput({ 
   <span class="hljs-attr">target</span>: !string,
   <span class="hljs-attr">placeholder</span>: ?string,
   <span class="hljs-attr">autofocus</span>: ?bool[<span class="hljs-literal">false</span>],
@@ -497,46 +497,6 @@ This is mandatory if you want a “clearSearch” button.</li>
 <ul>
 <li><code>container</code>: refers to the parent <code>div</code> that contains the widget.</li>
 <li><code>input</code>: refers to the html input.</li>
-</ul>
-</li>
-</ul>
-<h3 id="suggested-search"><a name="suggested-search" class="fa fa-link" href="#"></a>Suggested Search</h3>
-<p>The suggested search input goes one step further. You can
-get auto-completed suggestions list related to the text
-you are looking for just below the search input.</p>
-<pre><code class="language-javascript"><span class="hljs-keyword">const</span> suggestedSearchWidget = ui.widgets.suggestedSearch({ 
-    <span class="hljs-attr">target</span>: !string,
-    <span class="hljs-attr">placeholder</span>: ?string,
-    <span class="hljs-attr">autofocus</span>: ?bool[<span class="hljs-literal">false</span>],
-    <span class="hljs-attr">clearSearch</span>: ?bool[<span class="hljs-literal">true</span>],
-    <span class="hljs-attr">classNames</span>: {
-        <span class="hljs-attr">container</span>: ?string,
-        <span class="hljs-attr">input</span>: ?string,
-        <span class="hljs-attr">clearSearch</span>: ?string,
-        <span class="hljs-attr">box</span>: ?string,
-        <span class="hljs-attr">suggestion</span>: ?string,
-        <span class="hljs-attr">activeSuggestion</span>: ?string
-    },
-    <span class="hljs-attr">template</span>: {
-        <span class="hljs-attr">clearSearch</span>: ?string
-    }
-});
-</code></pre>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>target</code>: is the dom selector, it can be an id or a class.</li>
-<li><code>placeholder</code>: the default html input placeholder.</li>
-<li><code>autofocus</code>: when set to <code>true</code>, the cursor is focused on the input.</li>
-<li><code>startSearchOn</code>: is the minimum number of characters to start searching.</li>
-<li><code>clearSearch</code>: to show a clear search button to reset your search.</li>
-<li><code>classNames</code>:
-<ul>
-<li><code>container</code>: refers to the parent <code>div</code> class that
-contains the widget.</li>
-<li><code>input</code>: refers to the html input.</li>
-<li><code>box</code>: refers to the suggestions box.</li>
-<li><code>suggestion</code>: refers to the suggestion item.</li>
-<li><code>activeSuggestion</code>: refers to the active suggestion.</li>
 </ul>
 </li>
 </ul>
@@ -939,16 +899,9 @@ and query the data, and ApisearchUI to build the super fast experience.</p>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--3 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#simple-search"
+                           href="#search-input"
                         >
-                            Simple Search
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#suggested-search"
-                        >
-                            Suggested Search
+                            Search Input
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--3 nav-item">
