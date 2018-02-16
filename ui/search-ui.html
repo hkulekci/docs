@@ -440,9 +440,12 @@ like in the example below.</p>
 <p>Once your setup is done, you just call the <code>.init()</code> method to
 start all the magic!</p>
 <blockquote>
+<p><strong>Note:</strong> If you don’t want the UI to query data automatically
+when <code>.init()</code> the instance, just add <code>.init({firstQuery: false})</code>
+and no data will be fetched.</p>
+</blockquote>
 <p>Check out this for more examples:
 <a href="https://github.com/apisearch-io/search-ui/tree/master/examples">apisearch-ui/examples</a>!</p>
-</blockquote>
 <h2 id="anatomy"><a name="anatomy" class="fa fa-link" href="#"></a>Anatomy</h2>
 <p>This is the anatomy of the ApisearchUI configuration:</p>
 <pre><code class="language-javascript"><span class="hljs-keyword">const</span> ui = apisearchUI({
@@ -550,7 +553,7 @@ contains the widget.</li>
     },
     <span class="hljs-attr">template</span>: {
         <span class="hljs-attr">top</span>: ?string,
-        <span class="hljs-attr">item</span>: !string,
+        <span class="hljs-attr">item</span>: ?string[defaultItemTemplate],
         <span class="hljs-attr">showMore</span>: ?string[<span class="hljs-string">'+ Show more'</span>],
         <span class="hljs-attr">showLess</span>: ?string[<span class="hljs-string">'- Show less'</span>]
     },
@@ -588,7 +591,16 @@ contains the widget.</li>
 <li><code>template</code>:
 <ul>
 <li><code>top</code>: template string for the title of the filter list.</li>
-<li><code>item</code>: template string for the filter item link.</li>
+<li><code>item</code>: template string for the filter item link. If any template is passed,
+Apisearch UI have a default one. This template will have the following
+values available:
+<ul>
+<li><code>{{n}}</code>: number of aggregations.</li>
+<li><code>{{isActive}}</code>: if filter is active.</li>
+<li><code>{{values}}</code>: the information of the filter: <code>{{values.id}}</code> and
+<code>{{values.name}}</code>.</li>
+</ul>
+</li>
 <li><code>showMore</code>: template string for the “show more” button.</li>
 <li><code>showLess</code>: template string for the “show less” button.</li>
 </ul>
@@ -604,6 +616,22 @@ passed to the template.</li>
 </ul>
 </li>
 </ul>
+<p>As a example of an item template, you can check this:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> filterItemTemplate = <span class="hljs-string">`
+    &lt;input 
+        type="checkbox" 
+        id="filter_{{values.id}}"
+        {{#isActive}}checked="checked"{{/isActive}}
+    &gt;
+    &lt;label 
+        class="item-name"
+        for="filter_{{values.id}}"
+    &gt;
+        {{{values.name}}}
+    &lt;/label&gt;
+    &lt;span class="aggregations"&gt;{{n}}&lt;/span&gt;
+`</span>;
+</code></pre>
 <h3 id="clear-filters-button"><a name="clear-filters-button" class="fa fa-link" href="#"></a>Clear filters button</h3>
 <p>Clear filters widget gives us a button to remove all active
 filters.</p>
@@ -715,17 +743,17 @@ of results:</li>
 <p>You will be able to build your results like this, and
 passing the string to the <code>body</code> template attribute:</p>
 <pre><code class="language-javascript"><span class="hljs-keyword">const</span> resultsTemplate = <span class="hljs-string">`
-&lt;ul&gt;
-{{#items}}
-    &lt;li&gt;
-        &lt;img src="{{metadata.img}}" /&gt;
-        &lt;h1&gt;{{metadata.name}}&lt;/h1&gt;
-    &lt;/li&gt;
-{{/items}}
-&lt;/ul&gt;
-{{^items}}
-    No results found for this search: &lt;b&gt;{{query}}&lt;/b&gt; :(
-{{/items}}
+    &lt;ul&gt;
+    {{#items}}
+        &lt;li&gt;
+            &lt;img src="{{metadata.img}}" /&gt;
+            &lt;h1&gt;{{metadata.name}}&lt;/h1&gt;
+        &lt;/li&gt;
+    {{/items}}
+    &lt;/ul&gt;
+    {{^items}}
+        No results found for this search: &lt;b&gt;{{query}}&lt;/b&gt; :(
+    {{/items}}
 `</span>;
 </code></pre>
 <p>For more information about how this templating system works,
@@ -826,7 +854,7 @@ data related to the information widget: <code>total_hits</code> and <code>total_
 Is useful to transform some information received before being passed
 to the template.</li>
 </ul>
-<h3 id="multiple-instances"><a name="multiple-instances" class="fa fa-link" href="#"></a>Multiple instances</h3>
+<h2 id="multiple-instances"><a name="multiple-instances" class="fa fa-link" href="#"></a>Multiple instances</h2>
 <p>When working with ApisearchUI you have to keep in mind that you
 can work with multiple ApisearchUI instances at once.</p>
 <p>This instances need a client to request all the data from the Apisearch
@@ -946,7 +974,7 @@ and query the data, and ApisearchUI to build the super fast experience.</p>
                             Information (Result info)
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#multiple-instances"
                         >

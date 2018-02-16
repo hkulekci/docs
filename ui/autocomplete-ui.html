@@ -453,7 +453,8 @@ an <code>indexId</code> and an <strong>events</strong> <code>token</code>.</p>
 we can convert any input of our site into an autocomplete
 search input.</p>
 <pre><code class="language-javascript">autocomplete({
-    <span class="hljs-attr">inputTarget</span>: <span class="hljs-string">'.apisearch-autocomplete'</span>,
+    <span class="hljs-attr">inputTarget</span>: !string,
+    <span class="hljs-attr">resultTarget</span>: ?string,
     <span class="hljs-attr">poweredBy</span>: ?bool|string[<span class="hljs-literal">false</span>],
     <span class="hljs-attr">itemsPerResult</span>: ?integer[<span class="hljs-number">10</span>],
     <span class="hljs-attr">startSearchOn</span>: ?integer[<span class="hljs-number">0</span>],
@@ -469,6 +470,8 @@ search input.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><code>inputTarget</code>: is the dom selector, it can be an id or a class.</li>
+<li><code>resultTarget</code>: results container dom selector. Is totally optional. If not
+defined, the results list will be placed just after the search input.</li>
 <li><code>poweredBy</code>: by default is set to false. If set to true, a default poweredBy
 template will appear, if you want a custom poweredBy template just pass a template
 string.</li>
