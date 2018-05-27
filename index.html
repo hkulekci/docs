@@ -417,59 +417,17 @@ evolutionary data can be reviewed. Great to show how data changed over the time.
 <li>Database-less applications : We can be your database. That simple. Accessible
 from everywhere, make all your applications work with the same entry point.</li>
 </ul>
-<h2 id="create-an-apisearch-account"><a name="create-an-apisearch-account" class="fa fa-link" href="#"></a>Create an Apisearch account</h2>
-<p>The first thing you should do in order to start using Apisearch is to create a
-new account at <a href="https://admin.apisearch.io">https://admin.apisearch.io</a>. If the
-website is not opened for new registrations and you want to request a new
-invitation, then don’t hesitate to write us at <a href="mailto:invitations@puntmig.com">invitations@puntmig.com</a>.</p>
-<p><img src="/assets/media/login.png#inline" alt="Login"></p>
-<p>As a user you could be able to</p>
-<ul>
-<li>Manage your own information and custom your panel</li>
-<li>Manage your apps and indexes</li>
-<li>Manage your access tokens</li>
-<li>Manage your campaigns</li>
-<li>Manage your billing information</li>
-</ul>
-<h2 id="create-an-app"><a name="create-an-app" class="fa fa-link" href="#"></a>Create an App</h2>
-<p>Each user can manage many apps. The concept of an app is like a group of
-possible indexes, each one containing related data. As an app holder, you will
-be able to</p>
-<ul>
-<li>Manage your app information</li>
-<li>Manage your indexes</li>
-<li>Manage your billing information. By defining this information you will
-override the one defined per user</li>
-</ul>
-<p>When you create a new app, you’re not creating anything in our Elasticsearch
-databases. An app is only a virtual aggregation, so you will be able to create
-as many apps as you want without much impact at all.</p>
-<p><img src="/assets/media/new-app.png#inline" alt="Login"></p>
-<p>Once a new app is created, you will have an app_id, important to create external
-integrations. You will be able to find it in your app panel in the admin
-website. This app_id will never change and is unique, and because apisearch work
-with tokens, don’t worry if someone knows this app_id. Our data is safe with us.</p>
-<p>By default, when you create a new index, a set of tokens are created for you
-with different levels of permissions. These tokens are not deletable, in order
-to make sure that you will have always some tokens to manage and access your
-data from anywhere.</p>
-<h2 id="create-a-token"><a name="create-a-token" class="fa fa-link" href="#"></a>Create a token</h2>
-<p>You can create as many tokens as you want, but remember that tokens with write
-access can expose your data to third party people, so be careful to share and
-publish these tokens.</p>
-<p>When a token is compromised, you can regenerate it as many times as you want.
-This token receives an immutable name, and a token value. This one is unique.</p>
-<p><code>f34d6da4-9ecd-48aa-9415-750c02ee9a19</code></p>
-<h2 id="create-an-index"><a name="create-an-index" class="fa fa-link" href="#"></a>Create an Index</h2>
-<p>Once you have created a new app, let’s start by creating a new index. As soon as
-you create a new index, you will be creating a new Elasticsearch empty set of
-documents, so it will start by generating billing information. If you’re under
-a billing plan, then you’ll be able to create this index under some plan
-limitations.</p>
-<p>By default, a new index is created using a default configuration, so for our
-fresh setup, we will not worry about this. If you have some interest in how to
-configure your index, please visit the configuration part of the documentation.</p>
-<p>Once you have a fresh new index, we can start uploading some data.</p>
+<h2 id="download-and-install-apisearch"><a name="download-and-install-apisearch" class="fa fa-link" href="#"></a>Download and install Apisearch</h2>
+<p>Apisearch is an open source project. This means that you can download Apisearch
+for free and install it in your own servers.</p>
+<p>In order to start using Apisearch, you only need a server with
+<a href="https://docs.docker.com/install/">docker</a> and
+<a href="https://docs.docker.com/compose/install/">docker-compose</a>.</p>
+<pre><code>&gt; This section is under construction
+</code></pre>
+<h2 id="create-your-first-application"><a name="create-your-first-application" class="fa fa-link" href="#"></a>Create your first application</h2>
+<pre><code>&gt; This section is under construction
+</code></pre>
 <h2 id="add-some-data"><a name="add-some-data" class="fa fa-link" href="#"></a>Add some data</h2>
 <p>In Apisearch you can work with some accepted and common formats. Some of them
 are basically implemented because are multi platform, like CSV or JSON, but some
@@ -618,30 +576,16 @@ as well, so we encourage you to use each time you need to find something.</p>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#create-an-apisearch-account"
+                           href="#download-and-install-apisearch"
                         >
-                            Create an Apisearch account
+                            Download and install Apisearch
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#create-an-app"
+                           href="#create-your-first-application"
                         >
-                            Create an App
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#create-a-token"
-                        >
-                            Create a token
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#create-an-index"
-                        >
-                            Create an Index
+                            Create your first application
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
