@@ -1104,6 +1104,40 @@ value.</p>
     .sortBy(<span class="hljs-string">'SORT_BY_RANDOM'</span>)
 ;
 </code></pre>
+<h2 id="relevance-strategy"><a name="relevance-strategy" class="fa fa-link" href="#"></a>Relevance Strategy</h2>
+<p>By default, your results are sorted by score from highest to lowest. This score
+is dynamically created per each matched documents in your index. But you may
+change this behavior by adding an extra document-specific boosting. This means
+that part of the final document score will be affected by the value of the
+<code>indexed_metadata.relevance</code> field. This field <strong>MUST</strong> be an integer value.
+The higher, the better.</p>
+<p>In order to enable this feature, use the relevance strategy method.</p>
+<pre><code class="language-php">Query::createMatchAll()
+    -&gt;setScoreStrategy(ScoreStrategy::createRelevanceBoosting())
+;
+</code></pre>
+<p>You can add your custom boosting function by using
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting-painless.html">Painless Script</a>.
+Using this scripting, you will be able to access the previous score in order to
+make it part of the final calculation by using <code>_score</code></p>
+<pre><code class="language-php">Query::createMatchAll()
+    -&gt;setScoreStrategy(ScoreStrategy::createCustomFunction(
+        <span class="hljs-string">"doc['indexed_metadata.price'].value"</span>
+    ))
+;
+</code></pre>
+<p>And using <code>_score</code></p>
+<pre><code class="language-php">Query::createMatchAll()
+    -&gt;setScoreStrategy(ScoreStrategy::createCustomFunction(
+        <span class="hljs-string">"_score + (10 * doc['indexed_metadata.relevance'].value / 100)"</span>
+    ))
+;
+</code></pre>
+<p>You can set the default behavior as well.</p>
+<pre><code class="language-php">Query::createMatchAll()
+    -&gt;setScoreStrategy(ScoreStrategy::createDefault())
+;
+</code></pre>
 <h2 id="enabling-suggestions"><a name="enabling-suggestions" class="fa fa-link" href="#"></a>Enabling suggestions</h2>
 <p>Suggestions can be enabled or disabled by using these flag methods.</p>
 <pre><code class="language-php">$query = Query::create(<span class="hljs-string">''</span>)
@@ -1309,6 +1343,13 @@ composition between the ID and the type.</p>
                            href="#sort-randomly"
                         >
                             Sort randomly
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#relevance-strategy"
+                        >
+                            Relevance Strategy
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
