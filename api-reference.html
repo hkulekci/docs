@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Events UI</title>
+    <title>API Reference</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Apisearch Event charts documentation page.">
+    <meta name="description" content="API reference for the main HTTP contract">
     <meta name="author" content="Apisearch team">
     <meta name="keywords" content="Apisearch, Elasticsearch search engine, fast search demo, Apisearch official website">
 
@@ -27,7 +27,7 @@
     <meta name="theme-color" content="#ffffff">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="./../assets/css/docs.css">
+    <link rel="stylesheet" href="./assets/css/docs.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
           rel="stylesheet"
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
@@ -111,10 +111,10 @@
                                 <a href="/">Apisearch docs</a>
                             </li>
                                 <li class="c-breadcrumb__item breadcrumb-item">
-                                    <a href="#">UI</a>
+                                    <a href="#">API Reference</a>
                                 </li>
                             <li class="c-breadcrumb__item--active breadcrumb-item active" aria-current="page">
-                                Events UI
+                                API Reference
                             </li>
                         </ol>
                     </nav>
@@ -124,12 +124,6 @@
                     <!-- language selector -->
                     <nav class="c-languageSelector">
                         <ol class="c-languageSelector__list">
-                                <li class="c-languageSelector__item">
-                                    <span data-lang="javascript"
-                                          class="c-languageSelector__link">
-                                        javascript
-                                    </span>
-                                </li>
                         </ol>
                     </nav>
                     <!-- /language selector -->
@@ -397,157 +391,304 @@
             <main class="col-sm-8 col-md-9 col-lg-8 ml-sm-auto mr-lg-auto pt-3" role="main">
                 <section class="c-content">
                     <!-- Content -->
-                    <h1 id="events-ui"><a name="events-ui" class="fa fa-link" href="#"></a>Events UI</h1>
-<h2 id="installation"><a name="installation" class="fa fa-link" href="#"></a>Installation</h2>
-<p><strong>npm &amp; yarn</strong></p>
-<pre><code class="language-shell">npm install apisearch-events-ui --save
-// or
-yarn add apisearch-events-ui
+                    <h1 id="api-reference"><a name="api-reference" class="fa fa-link" href="#"></a>Api Reference</h1>
+<p>In this chapter we will expose all the HTTP contract that Apisearch exposes.
+Of course, you will always be able to use Apisearch by using the clients, but if
+the language you’re using does’nt have a client yet, or this one is not enough
+good for you, or even if you want to use directly the HTTP layer, then you will
+always have this specification.</p>
+<p>This specification is divided in two big groups. The first one is the model one,
+where each model object will be explained. The second one is the exposed
+endpoints, which will be using these object explained in the first part.</p>
+<h2 id="model-references"><a name="model-references" class="fa fa-link" href="#"></a>Model References</h2>
+<p>These reference elements are part of the main model, so they will be used in
+several repositories, and will be the angular stone of the project.</p>
+<h3 id="item"><a name="item" class="fa fa-link" href="#"></a>Item</h3>
+<p>Item reference.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"uuid"</span>: ItemUUID,
+  <span class="hljs-attr">"metadata"</span>: mixed[],
+  <span class="hljs-attr">"indexed_metadata"</span>: mixed[],
+  <span class="hljs-attr">"searchable_metadata"</span>: mixed[],
+  <span class="hljs-attr">"exact_matching_metadata"</span>: string[],
+  <span class="hljs-attr">"suggest"</span>: string[],
+  <span class="hljs-attr">"coordinate"</span>: ?Coordinate,
+  <span class="hljs-attr">"distance"</span>: int,
+  <span class="hljs-attr">"highlights"</span>: mixed[],
+  <span class="hljs-attr">"is_promoted"</span>: bool
+}
 </code></pre>
-<p><strong>html tag &lt;script&gt;</strong></p>
-<p>You can either download the library and use a relative path to
-your assets folder, or use a CDN like jsDelivr.</p>
-<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.jsdelivr.net/npm/apisearch-events-ui/dist/apisearch-events-ui.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<h3 id="itemuuid"><a name="itemuuid" class="fa fa-link" href="#"></a>ItemUUID</h3>
+<p>ItemUUID reference. The composition of this object should be unique in your
+repository.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"id"</span>: string,
+  <span class="hljs-attr">"type"</span>: string
+}
 </code></pre>
-<h2 id="quick-start"><a name="quick-start" class="fa fa-link" href="#"></a>Quick start</h2>
-<p>This simple setup allows you to build a chart that will show
-all queries made in the last 30 days.</p>
-<pre><code class="language-javascript"><span class="hljs-comment">// Create instance</span>
-<span class="hljs-keyword">const</span> eventsUI = apisearchEventsUI({
-    <span class="hljs-attr">appId</span>: <span class="hljs-string">'your_app_id'</span>,
-    <span class="hljs-attr">indexId</span>: <span class="hljs-string">'your_index_id'</span>,
-    <span class="hljs-attr">token</span>: <span class="hljs-string">'your_app_EVENTS_token'</span>
-});
-
-<span class="hljs-comment">// Append widgets</span>
-eventsUI.addWidgets(
-    eventsUI.widgets.lastQueries({
-        <span class="hljs-attr">target</span>: <span class="hljs-string">'.last-queries-container'</span>
-    })
-);
-
-<span class="hljs-comment">// Initialize it</span>
-eventsUI.init();
+<h3 id="user"><a name="user" class="fa fa-link" href="#"></a>User</h3>
+<p>User reference. The composition of this object should represent one and
+only one user.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"id"</span>: string,
+  <span class="hljs-attr">"attributes"</span>: mixed[]
+}
 </code></pre>
-<p>Before customizing your widgets, first you need to create
-a new instance of <code>apisearchEventsUI</code>, passing an <code>appId</code>,
-an <code>indexId</code> and an <strong>events</strong> <code>token</code>.</p>
-<p>All widgets are passed using <code>.addWidget(widget)</code> method,
-or using <code>.addWidgets(...widgets)</code> to add widgets in a bulk mode,
-like in the example below.</p>
-<p>Once your setup is done, you just call the <code>.init()</code> method to
-start all the magic!</p>
-<blockquote>
-<p>Check out this for more examples:
-<a href="https://github.com/apisearch-io/events-ui/tree/master/examples">apisearch-events-ui/examples</a>!</p>
-</blockquote>
-<h2 id="anatomy"><a name="anatomy" class="fa fa-link" href="#"></a>Anatomy</h2>
-<p>This is the anatomy of the ApisearchEventsUI configuration:</p>
-<pre><code class="language-javascript"><span class="hljs-keyword">const</span> ui = apisearchEventsUI({
-    <span class="hljs-attr">appId</span>: !string,
-    <span class="hljs-attr">indexId</span>: !string,
-    <span class="hljs-attr">token</span>: !string,
-    <span class="hljs-attr">options</span>: {
-        <span class="hljs-attr">endpoint</span>: ?string,
-        <span class="hljs-attr">apiVersion</span>: ?string,
-        <span class="hljs-attr">timeout</span>: ?int[<span class="hljs-number">10000</span>]
+<h3 id="interaction"><a name="interaction" class="fa fa-link" href="#"></a>Interaction</h3>
+<p>Interaction reference. Means an interaction between a user and an ItemUUID.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"user"</span>: User,
+  <span class="hljs-attr">"item_uuid"</span>: ItemUUID,
+  <span class="hljs-attr">"weight"</span>: int
+}
+</code></pre>
+<h3 id="coordinate"><a name="coordinate" class="fa fa-link" href="#"></a>Coordinate</h3>
+<p>Coordinate reference. Used for object geo-localization.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"lat"</span>: float,
+  <span class="hljs-attr">"lon"</span>: float
+}
+</code></pre>
+<h3 id="changes"><a name="changes" class="fa fa-link" href="#"></a>Changes</h3>
+<p>Changes reference. This object is mainly used when updating your index.</p>
+<pre><code class="language-json">[
+  {
+    <span class="hljs-attr">"field"</span>: string,
+    <span class="hljs-attr">"type"</span>: int,
+    <span class="hljs-attr">"condition"</span>: ?string,
+    <span class="hljs-attr">"value"</span>: ?mixed
+  }
+]
+</code></pre>
+<h3 id="tokenuuid"><a name="tokenuuid" class="fa fa-link" href="#"></a>TokenUUID</h3>
+<p>Token UUID reference.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"id"</span>: string
+}
+</code></pre>
+<h3 id="token"><a name="token" class="fa fa-link" href="#"></a>Token</h3>
+<p>Token reference</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"uuid"</span>: TokenUUID,
+  <span class="hljs-attr">"app_id"</span>: string,
+  <span class="hljs-attr">"created_at"</span>: int,
+  <span class="hljs-attr">"updated_at"</span>: int,
+  <span class="hljs-attr">"indices"</span>: string[],
+  <span class="hljs-attr">"seconds_valid"</span>: int,
+  <span class="hljs-attr">"max_hits_per_query"</span>: int,
+  <span class="hljs-attr">"http_referrers"</span>: string[],
+  <span class="hljs-attr">"endpoints"</span>: string[],
+  <span class="hljs-attr">"plugins"</span>: string[],
+  <span class="hljs-attr">"ttl"</span>: int
+}
+</code></pre>
+<h2 id="query-references"><a name="query-references" class="fa fa-link" href="#"></a>Query References</h2>
+<p>These elements are part of the query repository and will be used to create
+queries to several repositories.</p>
+<h3 id="queryaggregation"><a name="queryaggregation" class="fa fa-link" href="#"></a>QueryAggregation</h3>
+<p>Query Aggregation reference. Used in Query repository.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"name"</span>: string,
+  <span class="hljs-attr">"field"</span>: string,
+  <span class="hljs-attr">"application_type"</span>: int,
+  <span class="hljs-attr">"filter_type"</span>: string,
+  <span class="hljs-attr">"subgroup"</span>: string[],
+  <span class="hljs-attr">"sort"</span>: string[],
+  <span class="hljs-attr">"limit"</span>: int
+}
+</code></pre>
+<h3 id="filter"><a name="filter" class="fa fa-link" href="#"></a>Filter</h3>
+<p>Filter reference. Used in Query repository.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"field"</span>: string,
+  <span class="hljs-attr">"values"</span>: mixed[],
+  <span class="hljs-attr">"application_type"</span>: int,
+  <span class="hljs-attr">"filter_type"</span>: string,
+  <span class="hljs-attr">"filter_terms"</span>: string[]
+}
+</code></pre>
+<h3 id="scorestrategy"><a name="scorestrategy" class="fa fa-link" href="#"></a>ScoreStrategy</h3>
+<p>Score Strategy reference. Used in Query Repository</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"type"</span>: int,
+  <span class="hljs-attr">"function"</span>: ?string
+}
+</code></pre>
+<h3 id="sortby"><a name="sortby" class="fa fa-link" href="#"></a>SortBy</h3>
+<p>Sortby reference. Used in Query Repository</p>
+<pre><code class="language-json">[
+    {
+      <span class="hljs-attr">"type"</span>: int,
+      <span class="hljs-attr">"filter"</span>: ?Filter,
+      <span class="hljs-attr">"mode"</span>: string
+      <span class="hljs-string">"indexed_metadata.%field_name%"</span>: {
+        <span class="hljs-attr">"order"</span>: string,
+        <span class="hljs-attr">"coordinate"</span>: ?Coordinate
+      }
     }
-});
+]
 </code></pre>
-<h2 id="widgets"><a name="widgets" class="fa fa-link" href="#"></a>Widgets</h2>
-<p>Event Widgets are different charts and representations of every event occurred
-on your applications. You can either create your own charts using our Javascript client
-or use this library with predefined charts.</p>
-<p>All charts of this library are built using <a href="http://www.chartjs.org/">Chart.js</a>.</p>
-<h3 id="raw-events"><a name="raw-events" class="fa fa-link" href="#"></a>Raw Events</h3>
-<p>This widget gives you a table list of the last events made on your system.
-There can be three types of events “Query”, “Index”, “Delete”.</p>
-<p>For more information about the events read <a href="http://docs.apisearch.io/api-client/event.html">Api-client/Event</a>.</p>
-<pre><code class="language-javascript"><span class="hljs-keyword">const</span> rawEventsWidget = eventsUI.widgets.rawEvents({
-    <span class="hljs-attr">target</span>: !string,
-    <span class="hljs-attr">itemsPerPage</span>: ?integer[<span class="hljs-number">10</span>],
-    <span class="hljs-attr">classNames</span>: {
-        <span class="hljs-attr">container</span>: ?string,
-        <span class="hljs-attr">eventsList</span>: ?string
-    },
-    <span class="hljs-attr">template</span>: {
-        <span class="hljs-attr">eventsList</span>: ?string[defaultItemsListTemplate]
-    },
-    <span class="hljs-attr">formatData</span>: ?<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>)
-})
-</span></code></pre>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>target</code>: is the dom selector, it can be an id or a class.</li>
-<li><code>itemsPerPage</code>: the number of event items on page.</li>
-<li><code>classNames</code>:
-<ul>
-<li><code>container</code>: refers to the parent <code>div</code> that contains the whole widget.</li>
-<li><code>eventsList</code>: refers to the <code>div</code> that contains the <code>eventsList</code> template.</li>
-</ul>
-</li>
-<li><code>template</code>:
-<ul>
-<li><code>eventsList</code>: is the template of the events list, there is a template by default.
-The template system uses Hogan.js, a mustache-like syntax.</li>
-</ul>
-</li>
-<li><code>formatData</code>: is a callable function that receives every event item from the
-response. Is useful to transform some information received before being passed
-to the <code>eventsList</code> template.</li>
-</ul>
-<h3 id="last-queries"><a name="last-queries" class="fa fa-link" href="#"></a>Last Queries</h3>
-<p>Last Queries widget gives you a line chart with all queries during the last month.</p>
-<pre><code class="language-javascript"><span class="hljs-keyword">const</span> lastQueriesWidget = eventsUI.widgets.lastQueries({
-    <span class="hljs-attr">target</span>: !string,
-    <span class="hljs-attr">boxWidth</span>: ?integer[<span class="hljs-number">200</span>],
-    <span class="hljs-attr">boxHeight</span>: ?integer[<span class="hljs-number">300</span>],
-    <span class="hljs-attr">chartOptions</span>: ?ChartJSLineChartOptions[lineChartDefaultOptions]
-})
+<h3 id="query"><a name="query" class="fa fa-link" href="#"></a>Query</h3>
+<p>Query reference.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"q"</span>: string,
+  <span class="hljs-attr">"coordinate"</span>: ?Coordinate,
+  <span class="hljs-attr">"filters"</span>: Filter[],
+  <span class="hljs-attr">"universe_filters"</span>: Filter[],
+  <span class="hljs-attr">"aggregations"</span>: QueryAggregation[],
+  <span class="hljs-attr">"sort"</span>: SortBy,
+  <span class="hljs-attr">"page"</span>: int,
+  <span class="hljs-attr">"size"</span>: int,
+  <span class="hljs-attr">"results_enabled"</span>: bool,
+  <span class="hljs-attr">"suggestions_enabled"</span>: bool,
+  <span class="hljs-attr">"highlight_enabled"</span>: bool,
+  <span class="hljs-attr">"aggregations_enabled"</span>: bool,
+  <span class="hljs-attr">"filter_fields"</span>: string[],
+  <span class="hljs-attr">"score_strategy"</span>: ?ScoreStrategy,
+  <span class="hljs-attr">"user"</span>: ?User,
+  <span class="hljs-attr">"items_promoted"</span>: ItemUUID[]
+}
 </code></pre>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>target</code>: is the dom selector, it can be an id or a class.</li>
-<li><code>boxWidth</code>: chart container width.</li>
-<li><code>boxHeight</code>: chart container height.</li>
-<li><code>chartOptions</code>: This is the chart configuration and expects a <code>Chart.js</code>
-object configuration. You can check more how a chart is configured
-in <a href="http://www.chartjs.org/docs/latest/">chart.js docs</a></li>
-</ul>
-<h3 id="search-effectiveness"><a name="search-effectiveness" class="fa fa-link" href="#"></a>Search Effectiveness</h3>
-<p>Also known as <strong>Queries with results v.s. Queries without results</strong>.</p>
-<p>Search effectiveness gives you a line chart with two datasets,
-the first one with the queries made in the last month that returned at least one result,
-the second dataset gives you the number of queries that returned 0 results.
-This is useful to compare the effectiveness of your user searches.</p>
-<pre><code class="language-javascript"><span class="hljs-keyword">const</span> searchEfivenessWidget = eventsUI.widgets.searchEffectiveness({
-    <span class="hljs-attr">target</span>: !string,
-    <span class="hljs-attr">boxWidth</span>: ?integer[<span class="hljs-number">200</span>],
-    <span class="hljs-attr">boxHeight</span>: ?integer[<span class="hljs-number">300</span>],
-    <span class="hljs-attr">chartOptions</span>: ?ChartJSOptions[lineChartDefaultOptions]
-})
+<h3 id="event"><a name="event" class="fa fa-link" href="#"></a>Event</h3>
+<p>Event reference</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"consistency_hash"</span>: string,
+  <span class="hljs-attr">"name"</span>: string,
+  <span class="hljs-attr">"payload"</span>: string,
+  <span class="hljs-attr">"indexable_payload"</span>: mixed,
+  <span class="hljs-attr">"occurred_on"</span>: int
+}
 </code></pre>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>target</code>: is the dom selector, it can be an id or a class.</li>
-<li><code>boxWidth</code>: chart container width.</li>
-<li><code>boxHeight</code>: chart container height.</li>
-<li><code>chartOptions</code>: This is the chart configuration and expects a <code>Chart.js</code>
-object configuration. You can check more how a chart is configured
-in <a href="http://www.chartjs.org/docs/latest/">chart.js docs</a></li>
-</ul>
-<h2 id="examples"><a name="examples" class="fa fa-link" href="#"></a>Examples</h2>
-<p>This is a simple dashboard example made with this library. The left side charts are
-made using the <strong>LastQueries</strong> and <strong>SearchEffectiveness</strong> widgets. On the right side
-the <strong>RawEvents</strong> widget.</p>
-<p><img src="/assets/media/events-dashboard.png" alt=""></p>
+<h3 id="log"><a name="log" class="fa fa-link" href="#"></a>Log</h3>
+<p>Log reference</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"id"</span>: string,
+  <span class="hljs-attr">"type"</span>: string,
+  <span class="hljs-attr">"payload"</span>: string,
+  <span class="hljs-attr">"occurred_on"</span>: int
+}
+</code></pre>
+<h2 id="result-references"><a name="result-references" class="fa fa-link" href="#"></a>Result References</h2>
+<p>These elements compose all the possible results that all repositories can return
+to you.</p>
+<h3 id="counter"><a name="counter" class="fa fa-link" href="#"></a>Counter</h3>
+<p>Counter reference. Each of them can be understood as an aggregation result.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"values"</span>: string[],
+  <span class="hljs-attr">"used"</span>: bool,
+  <span class="hljs-attr">"n"</span>: int
+}
+</code></pre>
+<h3 id="resultaggregation"><a name="resultaggregation" class="fa fa-link" href="#"></a>ResultAggregation</h3>
+<p>Result aggregation reference. Used for Results.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"name"</span>: string,
+  <span class="hljs-attr">"counters"</span>: Counter[],
+  <span class="hljs-attr">"application_type"</span>: int,
+  <span class="hljs-attr">"total_elements"</span>: int,
+  <span class="hljs-attr">"active_elements"</span>: Counter[],
+  <span class="hljs-attr">"highest_active_level"</span>: int
+}
+</code></pre>
+<h3 id="resultaggregations"><a name="resultaggregations" class="fa fa-link" href="#"></a>ResultAggregations</h3>
+<p>Result aggregations reference. Used for Results.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"total_elements"</span>: int,
+  <span class="hljs-attr">"aggregations"</span>: ResultAggregation[]
+}
+</code></pre>
+<h2 id="result"><a name="result" class="fa fa-link" href="#"></a>Result</h2>
+<p>Result reference.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"query"</span>: Query,
+  <span class="hljs-attr">"total_items"</span>: int,
+  <span class="hljs-attr">"total_hits"</span>: int,
+  <span class="hljs-attr">"items"</span>: Item[],
+  <span class="hljs-attr">"aggregations"</span>: ResultAggregations,
+  <span class="hljs-attr">"suggests"</span>: string[]
+}
+</code></pre>
+<h2 id="events"><a name="events" class="fa fa-link" href="#"></a>Events</h2>
+<p>Events Result reference</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"query"</span>: Query,
+  <span class="hljs-attr">"total_hits"</span>: int,
+  <span class="hljs-attr">"events"</span>: Event[],
+  <span class="hljs-attr">"aggregations"</span>: ResultAggregations
+}
+</code></pre>
+<h2 id="logs"><a name="logs" class="fa fa-link" href="#"></a>Logs</h2>
+<p>Logs Result reference</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"query"</span>: Query,
+  <span class="hljs-attr">"total_hits"</span>: int,
+  <span class="hljs-attr">"logs"</span>: Log[],
+  <span class="hljs-attr">"aggregations"</span>: ResultAggregations
+}
+</code></pre>
+<h2 id="endpoints-references"><a name="endpoints-references" class="fa fa-link" href="#"></a>Endpoints References</h2>
+<p>These are the repositories endpoints. All of them will share these responses.</p>
+<h3 id="add-interaction"><a name="add-interaction" class="fa fa-link" href="#"></a>Add Interaction</h3>
+<p>Add a new interaction inside the system.</p>
+<pre><code class="language-yml"><span class="hljs-string">Path</span> <span class="hljs-string">:</span> <span class="hljs-string">/v1/interaction</span>
+<span class="hljs-string">Verb</span> <span class="hljs-string">:</span> <span class="hljs-string">GET</span>
+<span class="hljs-attr">Query_Parameters:</span>
+<span class="hljs-attr">    app_id:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">    index:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">    token:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">Body:</span>
+<span class="hljs-attr">    interaction:</span> <span class="hljs-string">Interaction</span>
+</code></pre>
+<h3 id="add-token"><a name="add-token" class="fa fa-link" href="#"></a>Add Token</h3>
+<p>Add a new token inside the system. If the token already exists, this new Token
+will overwrite the old one.</p>
+<pre><code class="language-yml"><span class="hljs-string">Path</span> <span class="hljs-bullet">-</span> <span class="hljs-string">/v1/token</span>
+<span class="hljs-string">Verb</span> <span class="hljs-bullet">-</span> <span class="hljs-string">POST</span>
+<span class="hljs-attr">Query_Parameters:</span>
+<span class="hljs-attr">    app_id:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">    index:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">    token:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">Body:</span>
+<span class="hljs-attr">    - token:</span> <span class="hljs-string">Token</span>
+</code></pre>
+<h3 id="configure-index"><a name="configure-index" class="fa fa-link" href="#"></a>Configure Index</h3>
+<p>Configure the index once this one is already created.</p>
+<pre><code class="language-yml"><span class="hljs-string">Path</span> <span class="hljs-bullet">-</span> <span class="hljs-string">/v1/index</span>
+<span class="hljs-string">Verb</span> <span class="hljs-bullet">-</span> <span class="hljs-string">PUT</span>
+<span class="hljs-attr">Query_Parameters:</span>
+<span class="hljs-attr">    app_id:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">    index:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">    token:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">Body:</span>
+<span class="hljs-attr">    - config:</span> <span class="hljs-string">Config</span>
+</code></pre>
+<h3 id="create-events-index"><a name="create-events-index" class="fa fa-link" href="#"></a>Create Events Index</h3>
+<p>Create events index if this one is not created</p>
+<h3 id="create-index"><a name="create-index" class="fa fa-link" href="#"></a>Create Index</h3>
+<h3 id="create-logs-index"><a name="create-logs-index" class="fa fa-link" href="#"></a>Create Logs Index</h3>
+<h3 id="delete-all-interactions"><a name="delete-all-interactions" class="fa fa-link" href="#"></a>Delete all Interactions</h3>
+<h3 id="delete-events-index"><a name="delete-events-index" class="fa fa-link" href="#"></a>Delete Events Index</h3>
+<h3 id="delete-index"><a name="delete-index" class="fa fa-link" href="#"></a>Delete Index</h3>
+<h3 id="delete-logs-index"><a name="delete-logs-index" class="fa fa-link" href="#"></a>Delete Logs Index</h3>
+<h3 id="delete-token"><a name="delete-token" class="fa fa-link" href="#"></a>Delete Token</h3>
+<h3 id="delete-tokens"><a name="delete-tokens" class="fa fa-link" href="#"></a>Delete Tokens</h3>
+<h3 id="index-items"><a name="index-items" class="fa fa-link" href="#"></a>Index Items</h3>
+<h3 id="reset-index"><a name="reset-index" class="fa fa-link" href="#"></a>Reset Index</h3>
+<h3 id="update-items"><a name="update-items" class="fa fa-link" href="#"></a>Update Items</h3>
+<h3 id="check-health"><a name="check-health" class="fa fa-link" href="#"></a>Check Health</h3>
+<h3 id="check-index"><a name="check-index" class="fa fa-link" href="#"></a>Check Index</h3>
+<h3 id="get-tokens"><a name="get-tokens" class="fa fa-link" href="#"></a>Get Tokens</h3>
+<h3 id="ping"><a name="ping" class="fa fa-link" href="#"></a>Ping</h3>
+<h3 id="query"><a name="query" class="fa fa-link" href="#"></a>Query</h3>
+<h3 id="query-events"><a name="query-events" class="fa fa-link" href="#"></a>Query Events</h3>
+<h3 id="query-logs"><a name="query-logs" class="fa fa-link" href="#"></a>Query Logs</h3>
 
                     <!-- /Content -->
 
                     <hr>
                     <a class="c-content__editOnGithub"
                        target="_blank"
-                       href="https://github.com/apisearch-io/docs/tree/source/src/content/ui/events-ui.md">
+                       href="https://github.com/apisearch-io/docs/tree/source/src/content/api-reference.md">
                         <i class="fa fa-github" aria-hidden="true"></i>
                         Edit this page!
                     </a>
@@ -560,65 +701,338 @@ the <strong>RawEvents</strong> widget.</p>
                 <ul class="c-toc__nav nav nav-pills flex-column">
                     <li class="c-toc__navItem c-toc__navItem--1 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#events-ui"
+                           href="#api-reference"
                         >
-                            Events UI
+                            Api Reference
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#installation"
+                           href="#model-references"
                         >
-                            Installation
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#quick-start"
-                        >
-                            Quick start
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#anatomy"
-                        >
-                            Anatomy
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#widgets"
-                        >
-                            Widgets
+                            Model References
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--3 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#raw-events"
+                           href="#item"
                         >
-                            Raw Events
+                            Item
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--3 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#last-queries"
+                           href="#itemuuid"
                         >
-                            Last Queries
+                            ItemUUID
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--3 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#search-effectiveness"
+                           href="#user"
                         >
-                            Search Effectiveness
+                            User
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#interaction"
+                        >
+                            Interaction
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#coordinate"
+                        >
+                            Coordinate
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#changes"
+                        >
+                            Changes
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#tokenuuid"
+                        >
+                            TokenUUID
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#token"
+                        >
+                            Token
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#examples"
+                           href="#query-references"
                         >
-                            Examples
+                            Query References
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#queryaggregation"
+                        >
+                            QueryAggregation
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#filter"
+                        >
+                            Filter
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#scorestrategy"
+                        >
+                            ScoreStrategy
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#sortby"
+                        >
+                            SortBy
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#query"
+                        >
+                            Query
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#event"
+                        >
+                            Event
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#log"
+                        >
+                            Log
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#result-references"
+                        >
+                            Result References
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#counter"
+                        >
+                            Counter
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#resultaggregation"
+                        >
+                            ResultAggregation
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#resultaggregations"
+                        >
+                            ResultAggregations
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#result"
+                        >
+                            Result
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#events"
+                        >
+                            Events
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#logs"
+                        >
+                            Logs
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#endpoints-references"
+                        >
+                            Endpoints References
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#add-interaction"
+                        >
+                            Add Interaction
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#add-token"
+                        >
+                            Add Token
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#configure-index"
+                        >
+                            Configure Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#create-events-index"
+                        >
+                            Create Events Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#create-index"
+                        >
+                            Create Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#create-logs-index"
+                        >
+                            Create Logs Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#delete-all-interactions"
+                        >
+                            Delete all Interactions
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#delete-events-index"
+                        >
+                            Delete Events Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#delete-index"
+                        >
+                            Delete Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#delete-logs-index"
+                        >
+                            Delete Logs Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#delete-token"
+                        >
+                            Delete Token
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#delete-tokens"
+                        >
+                            Delete Tokens
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#index-items"
+                        >
+                            Index Items
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#reset-index"
+                        >
+                            Reset Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#update-items"
+                        >
+                            Update Items
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#check-health"
+                        >
+                            Check Health
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#check-index"
+                        >
+                            Check Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#get-tokens"
+                        >
+                            Get Tokens
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#ping"
+                        >
+                            Ping
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#query"
+                        >
+                            Query
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#query-events"
+                        >
+                            Query Events
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#query-logs"
+                        >
+                            Query Logs
                         </a>
                     </li>
 
@@ -741,6 +1155,6 @@ the <strong>RawEvents</strong> widget.</p>
     <!-- /Go up -->
 
     <!-- Scripts -->
-    <script src="./../assets/js/app.js"></script>
+    <script src="./assets/js/app.js"></script>
 </body>
 </html>
