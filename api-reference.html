@@ -177,6 +177,56 @@
                             </a>
                         </li>
 
+                            <ul class="c-sidebar__nav c-sidebar__nav--sub-1 nav nav-pills flex-column">
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/api-reference/model.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Model
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/api-reference/application.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Application API
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/api-reference/search.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Search API
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/api-reference/interaction.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Interaction API
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/api-reference/events.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Events API
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/api-reference/events.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Logs API
+                                        </a>
+                                    </li>
+                            </ul>
                         <li class="c-sidebar__navItem nav-item">
                             <a class="c-sidebar__navLink c-sidebar__navLink--title nav-link"
                                href="/api-client.html"
@@ -388,7 +438,7 @@
             </div>            <!-- Sidebar -->
 
             <!-- Main -->
-            <main class="col-sm-8 col-md-9 col-lg-8 ml-sm-auto mr-lg-auto pt-3" role="main">
+            <main class="col-sm-8 col-md-9 col-lg-10 ml-sm-auto pt-3" role="main">
                 <section class="c-content">
                     <!-- Content -->
                     <h1 id="api-reference"><a name="api-reference" class="fa fa-link" href="#"></a>Api Reference</h1>
@@ -400,288 +450,14 @@ always have this specification.</p>
 <p>This specification is divided in two big groups. The first one is the model one,
 where each model object will be explained. The second one is the exposed
 endpoints, which will be using these object explained in the first part.</p>
-<h2 id="model-references"><a name="model-references" class="fa fa-link" href="#"></a>Model References</h2>
-<p>These reference elements are part of the main model, so they will be used in
-several repositories, and will be the angular stone of the project.</p>
-<h3 id="item"><a name="item" class="fa fa-link" href="#"></a>Item</h3>
-<p>Item reference.</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"uuid"</span>: ItemUUID,
-  <span class="hljs-attr">"metadata"</span>: mixed[],
-  <span class="hljs-attr">"indexed_metadata"</span>: mixed[],
-  <span class="hljs-attr">"searchable_metadata"</span>: mixed[],
-  <span class="hljs-attr">"exact_matching_metadata"</span>: string[],
-  <span class="hljs-attr">"suggest"</span>: string[],
-  <span class="hljs-attr">"coordinate"</span>: ?Coordinate,
-  <span class="hljs-attr">"distance"</span>: int,
-  <span class="hljs-attr">"highlights"</span>: mixed[],
-  <span class="hljs-attr">"is_promoted"</span>: bool
-}
-</code></pre>
-<h3 id="itemuuid"><a name="itemuuid" class="fa fa-link" href="#"></a>ItemUUID</h3>
-<p>ItemUUID reference. The composition of this object should be unique in your
-repository.</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"id"</span>: string,
-  <span class="hljs-attr">"type"</span>: string
-}
-</code></pre>
-<h3 id="user"><a name="user" class="fa fa-link" href="#"></a>User</h3>
-<p>User reference. The composition of this object should represent one and
-only one user.</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"id"</span>: string,
-  <span class="hljs-attr">"attributes"</span>: mixed[]
-}
-</code></pre>
-<h3 id="interaction"><a name="interaction" class="fa fa-link" href="#"></a>Interaction</h3>
-<p>Interaction reference. Means an interaction between a user and an ItemUUID.</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"user"</span>: User,
-  <span class="hljs-attr">"item_uuid"</span>: ItemUUID,
-  <span class="hljs-attr">"weight"</span>: int
-}
-</code></pre>
-<h3 id="coordinate"><a name="coordinate" class="fa fa-link" href="#"></a>Coordinate</h3>
-<p>Coordinate reference. Used for object geo-localization.</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"lat"</span>: float,
-  <span class="hljs-attr">"lon"</span>: float
-}
-</code></pre>
-<h3 id="changes"><a name="changes" class="fa fa-link" href="#"></a>Changes</h3>
-<p>Changes reference. This object is mainly used when updating your index.</p>
-<pre><code class="language-json">[
-  {
-    <span class="hljs-attr">"field"</span>: string,
-    <span class="hljs-attr">"type"</span>: int,
-    <span class="hljs-attr">"condition"</span>: ?string,
-    <span class="hljs-attr">"value"</span>: ?mixed
-  }
-]
-</code></pre>
-<h3 id="tokenuuid"><a name="tokenuuid" class="fa fa-link" href="#"></a>TokenUUID</h3>
-<p>Token UUID reference.</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"id"</span>: string
-}
-</code></pre>
-<h3 id="token"><a name="token" class="fa fa-link" href="#"></a>Token</h3>
-<p>Token reference</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"uuid"</span>: TokenUUID,
-  <span class="hljs-attr">"app_id"</span>: string,
-  <span class="hljs-attr">"created_at"</span>: int,
-  <span class="hljs-attr">"updated_at"</span>: int,
-  <span class="hljs-attr">"indices"</span>: string[],
-  <span class="hljs-attr">"seconds_valid"</span>: int,
-  <span class="hljs-attr">"max_hits_per_query"</span>: int,
-  <span class="hljs-attr">"http_referrers"</span>: string[],
-  <span class="hljs-attr">"endpoints"</span>: string[],
-  <span class="hljs-attr">"plugins"</span>: string[],
-  <span class="hljs-attr">"ttl"</span>: int
-}
-</code></pre>
-<h2 id="query-references"><a name="query-references" class="fa fa-link" href="#"></a>Query References</h2>
-<p>These elements are part of the query repository and will be used to create
-queries to several repositories.</p>
-<h3 id="queryaggregation"><a name="queryaggregation" class="fa fa-link" href="#"></a>QueryAggregation</h3>
-<p>Query Aggregation reference. Used in Query repository.</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"name"</span>: string,
-  <span class="hljs-attr">"field"</span>: string,
-  <span class="hljs-attr">"application_type"</span>: int,
-  <span class="hljs-attr">"filter_type"</span>: string,
-  <span class="hljs-attr">"subgroup"</span>: string[],
-  <span class="hljs-attr">"sort"</span>: string[],
-  <span class="hljs-attr">"limit"</span>: int
-}
-</code></pre>
-<h3 id="filter"><a name="filter" class="fa fa-link" href="#"></a>Filter</h3>
-<p>Filter reference. Used in Query repository.</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"field"</span>: string,
-  <span class="hljs-attr">"values"</span>: mixed[],
-  <span class="hljs-attr">"application_type"</span>: int,
-  <span class="hljs-attr">"filter_type"</span>: string,
-  <span class="hljs-attr">"filter_terms"</span>: string[]
-}
-</code></pre>
-<h3 id="scorestrategy"><a name="scorestrategy" class="fa fa-link" href="#"></a>ScoreStrategy</h3>
-<p>Score Strategy reference. Used in Query Repository</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"type"</span>: int,
-  <span class="hljs-attr">"function"</span>: ?string
-}
-</code></pre>
-<h3 id="sortby"><a name="sortby" class="fa fa-link" href="#"></a>SortBy</h3>
-<p>Sortby reference. Used in Query Repository</p>
-<pre><code class="language-json">[
-    {
-      <span class="hljs-attr">"type"</span>: int,
-      <span class="hljs-attr">"filter"</span>: ?Filter,
-      <span class="hljs-attr">"mode"</span>: string
-      <span class="hljs-string">"indexed_metadata.%field_name%"</span>: {
-        <span class="hljs-attr">"order"</span>: string,
-        <span class="hljs-attr">"coordinate"</span>: ?Coordinate
-      }
-    }
-]
-</code></pre>
-<h3 id="query"><a name="query" class="fa fa-link" href="#"></a>Query</h3>
-<p>Query reference.</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"q"</span>: string,
-  <span class="hljs-attr">"coordinate"</span>: ?Coordinate,
-  <span class="hljs-attr">"filters"</span>: Filter[],
-  <span class="hljs-attr">"universe_filters"</span>: Filter[],
-  <span class="hljs-attr">"aggregations"</span>: QueryAggregation[],
-  <span class="hljs-attr">"sort"</span>: SortBy,
-  <span class="hljs-attr">"page"</span>: int,
-  <span class="hljs-attr">"size"</span>: int,
-  <span class="hljs-attr">"results_enabled"</span>: bool,
-  <span class="hljs-attr">"suggestions_enabled"</span>: bool,
-  <span class="hljs-attr">"highlight_enabled"</span>: bool,
-  <span class="hljs-attr">"aggregations_enabled"</span>: bool,
-  <span class="hljs-attr">"filter_fields"</span>: string[],
-  <span class="hljs-attr">"score_strategy"</span>: ?ScoreStrategy,
-  <span class="hljs-attr">"user"</span>: ?User,
-  <span class="hljs-attr">"items_promoted"</span>: ItemUUID[]
-}
-</code></pre>
-<h3 id="event"><a name="event" class="fa fa-link" href="#"></a>Event</h3>
-<p>Event reference</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"consistency_hash"</span>: string,
-  <span class="hljs-attr">"name"</span>: string,
-  <span class="hljs-attr">"payload"</span>: string,
-  <span class="hljs-attr">"indexable_payload"</span>: mixed,
-  <span class="hljs-attr">"occurred_on"</span>: int
-}
-</code></pre>
-<h3 id="log"><a name="log" class="fa fa-link" href="#"></a>Log</h3>
-<p>Log reference</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"id"</span>: string,
-  <span class="hljs-attr">"type"</span>: string,
-  <span class="hljs-attr">"payload"</span>: string,
-  <span class="hljs-attr">"occurred_on"</span>: int
-}
-</code></pre>
-<h2 id="result-references"><a name="result-references" class="fa fa-link" href="#"></a>Result References</h2>
-<p>These elements compose all the possible results that all repositories can return
-to you.</p>
-<h3 id="counter"><a name="counter" class="fa fa-link" href="#"></a>Counter</h3>
-<p>Counter reference. Each of them can be understood as an aggregation result.</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"values"</span>: string[],
-  <span class="hljs-attr">"used"</span>: bool,
-  <span class="hljs-attr">"n"</span>: int
-}
-</code></pre>
-<h3 id="resultaggregation"><a name="resultaggregation" class="fa fa-link" href="#"></a>ResultAggregation</h3>
-<p>Result aggregation reference. Used for Results.</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"name"</span>: string,
-  <span class="hljs-attr">"counters"</span>: Counter[],
-  <span class="hljs-attr">"application_type"</span>: int,
-  <span class="hljs-attr">"total_elements"</span>: int,
-  <span class="hljs-attr">"active_elements"</span>: Counter[],
-  <span class="hljs-attr">"highest_active_level"</span>: int
-}
-</code></pre>
-<h3 id="resultaggregations"><a name="resultaggregations" class="fa fa-link" href="#"></a>ResultAggregations</h3>
-<p>Result aggregations reference. Used for Results.</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"total_elements"</span>: int,
-  <span class="hljs-attr">"aggregations"</span>: ResultAggregation[]
-}
-</code></pre>
-<h2 id="result"><a name="result" class="fa fa-link" href="#"></a>Result</h2>
-<p>Result reference.</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"query"</span>: Query,
-  <span class="hljs-attr">"total_items"</span>: int,
-  <span class="hljs-attr">"total_hits"</span>: int,
-  <span class="hljs-attr">"items"</span>: Item[],
-  <span class="hljs-attr">"aggregations"</span>: ResultAggregations,
-  <span class="hljs-attr">"suggests"</span>: string[]
-}
-</code></pre>
-<h2 id="events"><a name="events" class="fa fa-link" href="#"></a>Events</h2>
-<p>Events Result reference</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"query"</span>: Query,
-  <span class="hljs-attr">"total_hits"</span>: int,
-  <span class="hljs-attr">"events"</span>: Event[],
-  <span class="hljs-attr">"aggregations"</span>: ResultAggregations
-}
-</code></pre>
-<h2 id="logs"><a name="logs" class="fa fa-link" href="#"></a>Logs</h2>
-<p>Logs Result reference</p>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"query"</span>: Query,
-  <span class="hljs-attr">"total_hits"</span>: int,
-  <span class="hljs-attr">"logs"</span>: Log[],
-  <span class="hljs-attr">"aggregations"</span>: ResultAggregations
-}
-</code></pre>
-<h2 id="endpoints-references"><a name="endpoints-references" class="fa fa-link" href="#"></a>Endpoints References</h2>
-<p>These are the repositories endpoints. All of them will share these responses.</p>
-<h3 id="add-interaction"><a name="add-interaction" class="fa fa-link" href="#"></a>Add Interaction</h3>
-<p>Add a new interaction inside the system.</p>
-<pre><code class="language-yml"><span class="hljs-string">Path</span> <span class="hljs-string">:</span> <span class="hljs-string">/v1/interaction</span>
-<span class="hljs-string">Verb</span> <span class="hljs-string">:</span> <span class="hljs-string">GET</span>
-<span class="hljs-attr">Query_Parameters:</span>
-<span class="hljs-attr">    app_id:</span> <span class="hljs-string">string</span>
-<span class="hljs-attr">    index:</span> <span class="hljs-string">string</span>
-<span class="hljs-attr">    token:</span> <span class="hljs-string">string</span>
-<span class="hljs-attr">Body:</span>
-<span class="hljs-attr">    interaction:</span> <span class="hljs-string">Interaction</span>
-</code></pre>
-<h3 id="add-token"><a name="add-token" class="fa fa-link" href="#"></a>Add Token</h3>
-<p>Add a new token inside the system. If the token already exists, this new Token
-will overwrite the old one.</p>
-<pre><code class="language-yml"><span class="hljs-string">Path</span> <span class="hljs-bullet">-</span> <span class="hljs-string">/v1/token</span>
-<span class="hljs-string">Verb</span> <span class="hljs-bullet">-</span> <span class="hljs-string">POST</span>
-<span class="hljs-attr">Query_Parameters:</span>
-<span class="hljs-attr">    app_id:</span> <span class="hljs-string">string</span>
-<span class="hljs-attr">    index:</span> <span class="hljs-string">string</span>
-<span class="hljs-attr">    token:</span> <span class="hljs-string">string</span>
-<span class="hljs-attr">Body:</span>
-<span class="hljs-attr">    - token:</span> <span class="hljs-string">Token</span>
-</code></pre>
-<h3 id="configure-index"><a name="configure-index" class="fa fa-link" href="#"></a>Configure Index</h3>
-<p>Configure the index once this one is already created.</p>
-<pre><code class="language-yml"><span class="hljs-string">Path</span> <span class="hljs-bullet">-</span> <span class="hljs-string">/v1/index</span>
-<span class="hljs-string">Verb</span> <span class="hljs-bullet">-</span> <span class="hljs-string">PUT</span>
-<span class="hljs-attr">Query_Parameters:</span>
-<span class="hljs-attr">    app_id:</span> <span class="hljs-string">string</span>
-<span class="hljs-attr">    index:</span> <span class="hljs-string">string</span>
-<span class="hljs-attr">    token:</span> <span class="hljs-string">string</span>
-<span class="hljs-attr">Body:</span>
-<span class="hljs-attr">    - config:</span> <span class="hljs-string">Config</span>
-</code></pre>
-<h3 id="create-events-index"><a name="create-events-index" class="fa fa-link" href="#"></a>Create Events Index</h3>
-<p>Create events index if this one is not created</p>
-<h3 id="create-index"><a name="create-index" class="fa fa-link" href="#"></a>Create Index</h3>
-<h3 id="create-logs-index"><a name="create-logs-index" class="fa fa-link" href="#"></a>Create Logs Index</h3>
-<h3 id="delete-all-interactions"><a name="delete-all-interactions" class="fa fa-link" href="#"></a>Delete all Interactions</h3>
-<h3 id="delete-events-index"><a name="delete-events-index" class="fa fa-link" href="#"></a>Delete Events Index</h3>
-<h3 id="delete-index"><a name="delete-index" class="fa fa-link" href="#"></a>Delete Index</h3>
-<h3 id="delete-logs-index"><a name="delete-logs-index" class="fa fa-link" href="#"></a>Delete Logs Index</h3>
-<h3 id="delete-token"><a name="delete-token" class="fa fa-link" href="#"></a>Delete Token</h3>
-<h3 id="delete-tokens"><a name="delete-tokens" class="fa fa-link" href="#"></a>Delete Tokens</h3>
-<h3 id="index-items"><a name="index-items" class="fa fa-link" href="#"></a>Index Items</h3>
-<h3 id="reset-index"><a name="reset-index" class="fa fa-link" href="#"></a>Reset Index</h3>
-<h3 id="update-items"><a name="update-items" class="fa fa-link" href="#"></a>Update Items</h3>
-<h3 id="check-health"><a name="check-health" class="fa fa-link" href="#"></a>Check Health</h3>
-<h3 id="check-index"><a name="check-index" class="fa fa-link" href="#"></a>Check Index</h3>
-<h3 id="get-tokens"><a name="get-tokens" class="fa fa-link" href="#"></a>Get Tokens</h3>
-<h3 id="ping"><a name="ping" class="fa fa-link" href="#"></a>Ping</h3>
-<h3 id="query"><a name="query" class="fa fa-link" href="#"></a>Query</h3>
-<h3 id="query-events"><a name="query-events" class="fa fa-link" href="#"></a>Query Events</h3>
-<h3 id="query-logs"><a name="query-logs" class="fa fa-link" href="#"></a>Query Logs</h3>
+<ul>
+<li><a href="api-reference/model.html">Model</a></li>
+<li><a href="api-reference/application.html">Application</a></li>
+<li><a href="api-reference/search.html">Search</a></li>
+<li><a href="api-reference/interaction.html">Interaction</a></li>
+<li><a href="api-reference/events.html">Events</a></li>
+<li><a href="api-reference/logs.html">Logs</a></li>
+</ul>
 
                     <!-- /Content -->
 
@@ -695,361 +471,6 @@ will overwrite the old one.</p>
                 </section>
             </main>
             <!-- /Main -->
-
-            <!-- Toc here -->
-            <div class="c-toc col-lg-2 d-none d-lg-block">
-                <ul class="c-toc__nav nav nav-pills flex-column">
-                    <li class="c-toc__navItem c-toc__navItem--1 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#api-reference"
-                        >
-                            Api Reference
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#model-references"
-                        >
-                            Model References
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#item"
-                        >
-                            Item
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#itemuuid"
-                        >
-                            ItemUUID
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#user"
-                        >
-                            User
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#interaction"
-                        >
-                            Interaction
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#coordinate"
-                        >
-                            Coordinate
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#changes"
-                        >
-                            Changes
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#tokenuuid"
-                        >
-                            TokenUUID
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#token"
-                        >
-                            Token
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#query-references"
-                        >
-                            Query References
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#queryaggregation"
-                        >
-                            QueryAggregation
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#filter"
-                        >
-                            Filter
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#scorestrategy"
-                        >
-                            ScoreStrategy
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#sortby"
-                        >
-                            SortBy
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#query"
-                        >
-                            Query
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#event"
-                        >
-                            Event
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#log"
-                        >
-                            Log
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#result-references"
-                        >
-                            Result References
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#counter"
-                        >
-                            Counter
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#resultaggregation"
-                        >
-                            ResultAggregation
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#resultaggregations"
-                        >
-                            ResultAggregations
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#result"
-                        >
-                            Result
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#events"
-                        >
-                            Events
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#logs"
-                        >
-                            Logs
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#endpoints-references"
-                        >
-                            Endpoints References
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#add-interaction"
-                        >
-                            Add Interaction
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#add-token"
-                        >
-                            Add Token
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#configure-index"
-                        >
-                            Configure Index
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#create-events-index"
-                        >
-                            Create Events Index
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#create-index"
-                        >
-                            Create Index
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#create-logs-index"
-                        >
-                            Create Logs Index
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#delete-all-interactions"
-                        >
-                            Delete all Interactions
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#delete-events-index"
-                        >
-                            Delete Events Index
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#delete-index"
-                        >
-                            Delete Index
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#delete-logs-index"
-                        >
-                            Delete Logs Index
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#delete-token"
-                        >
-                            Delete Token
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#delete-tokens"
-                        >
-                            Delete Tokens
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#index-items"
-                        >
-                            Index Items
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#reset-index"
-                        >
-                            Reset Index
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#update-items"
-                        >
-                            Update Items
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#check-health"
-                        >
-                            Check Health
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#check-index"
-                        >
-                            Check Index
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#get-tokens"
-                        >
-                            Get Tokens
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#ping"
-                        >
-                            Ping
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#query"
-                        >
-                            Query
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#query-events"
-                        >
-                            Query Events
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#query-logs"
-                        >
-                            Query Logs
-                        </a>
-                    </li>
-
-                    <li class="c-toc__navItem c-toc__navItem--needHelp nav-item">
-                        Need help?
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--needHelp c-toc__navLink--title nav-link"
-                           href="https://gitter.im/apisearch_io" target="_blank"
-                        >
-                            <img class="c-toc__navLinkImage" src="/assets/media/gitter-logo.png" />
-                            Talk with us
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <!-- End toc -->
 
             <!-- Footer -->
             <footer class="c-footer col-sm-9 ml-sm-auto col-md-10 pt-3">

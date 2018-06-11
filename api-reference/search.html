@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>FAQS about the integrations</title>
+    <title>Search API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="FAQs - About the Integrations">
+    <meta name="description" content="Api Reference - Search">
     <meta name="author" content="Apisearch team">
     <meta name="keywords" content="Apisearch, Elasticsearch search engine, fast search demo, Apisearch official website">
 
@@ -111,10 +111,10 @@
                                 <a href="/">Apisearch docs</a>
                             </li>
                                 <li class="c-breadcrumb__item breadcrumb-item">
-                                    <a href="#">FAQs</a>
+                                    <a href="#">API Reference</a>
                                 </li>
                             <li class="c-breadcrumb__item--active breadcrumb-item active" aria-current="page">
-                                FAQS about the integrations
+                                Search API
                             </li>
                         </ol>
                     </nav>
@@ -125,15 +125,21 @@
                     <nav class="c-languageSelector">
                         <ol class="c-languageSelector__list">
                                 <li class="c-languageSelector__item">
-                                    <span data-lang="js"
-                                          class="c-languageSelector__link">
-                                        js
-                                    </span>
-                                </li>
-                                <li class="c-languageSelector__item">
                                     <span data-lang="php"
                                           class="c-languageSelector__link">
                                         php
+                                    </span>
+                                </li>
+                                <li class="c-languageSelector__item">
+                                    <span data-lang="javascript"
+                                          class="c-languageSelector__link">
+                                        javascript
+                                    </span>
+                                </li>
+                                <li class="c-languageSelector__item">
+                                    <span data-lang="json"
+                                          class="c-languageSelector__link">
+                                        json
                                     </span>
                                 </li>
                         </ol>
@@ -453,13 +459,26 @@
             <main class="col-sm-8 col-md-9 col-lg-8 ml-sm-auto mr-lg-auto pt-3" role="main">
                 <section class="c-content">
                     <!-- Content -->
-                    
+                    <h3 id="index-items"><a name="index-items" class="fa fa-link" href="#"></a>Index Items</h3>
+<h3 id="update-items"><a name="update-items" class="fa fa-link" href="#"></a>Update Items</h3>
+<h3 id="query"><a name="query" class="fa fa-link" href="#"></a>Query</h3>
+<p>Makes a simple query and return a result.</p>
+<pre><code class="language-yml"><span class="hljs-string">Path</span> <span class="hljs-bullet">-</span> <span class="hljs-string">/v1</span>
+<span class="hljs-string">Verb</span> <span class="hljs-bullet">-</span> <span class="hljs-string">GET</span>
+<span class="hljs-attr">Query_Parameters:</span>
+<span class="hljs-attr">    app_id:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">    index:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">    token:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">    query:</span> <span class="hljs-string">Query</span>
+</code></pre>
+<p>This endpoint will return a <a href="#result">Result</a> object.</p>
+
                     <!-- /Content -->
 
                     <hr>
                     <a class="c-content__editOnGithub"
                        target="_blank"
-                       href="https://github.com/apisearch-io/docs/tree/source/src/content/faqs/integrations.md">
+                       href="https://github.com/apisearch-io/docs/tree/source/src/content/api-reference/search.md">
                         <i class="fa fa-github" aria-hidden="true"></i>
                         Edit this page!
                     </a>
@@ -470,6 +489,27 @@
             <!-- Toc here -->
             <div class="c-toc col-lg-2 d-none d-lg-block">
                 <ul class="c-toc__nav nav nav-pills flex-column">
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#index-items"
+                        >
+                            Index Items
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#update-items"
+                        >
+                            Update Items
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#query"
+                        >
+                            Query
+                        </a>
+                    </li>
 
                     <li class="c-toc__navItem c-toc__navItem--needHelp nav-item">
                         Need help?

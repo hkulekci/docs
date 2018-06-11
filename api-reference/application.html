@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>FAQS about the integrations</title>
+    <title>Application API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="FAQs - About the Integrations">
+    <meta name="description" content="Api Reference - Application">
     <meta name="author" content="Apisearch team">
     <meta name="keywords" content="Apisearch, Elasticsearch search engine, fast search demo, Apisearch official website">
 
@@ -111,10 +111,10 @@
                                 <a href="/">Apisearch docs</a>
                             </li>
                                 <li class="c-breadcrumb__item breadcrumb-item">
-                                    <a href="#">FAQs</a>
+                                    <a href="#">API Reference</a>
                                 </li>
                             <li class="c-breadcrumb__item--active breadcrumb-item active" aria-current="page">
-                                FAQS about the integrations
+                                Application API
                             </li>
                         </ol>
                     </nav>
@@ -125,15 +125,21 @@
                     <nav class="c-languageSelector">
                         <ol class="c-languageSelector__list">
                                 <li class="c-languageSelector__item">
-                                    <span data-lang="js"
-                                          class="c-languageSelector__link">
-                                        js
-                                    </span>
-                                </li>
-                                <li class="c-languageSelector__item">
                                     <span data-lang="php"
                                           class="c-languageSelector__link">
                                         php
+                                    </span>
+                                </li>
+                                <li class="c-languageSelector__item">
+                                    <span data-lang="javascript"
+                                          class="c-languageSelector__link">
+                                        javascript
+                                    </span>
+                                </li>
+                                <li class="c-languageSelector__item">
+                                    <span data-lang="json"
+                                          class="c-languageSelector__link">
+                                        json
                                     </span>
                                 </li>
                         </ol>
@@ -453,13 +459,45 @@
             <main class="col-sm-8 col-md-9 col-lg-8 ml-sm-auto mr-lg-auto pt-3" role="main">
                 <section class="c-content">
                     <!-- Content -->
-                    
+                    <h3 id="add-token"><a name="add-token" class="fa fa-link" href="#"></a>Add Token</h3>
+<p>Add a new token inside the system. If the token already exists, this new Token
+will overwrite the old one.</p>
+<pre><code class="language-yml"><span class="hljs-string">Path</span> <span class="hljs-bullet">-</span> <span class="hljs-string">/v1/token</span>
+<span class="hljs-string">Verb</span> <span class="hljs-bullet">-</span> <span class="hljs-string">POST</span>
+<span class="hljs-attr">Query_Parameters:</span>
+<span class="hljs-attr">    app_id:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">    index:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">    token:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">Body:</span>
+<span class="hljs-attr">    - token:</span> <span class="hljs-string">Token</span>
+</code></pre>
+<h3 id="configure-index"><a name="configure-index" class="fa fa-link" href="#"></a>Configure Index</h3>
+<p>Configure the index once this one is already created.</p>
+<pre><code class="language-yml"><span class="hljs-string">Path</span> <span class="hljs-bullet">-</span> <span class="hljs-string">/v1/index</span>
+<span class="hljs-string">Verb</span> <span class="hljs-bullet">-</span> <span class="hljs-string">PUT</span>
+<span class="hljs-attr">Query_Parameters:</span>
+<span class="hljs-attr">    app_id:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">    index:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">    token:</span> <span class="hljs-string">string</span>
+<span class="hljs-attr">Body:</span>
+<span class="hljs-attr">    - config:</span> <span class="hljs-string">Config</span>
+</code></pre>
+<h3 id="create-index"><a name="create-index" class="fa fa-link" href="#"></a>Create Index</h3>
+<h3 id="delete-index"><a name="delete-index" class="fa fa-link" href="#"></a>Delete Index</h3>
+<h3 id="delete-token"><a name="delete-token" class="fa fa-link" href="#"></a>Delete Token</h3>
+<h3 id="delete-tokens"><a name="delete-tokens" class="fa fa-link" href="#"></a>Delete Tokens</h3>
+<h3 id="reset-index"><a name="reset-index" class="fa fa-link" href="#"></a>Reset Index</h3>
+<h3 id="check-health"><a name="check-health" class="fa fa-link" href="#"></a>Check Health</h3>
+<h3 id="check-index"><a name="check-index" class="fa fa-link" href="#"></a>Check Index</h3>
+<h3 id="get-tokens"><a name="get-tokens" class="fa fa-link" href="#"></a>Get Tokens</h3>
+<h3 id="ping"><a name="ping" class="fa fa-link" href="#"></a>Ping</h3>
+
                     <!-- /Content -->
 
                     <hr>
                     <a class="c-content__editOnGithub"
                        target="_blank"
-                       href="https://github.com/apisearch-io/docs/tree/source/src/content/faqs/integrations.md">
+                       href="https://github.com/apisearch-io/docs/tree/source/src/content/api-reference/application.md">
                         <i class="fa fa-github" aria-hidden="true"></i>
                         Edit this page!
                     </a>
@@ -470,6 +508,83 @@
             <!-- Toc here -->
             <div class="c-toc col-lg-2 d-none d-lg-block">
                 <ul class="c-toc__nav nav nav-pills flex-column">
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#add-token"
+                        >
+                            Add Token
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#configure-index"
+                        >
+                            Configure Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#create-index"
+                        >
+                            Create Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#delete-index"
+                        >
+                            Delete Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#delete-token"
+                        >
+                            Delete Token
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#delete-tokens"
+                        >
+                            Delete Tokens
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#reset-index"
+                        >
+                            Reset Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#check-health"
+                        >
+                            Check Health
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#check-index"
+                        >
+                            Check Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#get-tokens"
+                        >
+                            Get Tokens
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#ping"
+                        >
+                            Ping
+                        </a>
+                    </li>
 
                     <li class="c-toc__navItem c-toc__navItem--needHelp nav-item">
                         Need help?

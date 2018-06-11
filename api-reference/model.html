@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>FAQS about the integrations</title>
+    <title>Model</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="FAQs - About the Integrations">
+    <meta name="description" content="Api Reference - Model">
     <meta name="author" content="Apisearch team">
     <meta name="keywords" content="Apisearch, Elasticsearch search engine, fast search demo, Apisearch official website">
 
@@ -111,10 +111,10 @@
                                 <a href="/">Apisearch docs</a>
                             </li>
                                 <li class="c-breadcrumb__item breadcrumb-item">
-                                    <a href="#">FAQs</a>
+                                    <a href="#">API Reference</a>
                                 </li>
                             <li class="c-breadcrumb__item--active breadcrumb-item active" aria-current="page">
-                                FAQS about the integrations
+                                Model
                             </li>
                         </ol>
                     </nav>
@@ -125,15 +125,21 @@
                     <nav class="c-languageSelector">
                         <ol class="c-languageSelector__list">
                                 <li class="c-languageSelector__item">
-                                    <span data-lang="js"
-                                          class="c-languageSelector__link">
-                                        js
-                                    </span>
-                                </li>
-                                <li class="c-languageSelector__item">
                                     <span data-lang="php"
                                           class="c-languageSelector__link">
                                         php
+                                    </span>
+                                </li>
+                                <li class="c-languageSelector__item">
+                                    <span data-lang="javascript"
+                                          class="c-languageSelector__link">
+                                        javascript
+                                    </span>
+                                </li>
+                                <li class="c-languageSelector__item">
+                                    <span data-lang="json"
+                                          class="c-languageSelector__link">
+                                        json
                                     </span>
                                 </li>
                         </ol>
@@ -453,13 +459,353 @@
             <main class="col-sm-8 col-md-9 col-lg-8 ml-sm-auto mr-lg-auto pt-3" role="main">
                 <section class="c-content">
                     <!-- Content -->
-                    
+                    <h2 id="model-reference"><a name="model-reference" class="fa fa-link" href="#"></a>Model Reference</h2>
+<h3 id="itemuuid"><a name="itemuuid" class="fa fa-link" href="#"></a>ItemUUID</h3>
+<p>ItemUUID reference. The composition of this object should be unique in your
+repository.</p>
+<pre><code>{
+  <span class="hljs-attr">"id"</span>: string,
+  <span class="hljs-attr">"type"</span>: string
+}
+</code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$itemUUID = ItemUUID::createFromArray([
+    <span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">'12345'</span>,
+    <span class="hljs-string">'type'</span> =&gt; <span class="hljs-string">'product'</span>
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"id"</span>: <span class="hljs-string">"12345"</span>,
+  <span class="hljs-attr">"type"</span>: <span class="hljs-string">"product"</span>
+}
+</code></pre>
+<h3 id="item"><a name="item" class="fa fa-link" href="#"></a>Item</h3>
+<p>Item reference. This is the representation of all your searchable elements.
+Inside this model class you will be able to work with all your data and classify
+as ready to be indexed or searched by.</p>
+<pre><code>{
+  <span class="hljs-attr">"uuid"</span>: ItemUUID,
+  <span class="hljs-attr">"metadata"</span>: mixed[],
+  <span class="hljs-attr">"indexed_metadata"</span>: mixed[],
+  <span class="hljs-attr">"searchable_metadata"</span>: mixed[],
+  <span class="hljs-attr">"exact_matching_metadata"</span>: string[],
+  <span class="hljs-attr">"suggest"</span>: string[],
+  <span class="hljs-attr">"coordinate"</span>: ?Coordinate,
+  <span class="hljs-attr">"distance"</span>: int,
+  <span class="hljs-attr">"highlights"</span>: mixed[],
+  <span class="hljs-attr">"is_promoted"</span>: bool
+}
+</code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$item = Item::createFromArray([
+    <span class="hljs-string">'uuid'</span> =&gt; [
+        <span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">'12345'</span>,
+        <span class="hljs-string">'type'</span> =&gt; <span class="hljs-string">'product'</span>
+    ),
+    <span class="hljs-string">'metadata'</span> =&gt; [
+        <span class="hljs-string">'title'</span> =&gt; <span class="hljs-string">'My Product'</span>,
+        <span class="hljs-string">'description'</span> =&gt; <span class="hljs-string">'This is my product'</span>
+    ],
+    <span class="hljs-string">'indexed_metadata'</span> =&gt; [
+        <span class="hljs-string">'price'</span> =&gt; <span class="hljs-number">2000</span>,
+        <span class="hljs-string">'category_id'</span> =&gt; [<span class="hljs-number">12</span>, <span class="hljs-number">13</span>]
+    ],
+    <span class="hljs-string">'searchable_metadata'</span> =&gt; [
+        <span class="hljs-string">'title'</span> =&gt; <span class="hljs-string">'My product'</span>,
+    ],
+    <span class="hljs-string">'exact_matching_metadata'</span> =&gt; [<span class="hljs-string">'12345'</span>],
+    <span class="hljs-string">'suggest'</span> =&gt; [<span class="hljs-string">'product'</span>],
+    <span class="hljs-string">'coordinate'</span> =&gt; [
+        <span class="hljs-string">'lat'</span> =&gt; <span class="hljs-number">1.23</span>,
+        <span class="hljs-string">'lon'</span> =&gt; <span class="hljs-number">-5.34</span>
+    ]
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"uuid"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-string">"12345"</span>,
+    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"product"</span>
+  },
+  <span class="hljs-attr">"metadata"</span>: {
+    <span class="hljs-attr">"title"</span>: <span class="hljs-string">"My Product"</span>,
+    <span class="hljs-attr">"description"</span>: <span class="hljs-string">"This is my product"</span>
+  },
+  <span class="hljs-attr">"indexed_metadata"</span>: {
+    <span class="hljs-attr">"price"</span>: <span class="hljs-number">2000</span>,
+    <span class="hljs-attr">"category_id"</span>: [<span class="hljs-number">12</span>, <span class="hljs-number">13</span>]
+  },
+  <span class="hljs-attr">"searchable_metadata"</span>: {
+    <span class="hljs-attr">"title"</span>: <span class="hljs-string">"My Product"</span>
+  },
+  <span class="hljs-attr">"exact_matching_metadata"</span>: [<span class="hljs-string">"12345"</span>],
+  <span class="hljs-attr">"suggest"</span>: [<span class="hljs-string">"product"</span>],
+  <span class="hljs-attr">"coordinate"</span>: {
+    <span class="hljs-attr">"lat"</span>: <span class="hljs-number">1.23</span>,
+    <span class="hljs-attr">"lon"</span>: <span class="hljs-number">-5.34</span>
+  }
+}
+</code></pre>
+<h3 id="user"><a name="user" class="fa fa-link" href="#"></a>User</h3>
+<p>User reference. The composition of this object should represent one and
+only one user. You should place inside all user related information that will be
+used to determine some specific actions (For example, for machine learning
+plugins, you may use the born year, or the gender id).</p>
+<pre><code>{
+  <span class="hljs-attr">"id"</span>: string,
+  <span class="hljs-attr">"attributes"</span>: mixed[]
+}
+</code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$user = User::createFromArray([
+    <span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">"6789"</span>,
+    <span class="hljs-string">'attributes'</span> =&gt; [
+        <span class="hljs-string">'genre'</span>: <span class="hljs-number">1</span>,
+        <span class="hljs-string">'year'</span>: <span class="hljs-number">1985</span>
+    ],
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"id"</span>: <span class="hljs-string">"6789"</span>,
+  <span class="hljs-attr">"attributes"</span>: {
+    <span class="hljs-attr">"genre"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"year"</span>: <span class="hljs-number">1985</span>
+  }
+}
+</code></pre>
+<h3 id="interaction"><a name="interaction" class="fa fa-link" href="#"></a>Interaction</h3>
+<p>Interaction reference. Means an interaction between a user and an ItemUUID.</p>
+<pre><code>{
+  <span class="hljs-attr">"user"</span>: User,
+  <span class="hljs-attr">"item_uuid"</span>: ItemUUID,
+  <span class="hljs-attr">"weight"</span>: int
+}
+</code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$interaction = Interaction::createFromArray([
+    <span class="hljs-string">'user'</span> =&gt; [
+        <span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">"6789"</span>,
+        <span class="hljs-string">'attributes'</span> =&gt; [
+            <span class="hljs-string">'genre'</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-string">'year'</span>: <span class="hljs-number">1985</span>
+        ],
+    ],
+    <span class="hljs-string">'item_uuid'</span> =&gt; [
+        <span class="hljs-string">'id'</span>: <span class="hljs-string">'1234'</span>,
+        <span class="hljs-string">'type'</span>: <span class="hljs-string">'product'</span>
+    ],
+    <span class="hljs-string">'weight'</span> =&gt; <span class="hljs-number">100</span>
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"user"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-string">"6789"</span>,
+    <span class="hljs-attr">"attributes"</span>: {
+      <span class="hljs-attr">"genre"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">"year"</span>: <span class="hljs-number">1985</span>
+    }
+  },
+  <span class="hljs-attr">"item_uuid"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-string">"1234"</span>,
+    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"product"</span>
+  },
+  <span class="hljs-attr">"weight"</span>: <span class="hljs-number">100</span>
+}
+</code></pre>
+<h3 id="coordinate"><a name="coordinate" class="fa fa-link" href="#"></a>Coordinate</h3>
+<p>Coordinate reference. Used for object geo-localization.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"lat"</span>: float,
+  <span class="hljs-attr">"lon"</span>: float
+}
+</code></pre>
+<h3 id="changes"><a name="changes" class="fa fa-link" href="#"></a>Changes</h3>
+<p>Changes reference. This object is mainly used when updating your index.</p>
+<pre><code class="language-json">[
+  {
+    <span class="hljs-attr">"field"</span>: string,
+    <span class="hljs-attr">"type"</span>: int,
+    <span class="hljs-attr">"condition"</span>: ?string,
+    <span class="hljs-attr">"value"</span>: ?mixed
+  }
+]
+</code></pre>
+<h3 id="tokenuuid"><a name="tokenuuid" class="fa fa-link" href="#"></a>TokenUUID</h3>
+<p>Token UUID reference.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"id"</span>: string
+}
+</code></pre>
+<h3 id="token"><a name="token" class="fa fa-link" href="#"></a>Token</h3>
+<p>Token reference</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"uuid"</span>: TokenUUID,
+  <span class="hljs-attr">"app_id"</span>: string,
+  <span class="hljs-attr">"created_at"</span>: int,
+  <span class="hljs-attr">"updated_at"</span>: int,
+  <span class="hljs-attr">"indices"</span>: string[],
+  <span class="hljs-attr">"seconds_valid"</span>: int,
+  <span class="hljs-attr">"max_hits_per_query"</span>: int,
+  <span class="hljs-attr">"http_referrers"</span>: string[],
+  <span class="hljs-attr">"endpoints"</span>: string[],
+  <span class="hljs-attr">"plugins"</span>: string[],
+  <span class="hljs-attr">"ttl"</span>: int
+}
+</code></pre>
+<h2 id="query-references"><a name="query-references" class="fa fa-link" href="#"></a>Query References</h2>
+<p>These elements are part of the query repository and will be used to create
+queries to several repositories.</p>
+<h3 id="queryaggregation"><a name="queryaggregation" class="fa fa-link" href="#"></a>QueryAggregation</h3>
+<p>Query Aggregation reference. Used in Query repository.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"name"</span>: string,
+  <span class="hljs-attr">"field"</span>: string,
+  <span class="hljs-attr">"application_type"</span>: int,
+  <span class="hljs-attr">"filter_type"</span>: string,
+  <span class="hljs-attr">"subgroup"</span>: string[],
+  <span class="hljs-attr">"sort"</span>: string[],
+  <span class="hljs-attr">"limit"</span>: int
+}
+</code></pre>
+<h3 id="filter"><a name="filter" class="fa fa-link" href="#"></a>Filter</h3>
+<p>Filter reference. Used in Query repository.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"field"</span>: string,
+  <span class="hljs-attr">"values"</span>: mixed[],
+  <span class="hljs-attr">"application_type"</span>: int,
+  <span class="hljs-attr">"filter_type"</span>: string,
+  <span class="hljs-attr">"filter_terms"</span>: string[]
+}
+</code></pre>
+<h3 id="scorestrategy"><a name="scorestrategy" class="fa fa-link" href="#"></a>ScoreStrategy</h3>
+<p>Score Strategy reference. Used in Query Repository</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"type"</span>: int,
+  <span class="hljs-attr">"function"</span>: ?string
+}
+</code></pre>
+<h3 id="sortby"><a name="sortby" class="fa fa-link" href="#"></a>SortBy</h3>
+<p>Sortby reference. Used in Query Repository</p>
+<pre><code class="language-json">[
+    {
+      <span class="hljs-attr">"type"</span>: int,
+      <span class="hljs-attr">"filter"</span>: ?Filter,
+      <span class="hljs-attr">"mode"</span>: string
+      <span class="hljs-string">"indexed_metadata.%field_name%"</span>: {
+        <span class="hljs-attr">"order"</span>: string,
+        <span class="hljs-attr">"coordinate"</span>: ?Coordinate
+      }
+    }
+]
+</code></pre>
+<h3 id="query"><a name="query" class="fa fa-link" href="#"></a>Query</h3>
+<p>Query reference.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"q"</span>: string,
+  <span class="hljs-attr">"coordinate"</span>: ?Coordinate,
+  <span class="hljs-attr">"filters"</span>: Filter[],
+  <span class="hljs-attr">"universe_filters"</span>: Filter[],
+  <span class="hljs-attr">"aggregations"</span>: QueryAggregation[],
+  <span class="hljs-attr">"sort"</span>: SortBy,
+  <span class="hljs-attr">"page"</span>: int,
+  <span class="hljs-attr">"size"</span>: int,
+  <span class="hljs-attr">"results_enabled"</span>: bool,
+  <span class="hljs-attr">"suggestions_enabled"</span>: bool,
+  <span class="hljs-attr">"highlight_enabled"</span>: bool,
+  <span class="hljs-attr">"aggregations_enabled"</span>: bool,
+  <span class="hljs-attr">"filter_fields"</span>: string[],
+  <span class="hljs-attr">"score_strategy"</span>: ?ScoreStrategy,
+  <span class="hljs-attr">"user"</span>: ?User,
+  <span class="hljs-attr">"items_promoted"</span>: ItemUUID[]
+}
+</code></pre>
+<h3 id="event"><a name="event" class="fa fa-link" href="#"></a>Event</h3>
+<p>Event reference</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"consistency_hash"</span>: string,
+  <span class="hljs-attr">"name"</span>: string,
+  <span class="hljs-attr">"payload"</span>: string,
+  <span class="hljs-attr">"indexable_payload"</span>: mixed,
+  <span class="hljs-attr">"occurred_on"</span>: int
+}
+</code></pre>
+<h3 id="log"><a name="log" class="fa fa-link" href="#"></a>Log</h3>
+<p>Log reference</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"id"</span>: string,
+  <span class="hljs-attr">"type"</span>: string,
+  <span class="hljs-attr">"payload"</span>: string,
+  <span class="hljs-attr">"occurred_on"</span>: int
+}
+</code></pre>
+<h2 id="result-references"><a name="result-references" class="fa fa-link" href="#"></a>Result References</h2>
+<p>These elements compose all the possible results that all repositories can return
+to you.</p>
+<h3 id="counter"><a name="counter" class="fa fa-link" href="#"></a>Counter</h3>
+<p>Counter reference. Each of them can be understood as an aggregation result.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"values"</span>: string[],
+  <span class="hljs-attr">"used"</span>: bool,
+  <span class="hljs-attr">"n"</span>: int
+}
+</code></pre>
+<h3 id="resultaggregation"><a name="resultaggregation" class="fa fa-link" href="#"></a>ResultAggregation</h3>
+<p>Result aggregation reference. Used for Results.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"name"</span>: string,
+  <span class="hljs-attr">"counters"</span>: Counter[],
+  <span class="hljs-attr">"application_type"</span>: int,
+  <span class="hljs-attr">"total_elements"</span>: int,
+  <span class="hljs-attr">"active_elements"</span>: Counter[],
+  <span class="hljs-attr">"highest_active_level"</span>: int
+}
+</code></pre>
+<h3 id="resultaggregations"><a name="resultaggregations" class="fa fa-link" href="#"></a>ResultAggregations</h3>
+<p>Result aggregations reference. Used for Results.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"total_elements"</span>: int,
+  <span class="hljs-attr">"aggregations"</span>: ResultAggregation[]
+}
+</code></pre>
+<h3 id="result"><a name="result" class="fa fa-link" href="#"></a>Result</h3>
+<p>Result reference.</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"query"</span>: Query,
+  <span class="hljs-attr">"total_items"</span>: int,
+  <span class="hljs-attr">"total_hits"</span>: int,
+  <span class="hljs-attr">"items"</span>: Item[],
+  <span class="hljs-attr">"aggregations"</span>: ResultAggregations,
+  <span class="hljs-attr">"suggests"</span>: string[]
+}
+</code></pre>
+<h3 id="events"><a name="events" class="fa fa-link" href="#"></a>Events</h3>
+<p>Events Result reference</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"query"</span>: Query,
+  <span class="hljs-attr">"total_hits"</span>: int,
+  <span class="hljs-attr">"events"</span>: Event[],
+  <span class="hljs-attr">"aggregations"</span>: ResultAggregations
+}
+</code></pre>
+<h3 id="logs"><a name="logs" class="fa fa-link" href="#"></a>Logs</h3>
+<p>Logs Result reference</p>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"query"</span>: Query,
+  <span class="hljs-attr">"total_hits"</span>: int,
+  <span class="hljs-attr">"logs"</span>: Log[],
+  <span class="hljs-attr">"aggregations"</span>: ResultAggregations
+}
+</code></pre>
+
                     <!-- /Content -->
 
                     <hr>
                     <a class="c-content__editOnGithub"
                        target="_blank"
-                       href="https://github.com/apisearch-io/docs/tree/source/src/content/faqs/integrations.md">
+                       href="https://github.com/apisearch-io/docs/tree/source/src/content/api-reference/model.md">
                         <i class="fa fa-github" aria-hidden="true"></i>
                         Edit this page!
                     </a>
@@ -470,6 +816,174 @@
             <!-- Toc here -->
             <div class="c-toc col-lg-2 d-none d-lg-block">
                 <ul class="c-toc__nav nav nav-pills flex-column">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#model-reference"
+                        >
+                            Model Reference
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#itemuuid"
+                        >
+                            ItemUUID
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#item"
+                        >
+                            Item
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#user"
+                        >
+                            User
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#interaction"
+                        >
+                            Interaction
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#coordinate"
+                        >
+                            Coordinate
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#changes"
+                        >
+                            Changes
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#tokenuuid"
+                        >
+                            TokenUUID
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#token"
+                        >
+                            Token
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#query-references"
+                        >
+                            Query References
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#queryaggregation"
+                        >
+                            QueryAggregation
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#filter"
+                        >
+                            Filter
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#scorestrategy"
+                        >
+                            ScoreStrategy
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#sortby"
+                        >
+                            SortBy
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#query"
+                        >
+                            Query
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#event"
+                        >
+                            Event
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#log"
+                        >
+                            Log
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#result-references"
+                        >
+                            Result References
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#counter"
+                        >
+                            Counter
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#resultaggregation"
+                        >
+                            ResultAggregation
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#resultaggregations"
+                        >
+                            ResultAggregations
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#result"
+                        >
+                            Result
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#events"
+                        >
+                            Events
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#logs"
+                        >
+                            Logs
+                        </a>
+                    </li>
 
                     <li class="c-toc__navItem c-toc__navItem--needHelp nav-item">
                         Need help?
