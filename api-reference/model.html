@@ -480,6 +480,11 @@ top right of the website.</p>
   <span class="hljs-attr">"type"</span>: <span class="hljs-string">"product"</span>
 }
 </code></pre>
+<p>Some links of interest</p>
+<ul>
+<li><a href="/api-client/model.html#item">Api Client - Item</a></li>
+<li><a href="/api-client/model.html#itemuuid">Api Client - Item UUID</a></li>
+</ul>
 <h3 id="item"><a name="item" class="fa fa-link" href="#"></a>Item</h3>
 <p>Item reference. This is the representation of all your searchable elements.
 Inside this model class you will be able to work with all your data and classify
@@ -547,6 +552,11 @@ top right of the website.</p>
   }
 }
 </code></pre>
+<p>Some links of interest</p>
+<ul>
+<li><a href="/api-client/model.html#item">Api Client - Item</a></li>
+<li><a href="/api-client/model.html#itemuuid">Api Client - Item UUID</a></li>
+</ul>
 <h3 id="user"><a name="user" class="fa fa-link" href="#"></a>User</h3>
 <p>User reference. The composition of this object should represent one and
 only one user. You should place inside all user related information that will be
@@ -575,6 +585,10 @@ top right of the website.</p>
   }
 }
 </code></pre>
+<p>Some links of interest</p>
+<ul>
+<li><a href="/api-client/query.html#building-a-query">Api Client - Building a Query</a></li>
+</ul>
 <h3 id="interaction"><a name="interaction" class="fa fa-link" href="#"></a>Interaction</h3>
 <p>Interaction reference. Means an interaction between a user and an ItemUUID.</p>
 <pre><code>{
@@ -617,14 +631,26 @@ top right of the website.</p>
 </code></pre>
 <h3 id="coordinate"><a name="coordinate" class="fa fa-link" href="#"></a>Coordinate</h3>
 <p>Coordinate reference. Used for object geo-localization.</p>
-<pre><code class="language-json">{
+<pre><code>{
   <span class="hljs-attr">"lat"</span>: float,
   <span class="hljs-attr">"lon"</span>: float
 }
 </code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$coordinate = Coordinate::createFromArray([
+    <span class="hljs-string">'lat'</span> =&gt; <span class="hljs-number">1.34</span>,
+    <span class="hljs-string">'lat'</span> =&gt; <span class="hljs-number">-3.51</span>,
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"lat"</span>: <span class="hljs-number">1.34</span>,
+  <span class="hljs-attr">"lon"</span>: <span class="hljs-number">-3.51</span>
+}
+</code></pre>
 <h3 id="changes"><a name="changes" class="fa fa-link" href="#"></a>Changes</h3>
 <p>Changes reference. This object is mainly used when updating your index.</p>
-<pre><code class="language-json">[
+<pre><code>[
   {
     <span class="hljs-attr">"field"</span>: string,
     <span class="hljs-attr">"type"</span>: int,
@@ -633,15 +659,46 @@ top right of the website.</p>
   }
 ]
 </code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$change = Change::createFromArray([
+    <span class="hljs-string">'field'</span> =&gt; <span class="hljs-string">'indexed_metadata.category_id'</span>,
+    <span class="hljs-string">'type'</span> =&gt; Changes::TYPE_VALUE,
+    <span class="hljs-string">'condition'</span> =&gt; <span class="hljs-string">'indexed_metadata.category_id == 10'</span>,
+    <span class="hljs-string">'value'</span> =&gt; <span class="hljs-number">15</span>
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"field"</span>: <span class="hljs-string">"indexed_metadata.category_id"</span>,
+  <span class="hljs-attr">"type"</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">"condition"</span>: <span class="hljs-string">"indexed_metadata.category_id == 10"</span>,
+  <span class="hljs-attr">"value"</span>: <span class="hljs-number">15</span>
+}
+</code></pre>
 <h3 id="tokenuuid"><a name="tokenuuid" class="fa fa-link" href="#"></a>TokenUUID</h3>
 <p>Token UUID reference.</p>
-<pre><code class="language-json">{
+<pre><code>{
   <span class="hljs-attr">"id"</span>: string
 }
 </code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$tokenUUID = TokenUUID::createFromArray([
+    <span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">'aaaa'</span>,
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"id"</span>: <span class="hljs-string">"aaaa"</span>
+}
+</code></pre>
+<p>Some links of interest</p>
+<ul>
+<li><a href="/api-client/query.html#building-a-query">Api Client - Building a Query</a></li>
+<li><a href="/api-client/query.html#user-query">Api Client - User query</a></li>
+</ul>
 <h3 id="token"><a name="token" class="fa fa-link" href="#"></a>Token</h3>
 <p>Token reference</p>
-<pre><code class="language-json">{
+<pre><code>{
   <span class="hljs-attr">"uuid"</span>: TokenUUID,
   <span class="hljs-attr">"app_id"</span>: string,
   <span class="hljs-attr">"created_at"</span>: int,
@@ -655,12 +712,66 @@ top right of the website.</p>
   <span class="hljs-attr">"ttl"</span>: int
 }
 </code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$token = Token::createFromArray([
+    <span class="hljs-string">'uuid'</span> =&gt; [
+        <span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">'aaaa'</span>
+    ],
+    <span class="hljs-string">'app_id'</span> =&gt; <span class="hljs-string">'1234'</span>,
+    <span class="hljs-string">'created_at'</span> =&gt; <span class="hljs-number">326736728</span>,
+    <span class="hljs-string">'updated_at'</span> =&gt; <span class="hljs-number">326736728</span>,
+    <span class="hljs-string">'indices =&gt; [
+        '</span><span class="hljs-keyword">default</span><span class="hljs-string">',
+        '</span>default2<span class="hljs-string">',
+    ],
+    '</span>seconds_valid<span class="hljs-string">' =&gt; 3600,
+    '</span>max_hits_per_query<span class="hljs-string">' =&gt; 10,
+    '</span>http_referrers<span class="hljs-string">' =&gt; [
+        '</span>apisearch.io<span class="hljs-string">',
+        '</span>apisearch.com
+    ],
+    <span class="hljs-string">'endpoints'</span> =&gt; [
+        <span class="hljs-string">'v1-query'</span>,
+    ],
+    <span class="hljs-string">'plugins'</span> =&gt; [
+        <span class="hljs-string">'language_split'</span>,
+        <span class="hljs-string">'metadata_fields'</span>
+    ],
+    <span class="hljs-string">'ttl'</span> =&gt; <span class="hljs-number">3600</span>
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"uuid"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-string">"aaaa"</span>
+  },
+  <span class="hljs-attr">"app_id"</span>: <span class="hljs-string">"1234"</span>,
+  <span class="hljs-attr">"created_at"</span>: <span class="hljs-number">326736728</span>,
+  <span class="hljs-attr">"updated_at"</span>: <span class="hljs-number">326736728</span>,
+  <span class="hljs-attr">"indices"</span>: [
+    <span class="hljs-string">"default"</span>,
+    <span class="hljs-string">"default2"</span>
+  ],
+  <span class="hljs-attr">"seconds_valid"</span>: <span class="hljs-number">3600</span>,
+  <span class="hljs-attr">"max_hits_per_query"</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">"http_referrers"</span>: [
+    <span class="hljs-string">"apisearch.io"</span>,
+    <span class="hljs-string">"apisearch.com"</span>
+  ],
+  <span class="hljs-attr">"endpoints"</span>: [<span class="hljs-string">"v1-query"</span>],
+  <span class="hljs-attr">"plugins"</span>: [
+    <span class="hljs-string">"language_split"</span>,
+    <span class="hljs-string">"metadata_fields"</span>
+  ],
+  <span class="hljs-attr">"ttl"</span>: <span class="hljs-number">3600</span>
+}
+</code></pre>
 <h2 id="query-references"><a name="query-references" class="fa fa-link" href="#"></a>Query References</h2>
 <p>These elements are part of the query repository and will be used to create
 queries to several repositories.</p>
 <h3 id="queryaggregation"><a name="queryaggregation" class="fa fa-link" href="#"></a>QueryAggregation</h3>
 <p>Query Aggregation reference. Used in Query repository.</p>
-<pre><code class="language-json">{
+<pre><code>{
   <span class="hljs-attr">"name"</span>: string,
   <span class="hljs-attr">"field"</span>: string,
   <span class="hljs-attr">"application_type"</span>: int,
@@ -670,9 +781,34 @@ queries to several repositories.</p>
   <span class="hljs-attr">"limit"</span>: int
 }
 </code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$aggregation = Query\Aggregation::createFromArray([
+    <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'category'</span>,
+    <span class="hljs-string">'field'</span> =&gt; <span class="hljs-string">'category_id'</span>,
+    <span class="hljs-string">'application_type'</span> =&gt; Filter::MUST_ALL,
+    <span class="hljs-string">'filter_type'</span> =&gt; Filter::TYPE_FIELD,
+    <span class="hljs-string">'sort'</span> =&gt; Aggregation::SORT_BY_COUNT_ASC,
+    <span class="hljs-string">'limit'</span> =&gt; <span class="hljs-number">10</span>
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"category"</span>,
+  <span class="hljs-attr">"field"</span>: <span class="hljs-string">"category_id"</span>,
+  <span class="hljs-attr">"application_type"</span>: <span class="hljs-number">4</span>,
+  <span class="hljs-attr">"filter_type"</span>: <span class="hljs-string">"field"</span>,
+  <span class="hljs-attr">"sort"</span>: [<span class="hljs-string">"_count"</span>, <span class="hljs-string">"asc"</span>],
+  <span class="hljs-attr">"limit"</span>: <span class="hljs-number">10</span>
+}
+</code></pre>
+<p>Some links of interest</p>
+<ul>
+<li><a href="/api-client/query.html#building-a-query">Building a Query</a></li>
+<li><a href="/api-client/query.html#aggregations">Query aggregations</a></li>
+</ul>
 <h3 id="filter"><a name="filter" class="fa fa-link" href="#"></a>Filter</h3>
 <p>Filter reference. Used in Query repository.</p>
-<pre><code class="language-json">{
+<pre><code>{
   <span class="hljs-attr">"field"</span>: string,
   <span class="hljs-attr">"values"</span>: mixed[],
   <span class="hljs-attr">"application_type"</span>: int,
@@ -680,16 +816,55 @@ queries to several repositories.</p>
   <span class="hljs-attr">"filter_terms"</span>: string[]
 }
 </code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$filter = Filter::createFromArray([
+    <span class="hljs-string">'field'</span> =&gt; <span class="hljs-string">'category_id'</span>,
+    <span class="hljs-string">'values'</span> =&gt; [<span class="hljs-number">10</span>, <span class="hljs-number">12</span>],
+    <span class="hljs-string">'application_type'</span> =&gt; Filter::MUST_ALL,
+    <span class="hljs-string">'filter_type'</span> =&gt; Filter::TYPE_FIELD,
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"field"</span>: <span class="hljs-string">"category_id"</span>,
+  <span class="hljs-attr">"values"</span>: [<span class="hljs-number">10</span>,<span class="hljs-number">12</span>],
+  <span class="hljs-attr">"application_type"</span>: <span class="hljs-number">4</span>,
+  <span class="hljs-attr">"filter_type"</span>: <span class="hljs-string">"field"</span>
+}
+</code></pre>
+<p>Some links of interest</p>
+<ul>
+<li><a href="/api-client/query.html#building-a-query">Building a Query</a></li>
+<li><a href="/api-client/query.html#filters">Query filters</a></li>
+<li><a href="/api-client/query.html#filter-types">Filter types</a></li>
+</ul>
 <h3 id="scorestrategy"><a name="scorestrategy" class="fa fa-link" href="#"></a>ScoreStrategy</h3>
 <p>Score Strategy reference. Used in Query Repository</p>
-<pre><code class="language-json">{
+<pre><code>{
   <span class="hljs-attr">"type"</span>: int,
   <span class="hljs-attr">"function"</span>: ?string
 }
 </code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$scoreStrategy = ScoreStrategy::createFromArray([
+    <span class="hljs-string">'type'</span> =&gt; ScoreStrategy::CUSTOM_FUNCTION,
+    <span class="hljs-string">'function'</span> =&gt; <span class="hljs-string">'_score + 10'</span>
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"type"</span>: <span class="hljs-number">2</span>,
+  <span class="hljs-attr">"function"</span>: <span class="hljs-string">"_score + 10"</span>
+}
+</code></pre>
+<p>Some links of interest</p>
+<ul>
+<li><a href="/api-client/query.html#building-a-query">Building a Query</a></li>
+<li><a href="/api-client/query.html#relevance-strategy">Relevance Strategy</a></li>
+</ul>
 <h3 id="sortby"><a name="sortby" class="fa fa-link" href="#"></a>SortBy</h3>
 <p>Sortby reference. Used in Query Repository</p>
-<pre><code class="language-json">[
+<pre><code>[
     {
       <span class="hljs-attr">"type"</span>: int,
       <span class="hljs-attr">"filter"</span>: ?Filter,
@@ -701,9 +876,33 @@ queries to several repositories.</p>
     }
 ]
 </code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$sortBy = SortBy::createFromArray([
+    <span class="hljs-string">'type'</span> =&gt; SortBy::TYPE_FIELD,
+    <span class="hljs-string">'mode'</span> =&gt; SortBy::MODE_AVG,
+    <span class="hljs-string">'indexed_metadata.category_id'</span> =&gt; [
+        <span class="hljs-string">'order'</span>: SortBy::ASC
+    ]
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"type"</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">"mode"</span>: <span class="hljs-string">"avg"</span>,
+  <span class="hljs-attr">"indexed_metadata.category_id"</span>: {
+    <span class="hljs-attr">"order"</span>: <span class="hljs-string">"asc"</span>
+  }
+}
+</code></pre>
+<p>Some links of interest</p>
+<ul>
+<li><a href="/api-client/query.html#building-a-query">Building a Query</a></li>
+<li><a href="/api-client/query.html#sort-by-field">Sort by field</a></li>
+<li><a href="/api-client/query.html#sort-randomly">Sort randomly</a></li>
+</ul>
 <h3 id="query"><a name="query" class="fa fa-link" href="#"></a>Query</h3>
 <p>Query reference.</p>
-<pre><code class="language-json">{
+<pre><code>{
   <span class="hljs-attr">"q"</span>: string,
   <span class="hljs-attr">"coordinate"</span>: ?Coordinate,
   <span class="hljs-attr">"filters"</span>: Filter[],
@@ -722,9 +921,76 @@ queries to several repositories.</p>
   <span class="hljs-attr">"items_promoted"</span>: ItemUUID[]
 }
 </code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$query = Query::createFromArray([
+    <span class="hljs-string">'q'</span> =&gt; <span class="hljs-string">'hello'</span>,
+    <span class="hljs-string">'filters'</span> =&gt; [
+        [
+            <span class="hljs-string">'field'</span> =&gt; <span class="hljs-string">'category_id'</span>,
+            <span class="hljs-string">'values'</span> =&gt; [<span class="hljs-number">10</span>, <span class="hljs-number">12</span>],
+            <span class="hljs-string">'application_type'</span> =&gt; Filter::MUST_ALL,
+            <span class="hljs-string">'filter_type'</span> =&gt; Filter::TYPE_FIELD,
+        ]
+    ],
+    <span class="hljs-string">'aggregations'</span> =&gt; [
+        [
+            <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'category'</span>,
+            <span class="hljs-string">'field'</span> =&gt; <span class="hljs-string">'category_id'</span>,
+            <span class="hljs-string">'application_type'</span> =&gt; Filter::MUST_ALL,
+            <span class="hljs-string">'filter_type'</span> =&gt; Filter::TYPE_FIELD,
+            <span class="hljs-string">'sort'</span> =&gt; Aggregation::SORT_BY_COUNT_ASC,
+            <span class="hljs-string">'limit'</span> =&gt; <span class="hljs-number">10</span>
+        ]
+    ],
+    <span class="hljs-string">'sort'</span> =&gt; <span class="hljs-string">'type'</span> =&gt; SortBy::TYPE_FIELD,
+        <span class="hljs-string">'mode'</span> =&gt; SortBy::MODE_AVG,
+        <span class="hljs-string">'indexed_metadata.category_id'</span> =&gt; [
+        <span class="hljs-string">'order'</span>: SortBy::ASC
+    ],
+    <span class="hljs-string">'page'</span> =&gt; <span class="hljs-number">1</span>,
+    <span class="hljs-string">'size =&gt; 10
+]);
+</span></code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"q"</span>: <span class="hljs-string">"hello"</span>,
+  <span class="hljs-attr">"filters"</span>: [
+    {
+      <span class="hljs-attr">"field"</span>: <span class="hljs-string">"category_id"</span>,
+      <span class="hljs-attr">"values"</span>: [<span class="hljs-number">10</span>,<span class="hljs-number">12</span>],
+      <span class="hljs-attr">"application_type"</span>: <span class="hljs-number">4</span>,
+      <span class="hljs-attr">"filter_type"</span>: <span class="hljs-string">"field"</span>
+    }
+  ],
+  <span class="hljs-attr">"aggregations"</span>: [
+    {
+      <span class="hljs-attr">"name"</span>: <span class="hljs-string">"category"</span>,
+      <span class="hljs-attr">"field"</span>: <span class="hljs-string">"category_id"</span>,
+      <span class="hljs-attr">"application_type"</span>: <span class="hljs-number">4</span>,
+      <span class="hljs-attr">"filter_type"</span>: <span class="hljs-string">"field"</span>,
+      <span class="hljs-attr">"sort"</span>: [<span class="hljs-string">"_count"</span>, <span class="hljs-string">"asc"</span>],
+      <span class="hljs-attr">"limit"</span>: <span class="hljs-number">10</span>
+    }
+  ],
+  <span class="hljs-attr">"sort"</span>: {
+    <span class="hljs-attr">"type"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"mode"</span>: <span class="hljs-string">"avg"</span>,
+    <span class="hljs-attr">"indexed_metadata.category_id"</span>: {
+      <span class="hljs-attr">"order"</span>: <span class="hljs-string">"asc"</span>
+    }
+  },
+  <span class="hljs-attr">"page"</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">"size"</span>: <span class="hljs-number">10</span>
+}
+</code></pre>
+<p>Some links of interest</p>
+<ul>
+<li><a href="/api-client/query.html#building-a-query">Building a Query</a></li>
+<li><a href="/api-client/query.html#enabling-suggestions">Enabling Suggestions</a></li>
+</ul>
 <h3 id="event"><a name="event" class="fa fa-link" href="#"></a>Event</h3>
 <p>Event reference</p>
-<pre><code class="language-json">{
+<pre><code>{
   <span class="hljs-attr">"consistency_hash"</span>: string,
   <span class="hljs-attr">"name"</span>: string,
   <span class="hljs-attr">"payload"</span>: string,
@@ -732,13 +998,52 @@ queries to several repositories.</p>
   <span class="hljs-attr">"occurred_on"</span>: int
 }
 </code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$event = Event::createFromArray([
+    <span class="hljs-string">'consistency_hash'</span> =&gt; <span class="hljs-string">'789ds789s7d8s9'</span>,
+    <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'QueryWasMade'</span>,
+    <span class="hljs-string">'payload'</span> =&gt; <span class="hljs-string">"{...}"</span>,
+    <span class="hljs-string">"indexable_payload"</span> =&gt; <span class="hljs-string">"{...}"</span>,
+    <span class="hljs-string">"occurred_on"</span> =&gt; <span class="hljs-number">34782947389</span>,
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"consistency_hash"</span>: <span class="hljs-string">"789ds789s7d8s9"</span>,
+  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"QueryWasMade"</span>,
+  <span class="hljs-attr">"payload"</span>: <span class="hljs-string">"{...}"</span>,
+  <span class="hljs-attr">"indexable_payload"</span>: <span class="hljs-string">"{...}"</span>,
+  <span class="hljs-attr">"occurred_on"</span>: <span class="hljs-string">"{...}"</span>
+}
+</code></pre>
+<p>Some links of interest</p>
+<ul>
+<li><a href="/api-client/event.html#event-object">Event Object</a></li>
+<li><a href="/api-client/event.html#event-types">Event Types</a></li>
+</ul>
 <h3 id="log"><a name="log" class="fa fa-link" href="#"></a>Log</h3>
 <p>Log reference</p>
-<pre><code class="language-json">{
+<pre><code>{
   <span class="hljs-attr">"id"</span>: string,
   <span class="hljs-attr">"type"</span>: string,
   <span class="hljs-attr">"payload"</span>: string,
   <span class="hljs-attr">"occurred_on"</span>: int
+}
+</code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$log = Log::createFromArray([
+    <span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">'3478378'</span>,
+    <span class="hljs-string">'type'</span> =&gt; Log::TYPE_FATAL,
+    <span class="hljs-string">'payload'</span> =&gt; <span class="hljs-string">"{...}"</span>,
+    <span class="hljs-string">"occurred_on"</span> =&gt; <span class="hljs-number">34782947389</span>,
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"id"</span>: <span class="hljs-string">"3478378"</span>,
+  <span class="hljs-attr">"type"</span>: <span class="hljs-string">"fatal"</span>,
+  <span class="hljs-attr">"payload"</span>: <span class="hljs-string">"{...}"</span>,
+  <span class="hljs-attr">"occurred_on"</span>: <span class="hljs-string">"{...}"</span>
 }
 </code></pre>
 <h2 id="result-references"><a name="result-references" class="fa fa-link" href="#"></a>Result References</h2>
@@ -746,15 +1051,42 @@ queries to several repositories.</p>
 to you.</p>
 <h3 id="counter"><a name="counter" class="fa fa-link" href="#"></a>Counter</h3>
 <p>Counter reference. Each of them can be understood as an aggregation result.</p>
-<pre><code class="language-json">{
+<pre><code>{
   <span class="hljs-attr">"values"</span>: string[],
   <span class="hljs-attr">"used"</span>: bool,
   <span class="hljs-attr">"n"</span>: int
 }
 </code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$counter = Counter::createFromArray([
+    <span class="hljs-string">'values'</span> =&gt; [
+        <span class="hljs-string">'id'</span> =&gt; <span class="hljs-number">12</span>,
+        <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Main Category'</span>,
+        <span class="hljs-string">'slug'</span> =&gt; <span class="hljs-string">'main_category'</span>,
+    ],
+    <span class="hljs-string">'used'</span> =&gt; <span class="hljs-keyword">true</span>,
+    <span class="hljs-string">'n'</span> =&gt; <span class="hljs-number">526</span>
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"values"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">12</span>,
+    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Main Category"</span>,
+    <span class="hljs-attr">"slug"</span>: <span class="hljs-string">"main_category"</span>
+  },
+  <span class="hljs-attr">"used"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"n"</span>: <span class="hljs-number">526</span>
+}
+</code></pre>
+<p>Some links of interest</p>
+<ul>
+<li><a href="/api-client/result.html">Api Client - Result</a></li>
+<li><a href="/api-client/result.html#aggregation-counter">Api Client - Aggregation Counter</a></li>
+</ul>
 <h3 id="resultaggregation"><a name="resultaggregation" class="fa fa-link" href="#"></a>ResultAggregation</h3>
 <p>Result aggregation reference. Used for Results.</p>
-<pre><code class="language-json">{
+<pre><code>{
   <span class="hljs-attr">"name"</span>: string,
   <span class="hljs-attr">"counters"</span>: Counter[],
   <span class="hljs-attr">"application_type"</span>: int,
@@ -763,16 +1095,78 @@ to you.</p>
   <span class="hljs-attr">"highest_active_level"</span>: int
 }
 </code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$resultAggregation = Result\Aggregation::createFromArray([
+    <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'category_id'</span>,
+    <span class="hljs-string">'counters'</span> =&gt; [
+        [
+            <span class="hljs-string">'values'</span> =&gt; [
+                <span class="hljs-string">'id'</span> =&gt; <span class="hljs-number">12</span>,
+                <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Main Category'</span>,
+                <span class="hljs-string">'slug'</span> =&gt; <span class="hljs-string">'main_category'</span>,
+            ],
+            <span class="hljs-string">'used'</span> =&gt; <span class="hljs-keyword">true</span>,
+            <span class="hljs-string">'n'</span> =&gt; <span class="hljs-number">526</span>
+        ]
+    ],
+    <span class="hljs-string">'application_type'</span>: Filter::MUST_ALL,
+    <span class="hljs-string">'total_elements'</span>: <span class="hljs-number">1002</span>
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"category_id"</span>,
+  <span class="hljs-attr">"counters"</span>: [
+    {
+      <span class="hljs-attr">"values"</span>: {
+        <span class="hljs-attr">"id"</span>: <span class="hljs-number">12</span>,
+        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Main Category"</span>,
+        <span class="hljs-attr">"slug"</span>: <span class="hljs-string">"main_category"</span>
+      },
+      <span class="hljs-attr">"used"</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">"n"</span>: <span class="hljs-number">526</span>
+    }
+  ],
+  <span class="hljs-attr">"application_type"</span>: <span class="hljs-number">4</span>,
+  <span class="hljs-attr">"total_elements"</span>: <span class="hljs-number">1002</span>
+}
+</code></pre>
+<p>Some links of interest</p>
+<ul>
+<li><a href="/api-client/result.html">Api Client - Result</a></li>
+<li><a href="/api-client/result.html#reading-aggregations">Api Client - Reading Aggregations</a></li>
+<li><a href="/api-client/result.html#aggregation-counter">Api Client - Aggregation Counter</a></li>
+</ul>
 <h3 id="resultaggregations"><a name="resultaggregations" class="fa fa-link" href="#"></a>ResultAggregations</h3>
 <p>Result aggregations reference. Used for Results.</p>
-<pre><code class="language-json">{
+<pre><code>{
   <span class="hljs-attr">"total_elements"</span>: int,
   <span class="hljs-attr">"aggregations"</span>: ResultAggregation[]
 }
 </code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$aggregations = Aggregations::createFromArray([
+    <span class="hljs-string">'total_elements'</span> =&gt; <span class="hljs-number">1002</span>,
+    <span class="hljs-string">'aggregations'</span> =&gt; [
+    
+    ]
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"total_elements"</span>: <span class="hljs-number">1002</span>,
+  <span class="hljs-attr">"aggregations"</span>: []
+}
+</code></pre>
+<p>Some links of interest</p>
+<ul>
+<li><a href="/api-client/result.html">Api Client - Result</a></li>
+<li><a href="/api-client/result.html#reading-aggregations">Api Client - Reading Aggregations</a></li>
+<li><a href="/api-client/result.html#aggregation-counter">Api Client - Aggregation Counter</a></li>
+</ul>
 <h3 id="result"><a name="result" class="fa fa-link" href="#"></a>Result</h3>
 <p>Result reference.</p>
-<pre><code class="language-json">{
+<pre><code>{
   <span class="hljs-attr">"query"</span>: Query,
   <span class="hljs-attr">"total_items"</span>: int,
   <span class="hljs-attr">"total_hits"</span>: int,
@@ -781,9 +1175,56 @@ to you.</p>
   <span class="hljs-attr">"suggests"</span>: string[]
 }
 </code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$result = Result::createFromArray([
+    <span class="hljs-string">'query'</span> =&gt; [
+        <span class="hljs-string">'q'</span> =&gt; <span class="hljs-string">'hola'</span>
+    ],
+    <span class="hljs-string">'total_items'</span> =&gt; <span class="hljs-number">500</span>,
+    <span class="hljs-string">'total_hits'</span> =&gt; <span class="hljs-number">1</span>,
+    <span class="hljs-string">'items'</span> =&gt; [
+        [
+            <span class="hljs-string">'uuid'</span> =&gt; [
+                <span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">'1234'</span>,
+                <span class="hljs-string">'type =&gt; '</span>product
+            ],
+            <span class="hljs-string">'searchable_metadata'</span> =&gt; [
+                <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Hello, my new product'</span>
+            ]
+        ]
+    ],
+    <span class="hljs-string">'suggests'</span> =&gt; [<span class="hljs-string">'product'</span>]
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"query"</span>: {
+    <span class="hljs-attr">"q"</span>: <span class="hljs-string">"hola"</span>
+  },
+  <span class="hljs-attr">"total_items"</span>: <span class="hljs-number">500</span>,
+  <span class="hljs-attr">"total_hits"</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">"items"</span>: [
+    {
+      <span class="hljs-attr">"uuid"</span>: {
+        <span class="hljs-attr">"id"</span>: <span class="hljs-string">"1234"</span>,
+        <span class="hljs-attr">"type"</span>: <span class="hljs-string">"product"</span>
+      },
+      <span class="hljs-attr">"searchable_metadata"</span>: {
+        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Hello, my new product"</span>
+      }
+    }
+  ],
+  <span class="hljs-attr">"suggests"</span>: [<span class="hljs-string">"product"</span>]
+}
+</code></pre>
+<p>Some links of interest</p>
+<ul>
+<li><a href="/api-client/result.html">Api Client - Result</a></li>
+<li><a href="/api-client/result.html#reading-suggestions">Api Client - Reading Suggestions</a></li>
+</ul>
 <h3 id="events"><a name="events" class="fa fa-link" href="#"></a>Events</h3>
 <p>Events Result reference</p>
-<pre><code class="language-json">{
+<pre><code>{
   <span class="hljs-attr">"query"</span>: Query,
   <span class="hljs-attr">"total_hits"</span>: int,
   <span class="hljs-attr">"events"</span>: Event[],
@@ -792,7 +1233,7 @@ to you.</p>
 </code></pre>
 <h3 id="logs"><a name="logs" class="fa fa-link" href="#"></a>Logs</h3>
 <p>Logs Result reference</p>
-<pre><code class="language-json">{
+<pre><code>{
   <span class="hljs-attr">"query"</span>: Query,
   <span class="hljs-attr">"total_hits"</span>: int,
   <span class="hljs-attr">"logs"</span>: Log[],
