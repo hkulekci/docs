@@ -460,6 +460,32 @@
                 <section class="c-content">
                     <!-- Content -->
                     <h3 id="index-items"><a name="index-items" class="fa fa-link" href="#"></a>Index Items</h3>
+<p>By using this endpoint you will be able to add some items in your index. Before
+going deeper, remember how you can use and manage Items in Apisearch</p>
+<ul>
+<li><a href="http://docs.apisearch.io/api-reference/model.html#item">Api Reference - Item</a></li>
+<li><a href="http://docs.apisearch.io/api-reference/model.html#itemuuid">Api Reference - ItemUUID</a></li>
+</ul>
+<p>This is the endpoint reference</p>
+<ul>
+<li>Endpoint name - v1-items-index</li>
+<li>Path - /v1/items</li>
+<li>Verb - POST</li>
+<li>Query Parameters
+<ul>
+<li>app_id, <em>required</em></li>
+<li>index, <em>required</em></li>
+<li>token, <em>required</em></li>
+</ul>
+</li>
+<li>Body
+<ul>
+<li><a href="http://docs.apisearch.io/api-reference/model.html#item">Item</a>[]</li>
+</ul>
+</li>
+</ul>
+<p>This is a write-only endpoint, and eventually, all write only endpoints could be
+processed in an asynchronous way</p>
 <h3 id="update-items"><a name="update-items" class="fa fa-link" href="#"></a>Update Items</h3>
 <h3 id="query"><a name="query" class="fa fa-link" href="#"></a>Query</h3>
 <p>Makes a simple query and return a result.</p>
