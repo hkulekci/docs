@@ -124,24 +124,6 @@
                     <!-- language selector -->
                     <nav class="c-languageSelector">
                         <ol class="c-languageSelector__list">
-                                <li class="c-languageSelector__item">
-                                    <span data-lang="php"
-                                          class="c-languageSelector__link">
-                                        php
-                                    </span>
-                                </li>
-                                <li class="c-languageSelector__item">
-                                    <span data-lang="javascript"
-                                          class="c-languageSelector__link">
-                                        javascript
-                                    </span>
-                                </li>
-                                <li class="c-languageSelector__item">
-                                    <span data-lang="json"
-                                          class="c-languageSelector__link">
-                                        json
-                                    </span>
-                                </li>
                         </ol>
                     </nav>
                     <!-- /language selector -->
@@ -459,9 +441,10 @@
             <main class="col-sm-8 col-md-9 col-lg-8 ml-sm-auto mr-lg-auto pt-3" role="main">
                 <section class="c-content">
                     <!-- Content -->
-                    <h3 id="index-items"><a name="index-items" class="fa fa-link" href="#"></a>Index Items</h3>
-<p>By using this endpoint you will be able to add some items in your index. Before
-going deeper, remember how you can use and manage Items in Apisearch</p>
+                    <h1 id="search-api"><a name="search-api" class="fa fa-link" href="#"></a>Search API</h1>
+<h2 id="index-items"><a name="index-items" class="fa fa-link" href="#"></a>Index Items</h2>
+<p>By using this endpoint you will be able to add some items in your index.
+Here some related model objects you may know.</p>
 <ul>
 <li><a href="http://docs.apisearch.io/api-reference/model.html#item">Api Reference - Item</a></li>
 <li><a href="http://docs.apisearch.io/api-reference/model.html#itemuuid">Api Reference - ItemUUID</a></li>
@@ -475,29 +458,131 @@ going deeper, remember how you can use and manage Items in Apisearch</p>
 <ul>
 <li>app_id, <em>required</em></li>
 <li>index, <em>required</em></li>
-<li>token, <em>required</em></li>
-</ul>
-</li>
-<li>Body
-<ul>
-<li><a href="http://docs.apisearch.io/api-reference/model.html#item">Item</a>[]</li>
+<li>token, <em>required with permissions</em></li>
 </ul>
 </li>
 </ul>
+<p>The body of this endpoint is an array with one optional position with
+key <code>items</code> and an array of <a href="/api-reference/model.html#item">Item</a> objects as
+value.</p>
 <p>This is a write-only endpoint, and eventually, all write only endpoints could be
 processed in an asynchronous way</p>
-<h3 id="update-items"><a name="update-items" class="fa fa-link" href="#"></a>Update Items</h3>
-<h3 id="query"><a name="query" class="fa fa-link" href="#"></a>Query</h3>
-<p>Makes a simple query and return a result.</p>
-<pre><code class="language-yml"><span class="hljs-string">Path</span> <span class="hljs-bullet">-</span> <span class="hljs-string">/v1</span>
-<span class="hljs-string">Verb</span> <span class="hljs-bullet">-</span> <span class="hljs-string">GET</span>
-<span class="hljs-attr">Query_Parameters:</span>
-<span class="hljs-attr">    app_id:</span> <span class="hljs-string">string</span>
-<span class="hljs-attr">    index:</span> <span class="hljs-string">string</span>
-<span class="hljs-attr">    token:</span> <span class="hljs-string">string</span>
-<span class="hljs-attr">    query:</span> <span class="hljs-string">Query</span>
+<p>You can try this endpoint by using this curl snippet. As you can see, you should
+replace the placeholders with your own data. In order to make sure that no one
+has a default values in their installation, and creating a vulnerability, no
+default values are created.</p>
+<pre><code class="language-bash">curl -XPOST <span class="hljs-string">"http://localhost:8100/v1/items?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>  -d<span class="hljs-string">'
+{
+    "items": [
+        {
+            "uuid": {
+                "id": "1",
+                "type": "product"
+            },
+            "metadata": {
+                "title": "My product"
+            },
+            "searchable_metadata": {
+                "title": "My product"
+            }
+        },
+        {
+            "uuid": {
+                "id": "2",
+                "type": "product"
+            },
+            "metadata": {
+                "title": "Another product"
+            },
+            "searchable_metadata": {
+                "title": "Another product"
+            }
+        }
+    ]
+}
+'</span>
 </code></pre>
-<p>This endpoint will return a <a href="#result">Result</a> object.</p>
+<h2 id="delete-items"><a name="delete-items" class="fa fa-link" href="#"></a>Delete Items</h2>
+<p>By using this endpoint you will be able to delete some existing items from your
+index. Here some related model objects you may know.</p>
+<ul>
+<li><a href="http://docs.apisearch.io/api-reference/model.html#item">Api Reference - Item</a></li>
+<li><a href="http://docs.apisearch.io/api-reference/model.html#itemuuid">Api Reference - ItemUUID</a></li>
+</ul>
+<p>This is the endpoint reference</p>
+<ul>
+<li>Endpoint name - v1-items-index</li>
+<li>Path - /v1/items</li>
+<li>Verb - DELETE</li>
+<li>Query Parameters
+<ul>
+<li>app_id, <em>required</em></li>
+<li>index, <em>required</em></li>
+<li>token, <em>required with permissions</em></li>
+</ul>
+</li>
+</ul>
+<p>The body of this endpoint is an array with one optional position with
+key <code>items</code> and an array of <a href="/api-reference/model.html#itemuuid">ItemUUID</a>
+objects as value.</p>
+<p>This is a write-only endpoint, and eventually, all write only endpoints could be
+processed in an asynchronous way</p>
+<p>You can try this endpoint by using this curl snippet. As you can see, you should
+replace the placeholders with your own data. In order to make sure that no one
+has a default values in their installation, and creating a vulnerability, no
+default values are created.</p>
+<pre><code class="language-bash">curl -XDELETE <span class="hljs-string">"http://localhost:8100/v1/items?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>  -d<span class="hljs-string">'
+{
+    "items": [
+        {
+            "id": "1",
+            "type": "product"
+        },
+        {
+            "id": "2",
+            "type": "product"
+        }
+    ]
+}
+'</span>
+</code></pre>
+<h2 id="update-items"><a name="update-items" class="fa fa-link" href="#"></a>Update Items</h2>
+<h2 id="query"><a name="query" class="fa fa-link" href="#"></a>Query</h2>
+<p>By using this endpoint you will make a simple query to one or several indices in
+an existing app. Here some related model objects you may know.</p>
+<ul>
+<li><a href="/api-reference/model.html#query">Api Reference - Query</a></li>
+<li><a href="/api-client/query.html#building-a-query">Api Client - Building a Query</a></li>
+</ul>
+<p>This is the endpoint reference</p>
+<ul>
+<li>Endpoint name - v1-query</li>
+<li>Path - /v1</li>
+<li>Verb - GET</li>
+<li>Query Parameters
+<ul>
+<li>app_id, <em>required</em></li>
+<li>index, <em>not required, can be multiple separated by comma</em></li>
+<li>token, <em>required with permissions</em></li>
+</ul>
+</li>
+</ul>
+<p>The body of the endpoint should be an array with one optional position with
+key <code>query</code> and a <a href="/api-reference/model.html#query">Query</a>
+object as value.</p>
+<p>You can try this endpoint by using this curl snippet. As you can see, you should
+replace the placeholders with your own data. In order to make sure that no one
+has a default values in their installation, and creating a vulnerability, no
+default values are created.</p>
+<pre><code class="language-bash">curl -XGET <span class="hljs-string">"http://localhost:8100/v1?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>  -d<span class="hljs-string">'
+{
+    "query": {
+        "q": "house"
+    }
+}
+'</span>
+</code></pre>
+<p>This endpoint will return a <a href="/api-reference/model.html#result">Result</a> object.</p>
 
                     <!-- /Content -->
 
@@ -515,21 +600,35 @@ processed in an asynchronous way</p>
             <!-- Toc here -->
             <div class="c-toc col-lg-2 d-none d-lg-block">
                 <ul class="c-toc__nav nav nav-pills flex-column">
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--1 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#search-api"
+                        >
+                            Search API
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#index-items"
                         >
                             Index Items
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#delete-items"
+                        >
+                            Delete Items
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#update-items"
                         >
                             Update Items
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#query"
                         >

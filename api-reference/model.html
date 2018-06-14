@@ -766,6 +766,84 @@ top right of the website.</p>
   <span class="hljs-attr">"ttl"</span>: <span class="hljs-number">3600</span>
 }
 </code></pre>
+<h2 id="app-references"><a name="app-references" class="fa fa-link" href="#"></a>App References</h2>
+<p>The elements are part of the repository that will be used to configure the app
+and the indices</p>
+<h3 id="synonym"><a name="synonym" class="fa fa-link" href="#"></a>Synonym</h3>
+<p>Synonym representation.</p>
+<pre><code>{
+  <span class="hljs-attr">"words"</span>: string[]
+}
+</code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$synonym = Synonym::createFromArray([
+    <span class="hljs-string">'words'</span> =&gt; [
+        <span class="hljs-string">'house'</span>,
+        <span class="hljs-string">'building'</span>,
+        <span class="hljs-string">'cottage'</span>
+    ]
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"words"</span>: [
+    <span class="hljs-string">"house"</span>,
+    <span class="hljs-string">"building"</span>,
+    <span class="hljs-string">"cottage"</span>
+  ]
+}
+</code></pre>
+<h3 id="immutableconfig"><a name="immutableconfig" class="fa fa-link" href="#"></a>ImmutableConfig</h3>
+<p>This configuration is used when a new index instance is created. Is called
+immutable because cannot be changed after this index creation.</p>
+<pre><code>{
+  <span class="hljs-attr">"language"</span>: ?string [<span class="hljs-literal">null</span>],
+  <span class="hljs-attr">"store_searchable_metadata"</span>: bool [<span class="hljs-literal">true</span>],
+  <span class="hljs-attr">"synonyms"</span>: Synonym[]
+}
+</code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$immutableConfig = ImmutableConfig::createFromArray([
+    <span class="hljs-string">'language'</span> =&gt; <span class="hljs-string">'ca'</span>,
+    <span class="hljs-string">'store_searchable_metadata'</span> =&gt; <span class="hljs-keyword">false</span>,
+    <span class="hljs-string">'synonyms'</span> =&gt; [
+        [
+            <span class="hljs-string">'words'</span> =&gt; [
+                <span class="hljs-string">'house'</span>,
+                <span class="hljs-string">'building'</span>,
+                <span class="hljs-string">'cottage'</span>
+            ]
+        ],
+        [
+            <span class="hljs-string">'words'</span> =&gt; [
+                <span class="hljs-string">'large'</span>,
+                <span class="hljs-string">'big'</span>
+            ]
+        ]
+    ]
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"language"</span>: <span class="hljs-string">"ca"</span>,
+  <span class="hljs-attr">"store_searchable_metadata"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"synonyms"</span>: [
+    {
+      <span class="hljs-attr">"words"</span>: [
+        <span class="hljs-string">"house"</span>,
+        <span class="hljs-string">"building"</span>,
+        <span class="hljs-string">"cottage"</span>
+      ]
+    },
+    {
+      <span class="hljs-attr">"words"</span>: [
+        <span class="hljs-string">"large"</span>,
+        <span class="hljs-string">"big"</span>
+      ]
+    }
+  ]
+}
+</code></pre>
 <h2 id="query-references"><a name="query-references" class="fa fa-link" href="#"></a>Query References</h2>
 <p>These elements are part of the query repository and will be used to create
 queries to several repositories.</p>
@@ -1318,6 +1396,27 @@ top right of the website.</p>
                            href="#token"
                         >
                             Token
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#app-references"
+                        >
+                            App References
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#synonym"
+                        >
+                            Synonym
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#immutableconfig"
+                        >
+                            ImmutableConfig
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
