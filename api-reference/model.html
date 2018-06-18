@@ -131,12 +131,6 @@
                                     </span>
                                 </li>
                                 <li class="c-languageSelector__item">
-                                    <span data-lang="javascript"
-                                          class="c-languageSelector__link">
-                                        javascript
-                                    </span>
-                                </li>
-                                <li class="c-languageSelector__item">
                                     <span data-lang="json"
                                           class="c-languageSelector__link">
                                         json
@@ -206,7 +200,7 @@
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/api-reference/application.html"
+                                           href="/api-reference/application-api.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                                             Application API
@@ -214,7 +208,7 @@
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/api-reference/search.html"
+                                           href="/api-reference/search-api.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                                             Search API
@@ -459,13 +453,18 @@
             <main class="col-sm-8 col-md-9 col-lg-8 ml-sm-auto mr-lg-auto pt-3" role="main">
                 <section class="c-content">
                     <!-- Content -->
-                    <h2 id="model-reference"><a name="model-reference" class="fa fa-link" href="#"></a>Model Reference</h2>
-<h3 id="itemuuid"><a name="itemuuid" class="fa fa-link" href="#"></a>ItemUUID</h3>
+                    <h1 id="model-reference"><a name="model-reference" class="fa fa-link" href="#"></a>Model Reference</h1>
+<p>In this chapter we will expose all the objects existing inside Apisearch. This
+is important because across all repositories, and maybe inside specific client
+implementations you will see some objects and you will know how they work
+internally.</p>
+<p>Then this is your chapter.</p>
+<h2 id="itemuuid"><a name="itemuuid" class="fa fa-link" href="#"></a>ItemUUID</h2>
 <p>ItemUUID reference. The composition of this object should be unique in your
 repository.</p>
 <pre><code>{
-  <span class="hljs-attr">"id"</span>: string,
-  <span class="hljs-attr">"type"</span>: string
+  <span class="hljs-attr">"id"</span>: !string,
+  <span class="hljs-attr">"type"</span>: !string
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -485,21 +484,21 @@ top right of the website.</p>
 <li><a href="/api-client/model.html#item">Api Client - Item</a></li>
 <li><a href="/api-client/model.html#itemuuid">Api Client - Item UUID</a></li>
 </ul>
-<h3 id="item"><a name="item" class="fa fa-link" href="#"></a>Item</h3>
+<h2 id="item"><a name="item" class="fa fa-link" href="#"></a>Item</h2>
 <p>Item reference. This is the representation of all your searchable elements.
 Inside this model class you will be able to work with all your data and classify
 as ready to be indexed or searched by.</p>
 <pre><code>{
-  <span class="hljs-attr">"uuid"</span>: ItemUUID,
-  <span class="hljs-attr">"metadata"</span>: mixed[],
-  <span class="hljs-attr">"indexed_metadata"</span>: mixed[],
-  <span class="hljs-attr">"searchable_metadata"</span>: mixed[],
-  <span class="hljs-attr">"exact_matching_metadata"</span>: string[],
-  <span class="hljs-attr">"suggest"</span>: string[],
+  <span class="hljs-attr">"uuid"</span>: !ItemUUID,
+  <span class="hljs-attr">"metadata"</span>: ?mixed[],
+  <span class="hljs-attr">"indexed_metadata"</span>: ?mixed[],
+  <span class="hljs-attr">"searchable_metadata"</span>: ?mixed[],
+  <span class="hljs-attr">"exact_matching_metadata"</span>: ?string[],
+  <span class="hljs-attr">"suggest"</span>: ?string[],
   <span class="hljs-attr">"coordinate"</span>: ?Coordinate,
-  <span class="hljs-attr">"distance"</span>: int,
-  <span class="hljs-attr">"highlights"</span>: mixed[],
-  <span class="hljs-attr">"is_promoted"</span>: bool
+  <span class="hljs-attr">"distance"</span>: ?int (only in response),
+  <span class="hljs-attr">"highlights"</span>: ?mixed[] (only in response),
+  <span class="hljs-attr">"is_promoted"</span>: ?bool (only in response)
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -557,14 +556,14 @@ top right of the website.</p>
 <li><a href="/api-client/model.html#item">Api Client - Item</a></li>
 <li><a href="/api-client/model.html#itemuuid">Api Client - Item UUID</a></li>
 </ul>
-<h3 id="user"><a name="user" class="fa fa-link" href="#"></a>User</h3>
+<h2 id="user"><a name="user" class="fa fa-link" href="#"></a>User</h2>
 <p>User reference. The composition of this object should represent one and
 only one user. You should place inside all user related information that will be
 used to determine some specific actions (For example, for machine learning
 plugins, you may use the born year, or the gender id).</p>
 <pre><code>{
-  <span class="hljs-attr">"id"</span>: string,
-  <span class="hljs-attr">"attributes"</span>: mixed[]
+  <span class="hljs-attr">"id"</span>: !string,
+  <span class="hljs-attr">"attributes"</span>: ?mixed[]
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -589,12 +588,12 @@ top right of the website.</p>
 <ul>
 <li><a href="/api-client/query.html#building-a-query">Api Client - Building a Query</a></li>
 </ul>
-<h3 id="interaction"><a name="interaction" class="fa fa-link" href="#"></a>Interaction</h3>
+<h2 id="interaction"><a name="interaction" class="fa fa-link" href="#"></a>Interaction</h2>
 <p>Interaction reference. Means an interaction between a user and an ItemUUID.</p>
 <pre><code>{
-  <span class="hljs-attr">"user"</span>: User,
-  <span class="hljs-attr">"item_uuid"</span>: ItemUUID,
-  <span class="hljs-attr">"weight"</span>: int
+  <span class="hljs-attr">"user"</span>: !User,
+  <span class="hljs-attr">"item_uuid"</span>: !ItemUUID,
+  <span class="hljs-attr">"weight"</span>: !int
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -629,11 +628,11 @@ top right of the website.</p>
   <span class="hljs-attr">"weight"</span>: <span class="hljs-number">100</span>
 }
 </code></pre>
-<h3 id="coordinate"><a name="coordinate" class="fa fa-link" href="#"></a>Coordinate</h3>
+<h2 id="coordinate"><a name="coordinate" class="fa fa-link" href="#"></a>Coordinate</h2>
 <p>Coordinate reference. Used for object geo-localization.</p>
 <pre><code>{
-  <span class="hljs-attr">"lat"</span>: float,
-  <span class="hljs-attr">"lon"</span>: float
+  <span class="hljs-attr">"lat"</span>: !float,
+  <span class="hljs-attr">"lon"</span>: !float
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -648,12 +647,12 @@ top right of the website.</p>
   <span class="hljs-attr">"lon"</span>: <span class="hljs-number">-3.51</span>
 }
 </code></pre>
-<h3 id="changes"><a name="changes" class="fa fa-link" href="#"></a>Changes</h3>
+<h2 id="changes"><a name="changes" class="fa fa-link" href="#"></a>Changes</h2>
 <p>Changes reference. This object is mainly used when updating your index.</p>
 <pre><code>[
   {
-    <span class="hljs-attr">"field"</span>: string,
-    <span class="hljs-attr">"type"</span>: int,
+    <span class="hljs-attr">"field"</span>: !string,
+    <span class="hljs-attr">"type"</span>: !int,
     <span class="hljs-attr">"condition"</span>: ?string,
     <span class="hljs-attr">"value"</span>: ?mixed
   }
@@ -675,10 +674,10 @@ top right of the website.</p>
   <span class="hljs-attr">"value"</span>: <span class="hljs-number">15</span>
 }
 </code></pre>
-<h3 id="tokenuuid"><a name="tokenuuid" class="fa fa-link" href="#"></a>TokenUUID</h3>
+<h2 id="tokenuuid"><a name="tokenuuid" class="fa fa-link" href="#"></a>TokenUUID</h2>
 <p>Token UUID reference.</p>
 <pre><code>{
-  <span class="hljs-attr">"id"</span>: string
+  <span class="hljs-attr">"id"</span>: !string
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -696,20 +695,20 @@ top right of the website.</p>
 <li><a href="/api-client/query.html#building-a-query">Api Client - Building a Query</a></li>
 <li><a href="/api-client/query.html#user-query">Api Client - User query</a></li>
 </ul>
-<h3 id="token"><a name="token" class="fa fa-link" href="#"></a>Token</h3>
+<h2 id="token"><a name="token" class="fa fa-link" href="#"></a>Token</h2>
 <p>Token reference</p>
 <pre><code>{
-  <span class="hljs-attr">"uuid"</span>: TokenUUID,
-  <span class="hljs-attr">"app_id"</span>: string,
-  <span class="hljs-attr">"created_at"</span>: int,
-  <span class="hljs-attr">"updated_at"</span>: int,
-  <span class="hljs-attr">"indices"</span>: string[],
-  <span class="hljs-attr">"seconds_valid"</span>: int,
-  <span class="hljs-attr">"max_hits_per_query"</span>: int,
-  <span class="hljs-attr">"http_referrers"</span>: string[],
-  <span class="hljs-attr">"endpoints"</span>: string[],
-  <span class="hljs-attr">"plugins"</span>: string[],
-  <span class="hljs-attr">"ttl"</span>: int
+  <span class="hljs-attr">"uuid"</span>: !TokenUUID,
+  <span class="hljs-attr">"app_id"</span>: !string,
+  <span class="hljs-attr">"created_at"</span>: !int,
+  <span class="hljs-attr">"updated_at"</span>: !int,
+  <span class="hljs-attr">"indices"</span>: ?string[],
+  <span class="hljs-attr">"seconds_valid"</span>: ?int (default <span class="hljs-number">0</span>/Infinite),
+  <span class="hljs-attr">"max_hits_per_query"</span>: ?int (default <span class="hljs-number">0</span>/Infinite),
+  <span class="hljs-attr">"http_referrers"</span>: ?string[],
+  <span class="hljs-attr">"endpoints"</span>: ?string[],
+  <span class="hljs-attr">"plugins"</span>: ?string[],
+  <span class="hljs-attr">"ttl"</span>: ?int (default <span class="hljs-number">60</span> seconds)
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -766,13 +765,10 @@ top right of the website.</p>
   <span class="hljs-attr">"ttl"</span>: <span class="hljs-number">3600</span>
 }
 </code></pre>
-<h2 id="app-references"><a name="app-references" class="fa fa-link" href="#"></a>App References</h2>
-<p>The elements are part of the repository that will be used to configure the app
-and the indices</p>
-<h3 id="synonym"><a name="synonym" class="fa fa-link" href="#"></a>Synonym</h3>
+<h2 id="synonym"><a name="synonym" class="fa fa-link" href="#"></a>Synonym</h2>
 <p>Synonym representation.</p>
 <pre><code>{
-  <span class="hljs-attr">"words"</span>: string[]
+  <span class="hljs-attr">"words"</span>: ?string[]
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -793,13 +789,13 @@ top right of the website.</p>
   ]
 }
 </code></pre>
-<h3 id="immutableconfig"><a name="immutableconfig" class="fa fa-link" href="#"></a>ImmutableConfig</h3>
+<h2 id="immutableconfig"><a name="immutableconfig" class="fa fa-link" href="#"></a>ImmutableConfig</h2>
 <p>This configuration is used when a new index instance is created. Is called
 immutable because cannot be changed after this index creation.</p>
 <pre><code>{
-  <span class="hljs-attr">"language"</span>: ?string [<span class="hljs-literal">null</span>],
-  <span class="hljs-attr">"store_searchable_metadata"</span>: bool [<span class="hljs-literal">true</span>],
-  <span class="hljs-attr">"synonyms"</span>: Synonym[]
+  <span class="hljs-attr">"language"</span>: ?string (default <span class="hljs-literal">null</span>),
+  <span class="hljs-attr">"store_searchable_metadata"</span>: ?bool (default <span class="hljs-literal">true</span>),
+  <span class="hljs-attr">"synonyms"</span>: ?Synonym[]
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -844,19 +840,16 @@ top right of the website.</p>
   ]
 }
 </code></pre>
-<h2 id="query-references"><a name="query-references" class="fa fa-link" href="#"></a>Query References</h2>
-<p>These elements are part of the query repository and will be used to create
-queries to several repositories.</p>
-<h3 id="queryaggregation"><a name="queryaggregation" class="fa fa-link" href="#"></a>QueryAggregation</h3>
+<h2 id="queryaggregation"><a name="queryaggregation" class="fa fa-link" href="#"></a>QueryAggregation</h2>
 <p>Query Aggregation reference. Used in Query repository.</p>
 <pre><code>{
-  <span class="hljs-attr">"name"</span>: string,
-  <span class="hljs-attr">"field"</span>: string,
-  <span class="hljs-attr">"application_type"</span>: int,
-  <span class="hljs-attr">"filter_type"</span>: string,
-  <span class="hljs-attr">"subgroup"</span>: string[],
-  <span class="hljs-attr">"sort"</span>: string[],
-  <span class="hljs-attr">"limit"</span>: int
+  <span class="hljs-string">"name"</span>: !<span class="hljs-keyword">string</span>,
+  <span class="hljs-string">"field"</span>: ?<span class="hljs-keyword">string</span> (<span class="hljs-keyword">default</span> uuid.<span class="hljs-keyword">type</span>),
+  <span class="hljs-string">"application_type"</span>: ?<span class="hljs-keyword">int</span> (<span class="hljs-keyword">default</span> <span class="hljs-number">8</span>),
+  <span class="hljs-string">"filter_type"</span>: ?<span class="hljs-keyword">string</span> (<span class="hljs-keyword">default</span> <span class="hljs-string">"field"</span>),
+  <span class="hljs-string">"subgroup"</span>: ?<span class="hljs-keyword">string</span>[],
+  <span class="hljs-string">"sort"</span>: ?<span class="hljs-keyword">string</span>[] (<span class="hljs-keyword">default</span> [<span class="hljs-string">'_count'</span>, <span class="hljs-string">'desc'</span>]),
+  <span class="hljs-string">"limit"</span>: ?<span class="hljs-keyword">int</span> (<span class="hljs-keyword">default</span> <span class="hljs-number">0</span>/No limit)
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -884,14 +877,14 @@ top right of the website.</p>
 <li><a href="/api-client/query.html#building-a-query">Building a Query</a></li>
 <li><a href="/api-client/query.html#aggregations">Query aggregations</a></li>
 </ul>
-<h3 id="filter"><a name="filter" class="fa fa-link" href="#"></a>Filter</h3>
+<h2 id="filter"><a name="filter" class="fa fa-link" href="#"></a>Filter</h2>
 <p>Filter reference. Used in Query repository.</p>
 <pre><code>{
-  <span class="hljs-attr">"field"</span>: string,
-  <span class="hljs-attr">"values"</span>: mixed[],
-  <span class="hljs-attr">"application_type"</span>: int,
-  <span class="hljs-attr">"filter_type"</span>: string,
-  <span class="hljs-attr">"filter_terms"</span>: string[]
+  <span class="hljs-attr">"field"</span>: ?string (default uuid.type),
+  <span class="hljs-attr">"values"</span>: ?mixed[],
+  <span class="hljs-attr">"application_type"</span>: ?int (default <span class="hljs-number">8</span>),
+  <span class="hljs-attr">"filter_type"</span>: ?string (default <span class="hljs-string">"field"</span>),
+  <span class="hljs-attr">"filter_terms"</span>: ?string[]
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -916,11 +909,11 @@ top right of the website.</p>
 <li><a href="/api-client/query.html#filters">Query filters</a></li>
 <li><a href="/api-client/query.html#filter-types">Filter types</a></li>
 </ul>
-<h3 id="scorestrategy"><a name="scorestrategy" class="fa fa-link" href="#"></a>ScoreStrategy</h3>
+<h2 id="scorestrategy"><a name="scorestrategy" class="fa fa-link" href="#"></a>ScoreStrategy</h2>
 <p>Score Strategy reference. Used in Query Repository</p>
 <pre><code>{
-  <span class="hljs-attr">"type"</span>: int,
-  <span class="hljs-attr">"function"</span>: ?string
+  <span class="hljs-string">"type"</span>: ?<span class="hljs-keyword">int</span> (<span class="hljs-keyword">default</span> <span class="hljs-number">0</span>),
+  <span class="hljs-string">"function"</span>: ?<span class="hljs-built_in">string</span>
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -940,15 +933,15 @@ top right of the website.</p>
 <li><a href="/api-client/query.html#building-a-query">Building a Query</a></li>
 <li><a href="/api-client/query.html#relevance-strategy">Relevance Strategy</a></li>
 </ul>
-<h3 id="sortby"><a name="sortby" class="fa fa-link" href="#"></a>SortBy</h3>
+<h2 id="sortby"><a name="sortby" class="fa fa-link" href="#"></a>SortBy</h2>
 <p>Sortby reference. Used in Query Repository</p>
 <pre><code>[
     {
-      <span class="hljs-attr">"type"</span>: int,
+      <span class="hljs-attr">"type"</span>: ?int (default <span class="hljs-number">1</span>/field),
       <span class="hljs-attr">"filter"</span>: ?Filter,
-      <span class="hljs-attr">"mode"</span>: string
+      <span class="hljs-attr">"mode"</span>: !string
       <span class="hljs-string">"indexed_metadata.%field_name%"</span>: {
-        <span class="hljs-attr">"order"</span>: string,
+        <span class="hljs-attr">"order"</span>: !string,
         <span class="hljs-attr">"coordinate"</span>: ?Coordinate
       }
     }
@@ -978,25 +971,25 @@ top right of the website.</p>
 <li><a href="/api-client/query.html#sort-by-field">Sort by field</a></li>
 <li><a href="/api-client/query.html#sort-randomly">Sort randomly</a></li>
 </ul>
-<h3 id="query"><a name="query" class="fa fa-link" href="#"></a>Query</h3>
+<h2 id="query"><a name="query" class="fa fa-link" href="#"></a>Query</h2>
 <p>Query reference.</p>
 <pre><code>{
-  <span class="hljs-attr">"q"</span>: string,
+  <span class="hljs-attr">"q"</span>: ?string (default <span class="hljs-string">""</span>/Match all),
   <span class="hljs-attr">"coordinate"</span>: ?Coordinate,
-  <span class="hljs-attr">"filters"</span>: Filter[],
-  <span class="hljs-attr">"universe_filters"</span>: Filter[],
-  <span class="hljs-attr">"aggregations"</span>: QueryAggregation[],
-  <span class="hljs-attr">"sort"</span>: SortBy,
-  <span class="hljs-attr">"page"</span>: int,
-  <span class="hljs-attr">"size"</span>: int,
-  <span class="hljs-attr">"results_enabled"</span>: bool,
-  <span class="hljs-attr">"suggestions_enabled"</span>: bool,
-  <span class="hljs-attr">"highlight_enabled"</span>: bool,
-  <span class="hljs-attr">"aggregations_enabled"</span>: bool,
-  <span class="hljs-attr">"filter_fields"</span>: string[],
+  <span class="hljs-attr">"filters"</span>: ?Filter[],
+  <span class="hljs-attr">"universe_filters"</span>: ?Filter[],
+  <span class="hljs-attr">"aggregations"</span>: ?QueryAggregation[],
+  <span class="hljs-attr">"sort"</span>: ?SortBy,
+  <span class="hljs-attr">"page"</span>: ?int (default <span class="hljs-number">1</span>),
+  <span class="hljs-attr">"size"</span>: ?int (default <span class="hljs-number">10</span>),
+  <span class="hljs-attr">"results_enabled"</span>: ?bool (default <span class="hljs-literal">true</span>),
+  <span class="hljs-attr">"suggestions_enabled"</span>: ?bool (default <span class="hljs-literal">false</span>),
+  <span class="hljs-attr">"highlight_enabled"</span>: ?bool (default <span class="hljs-literal">false</span>),
+  <span class="hljs-attr">"aggregations_enabled"</span>: ?bool (default <span class="hljs-literal">true</span>),
+  <span class="hljs-attr">"filter_fields"</span>: ?string[],
   <span class="hljs-attr">"score_strategy"</span>: ?ScoreStrategy,
   <span class="hljs-attr">"user"</span>: ?User,
-  <span class="hljs-attr">"items_promoted"</span>: ItemUUID[]
+  <span class="hljs-attr">"items_promoted"</span>: ?ItemUUID[]
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -1066,14 +1059,14 @@ top right of the website.</p>
 <li><a href="/api-client/query.html#building-a-query">Building a Query</a></li>
 <li><a href="/api-client/query.html#enabling-suggestions">Enabling Suggestions</a></li>
 </ul>
-<h3 id="event"><a name="event" class="fa fa-link" href="#"></a>Event</h3>
-<p>Event reference</p>
+<h2 id="event"><a name="event" class="fa fa-link" href="#"></a>Event</h2>
+<p>Event reference.</p>
 <pre><code>{
-  <span class="hljs-attr">"consistency_hash"</span>: string,
-  <span class="hljs-attr">"name"</span>: string,
-  <span class="hljs-attr">"payload"</span>: string,
-  <span class="hljs-attr">"indexable_payload"</span>: mixed,
-  <span class="hljs-attr">"occurred_on"</span>: int
+  <span class="hljs-attr">"consistency_hash"</span>: !string,
+  <span class="hljs-attr">"name"</span>: !string,
+  <span class="hljs-attr">"payload"</span>: !string,
+  <span class="hljs-attr">"indexable_payload"</span>: !array,
+  <span class="hljs-attr">"occurred_on"</span>: !int
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -1099,13 +1092,13 @@ top right of the website.</p>
 <li><a href="/api-client/event.html#event-object">Event Object</a></li>
 <li><a href="/api-client/event.html#event-types">Event Types</a></li>
 </ul>
-<h3 id="log"><a name="log" class="fa fa-link" href="#"></a>Log</h3>
+<h2 id="log"><a name="log" class="fa fa-link" href="#"></a>Log</h2>
 <p>Log reference</p>
 <pre><code>{
-  <span class="hljs-attr">"id"</span>: string,
-  <span class="hljs-attr">"type"</span>: string,
-  <span class="hljs-attr">"payload"</span>: string,
-  <span class="hljs-attr">"occurred_on"</span>: int
+  <span class="hljs-attr">"id"</span>: !string,
+  <span class="hljs-attr">"type"</span>: !string,
+  <span class="hljs-attr">"payload"</span>: !string,
+  <span class="hljs-attr">"occurred_on"</span>: !int
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -1124,15 +1117,12 @@ top right of the website.</p>
   <span class="hljs-attr">"occurred_on"</span>: <span class="hljs-string">"{...}"</span>
 }
 </code></pre>
-<h2 id="result-references"><a name="result-references" class="fa fa-link" href="#"></a>Result References</h2>
-<p>These elements compose all the possible results that all repositories can return
-to you.</p>
-<h3 id="counter"><a name="counter" class="fa fa-link" href="#"></a>Counter</h3>
+<h2 id="counter"><a name="counter" class="fa fa-link" href="#"></a>Counter</h2>
 <p>Counter reference. Each of them can be understood as an aggregation result.</p>
 <pre><code>{
-  <span class="hljs-attr">"values"</span>: string[],
-  <span class="hljs-attr">"used"</span>: bool,
-  <span class="hljs-attr">"n"</span>: int
+  <span class="hljs-attr">"values"</span>: !string[],
+  <span class="hljs-attr">"used"</span>: ?bool (default <span class="hljs-literal">false</span>),
+  <span class="hljs-attr">"n"</span>: !int
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -1162,15 +1152,15 @@ top right of the website.</p>
 <li><a href="/api-client/result.html">Api Client - Result</a></li>
 <li><a href="/api-client/result.html#aggregation-counter">Api Client - Aggregation Counter</a></li>
 </ul>
-<h3 id="resultaggregation"><a name="resultaggregation" class="fa fa-link" href="#"></a>ResultAggregation</h3>
+<h2 id="resultaggregation"><a name="resultaggregation" class="fa fa-link" href="#"></a>ResultAggregation</h2>
 <p>Result aggregation reference. Used for Results.</p>
 <pre><code>{
-  <span class="hljs-attr">"name"</span>: string,
-  <span class="hljs-attr">"counters"</span>: Counter[],
-  <span class="hljs-attr">"application_type"</span>: int,
-  <span class="hljs-attr">"total_elements"</span>: int,
-  <span class="hljs-attr">"active_elements"</span>: Counter[],
-  <span class="hljs-attr">"highest_active_level"</span>: int
+  <span class="hljs-attr">"name"</span>: !string,
+  <span class="hljs-attr">"counters"</span>: ?Counter[],
+  <span class="hljs-attr">"application_type"</span>: ?int (default <span class="hljs-number">8</span>),
+  <span class="hljs-attr">"total_elements"</span>: ?int (default <span class="hljs-number">0</span>),
+  <span class="hljs-attr">"active_elements"</span>: ?Counter[],
+  <span class="hljs-attr">"highest_active_level"</span>: ?int (default <span class="hljs-number">0</span>)
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -1215,11 +1205,11 @@ top right of the website.</p>
 <li><a href="/api-client/result.html#reading-aggregations">Api Client - Reading Aggregations</a></li>
 <li><a href="/api-client/result.html#aggregation-counter">Api Client - Aggregation Counter</a></li>
 </ul>
-<h3 id="resultaggregations"><a name="resultaggregations" class="fa fa-link" href="#"></a>ResultAggregations</h3>
+<h2 id="resultaggregations"><a name="resultaggregations" class="fa fa-link" href="#"></a>ResultAggregations</h2>
 <p>Result aggregations reference. Used for Results.</p>
 <pre><code>{
-  <span class="hljs-attr">"total_elements"</span>: int,
-  <span class="hljs-attr">"aggregations"</span>: ResultAggregation[]
+  <span class="hljs-attr">"total_elements"</span>: ?int (default <span class="hljs-number">0</span>),
+  <span class="hljs-attr">"aggregations"</span>: ?ResultAggregation[]
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -1242,15 +1232,15 @@ top right of the website.</p>
 <li><a href="/api-client/result.html#reading-aggregations">Api Client - Reading Aggregations</a></li>
 <li><a href="/api-client/result.html#aggregation-counter">Api Client - Aggregation Counter</a></li>
 </ul>
-<h3 id="result"><a name="result" class="fa fa-link" href="#"></a>Result</h3>
+<h2 id="result"><a name="result" class="fa fa-link" href="#"></a>Result</h2>
 <p>Result reference.</p>
 <pre><code>{
-  <span class="hljs-attr">"query"</span>: Query,
-  <span class="hljs-attr">"total_items"</span>: int,
-  <span class="hljs-attr">"total_hits"</span>: int,
-  <span class="hljs-attr">"items"</span>: Item[],
-  <span class="hljs-attr">"aggregations"</span>: ResultAggregations,
-  <span class="hljs-attr">"suggests"</span>: string[]
+  <span class="hljs-attr">"query"</span>: !Query,
+  <span class="hljs-attr">"total_items"</span>: ?int (default <span class="hljs-number">0</span>),
+  <span class="hljs-attr">"total_hits"</span>: ?int (default <span class="hljs-number">0</span>),
+  <span class="hljs-attr">"items"</span>: ?Item[],
+  <span class="hljs-attr">"aggregations"</span>: ?ResultAggregations,
+  <span class="hljs-attr">"suggests"</span>: ?string[]
 }
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
@@ -1300,22 +1290,22 @@ top right of the website.</p>
 <li><a href="/api-client/result.html">Api Client - Result</a></li>
 <li><a href="/api-client/result.html#reading-suggestions">Api Client - Reading Suggestions</a></li>
 </ul>
-<h3 id="events"><a name="events" class="fa fa-link" href="#"></a>Events</h3>
+<h2 id="events"><a name="events" class="fa fa-link" href="#"></a>Events</h2>
 <p>Events Result reference</p>
 <pre><code>{
-  <span class="hljs-attr">"query"</span>: Query,
-  <span class="hljs-attr">"total_hits"</span>: int,
-  <span class="hljs-attr">"events"</span>: Event[],
-  <span class="hljs-attr">"aggregations"</span>: ResultAggregations
+  <span class="hljs-attr">"query"</span>: !Query,
+  <span class="hljs-attr">"total_hits"</span>: ?int (default <span class="hljs-number">0</span>),
+  <span class="hljs-attr">"events"</span>: ?Event[],
+  <span class="hljs-attr">"aggregations"</span>: ?ResultAggregations
 }
 </code></pre>
-<h3 id="logs"><a name="logs" class="fa fa-link" href="#"></a>Logs</h3>
+<h2 id="logs"><a name="logs" class="fa fa-link" href="#"></a>Logs</h2>
 <p>Logs Result reference</p>
 <pre><code>{
-  <span class="hljs-attr">"query"</span>: Query,
-  <span class="hljs-attr">"total_hits"</span>: int,
-  <span class="hljs-attr">"logs"</span>: Log[],
-  <span class="hljs-attr">"aggregations"</span>: ResultAggregations
+  <span class="hljs-attr">"query"</span>: !Query,
+  <span class="hljs-attr">"total_hits"</span>: ?int (default <span class="hljs-number">0</span>),
+  <span class="hljs-attr">"logs"</span>: ?Log[],
+  <span class="hljs-attr">"aggregations"</span>: ?ResultAggregations
 }
 </code></pre>
 
@@ -1335,63 +1325,63 @@ top right of the website.</p>
             <!-- Toc here -->
             <div class="c-toc col-lg-2 d-none d-lg-block">
                 <ul class="c-toc__nav nav nav-pills flex-column">
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--1 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#model-reference"
                         >
                             Model Reference
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#itemuuid"
                         >
                             ItemUUID
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#item"
                         >
                             Item
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#user"
                         >
                             User
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#interaction"
                         >
                             Interaction
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#coordinate"
                         >
                             Coordinate
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#changes"
                         >
                             Changes
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#tokenuuid"
                         >
                             TokenUUID
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#token"
                         >
@@ -1400,19 +1390,12 @@ top right of the website.</p>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#app-references"
-                        >
-                            App References
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#synonym"
                         >
                             Synonym
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#immutableconfig"
                         >
@@ -1421,54 +1404,47 @@ top right of the website.</p>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#query-references"
-                        >
-                            Query References
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#queryaggregation"
                         >
                             QueryAggregation
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#filter"
                         >
                             Filter
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#scorestrategy"
                         >
                             ScoreStrategy
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#sortby"
                         >
                             SortBy
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#query"
                         >
                             Query
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#event"
                         >
                             Event
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#log"
                         >
@@ -1477,47 +1453,40 @@ top right of the website.</p>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#result-references"
-                        >
-                            Result References
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#counter"
                         >
                             Counter
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#resultaggregation"
                         >
                             ResultAggregation
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#resultaggregations"
                         >
                             ResultAggregations
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#result"
                         >
                             Result
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#events"
                         >
                             Events
                         </a>
                     </li>
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#logs"
                         >

@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Search API</title>
+    <title>Application API</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Api Reference - Search">
+    <meta name="description" content="Api Reference - Application">
     <meta name="author" content="Apisearch team">
     <meta name="keywords" content="Apisearch, Elasticsearch search engine, fast search demo, Apisearch official website">
 
@@ -114,7 +114,7 @@
                                     <a href="#">API Reference</a>
                                 </li>
                             <li class="c-breadcrumb__item--active breadcrumb-item active" aria-current="page">
-                                Search API
+                                Application API
                             </li>
                         </ol>
                     </nav>
@@ -188,7 +188,7 @@
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/api-reference/application.html"
+                                           href="/api-reference/application-api.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                                             Application API
@@ -196,7 +196,7 @@
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/api-reference/search.html"
+                                           href="/api-reference/search-api.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                                             Search API
@@ -441,155 +441,246 @@
             <main class="col-sm-8 col-md-9 col-lg-8 ml-sm-auto mr-lg-auto pt-3" role="main">
                 <section class="c-content">
                     <!-- Content -->
-                    <h1 id="search-api"><a name="search-api" class="fa fa-link" href="#"></a>Search API</h1>
-<h2 id="index-items"><a name="index-items" class="fa fa-link" href="#"></a>Index Items</h2>
-<p>By using this endpoint you will be able to add some items in your index.
+                    <h1 id="application-api"><a name="application-api" class="fa fa-link" href="#"></a>Application API</h1>
+<p>These endpoints are part of the Application related repository. By using them
+you will be able to manage your applications, your indices and the way you
+interact with them.</p>
+<h2 id="create-index"><a name="create-index" class="fa fa-link" href="#"></a>Create Index</h2>
+<p>By using this endpoint you will be able to create an empty index. If the index
+is already created, then this action will be skipped and nothing will happen.
 Here some related model objects you may know.</p>
 <ul>
-<li><a href="http://docs.apisearch.io/api-reference/model.html#item">Api Reference - Item</a></li>
-<li><a href="http://docs.apisearch.io/api-reference/model.html#itemuuid">Api Reference - ItemUUID</a></li>
+<li><a href="/api-client/repository.html#index">Api Client - Index Repository</a></li>
 </ul>
 <p>This is the endpoint reference</p>
 <ul>
-<li>Endpoint name - v1-items-index</li>
-<li>Path - /v1/items</li>
-<li>Verb - POST</li>
+<li>Endpoint name - v1-index-create</li>
+<li>Path - <strong>/v1/index</strong></li>
+<li>Verb - <strong>POST</strong></li>
 <li>Query Parameters
 <ul>
-<li>app_id, <em>required</em></li>
-<li>index, <em>required</em></li>
-<li>token, <em>required with permissions</em></li>
-</ul>
-</li>
-</ul>
-<p>The body of this endpoint is an array with one optional position with
-key <code>items</code> and an array of <a href="/api-reference/model.html#item">Item</a> objects as
-value.</p>
-<p>This is a write-only endpoint, and eventually, all write only endpoints could be
-processed in an asynchronous way</p>
-<p>You can try this endpoint by using this curl snippet. As you can see, you should
-replace the placeholders with your own data. In order to make sure that no one
-has a default values in their installation, and creating a vulnerability, no
-default values are created.</p>
-<pre><code class="language-bash">curl -XPOST <span class="hljs-string">"http://localhost:8100/v1/items?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>  -d<span class="hljs-string">'
-{
-    "items": [
-        {
-            "uuid": {
-                "id": "1",
-                "type": "product"
-            },
-            "metadata": {
-                "title": "My product"
-            },
-            "searchable_metadata": {
-                "title": "My product"
-            }
-        },
-        {
-            "uuid": {
-                "id": "2",
-                "type": "product"
-            },
-            "metadata": {
-                "title": "Another product"
-            },
-            "searchable_metadata": {
-                "title": "Another product"
-            }
-        }
-    ]
-}
-'</span>
-</code></pre>
-<h2 id="delete-items"><a name="delete-items" class="fa fa-link" href="#"></a>Delete Items</h2>
-<p>By using this endpoint you will be able to delete some existing items from your
-index. Here some related model objects you may know.</p>
-<ul>
-<li><a href="http://docs.apisearch.io/api-reference/model.html#item">Api Reference - Item</a></li>
-<li><a href="http://docs.apisearch.io/api-reference/model.html#itemuuid">Api Reference - ItemUUID</a></li>
-</ul>
-<p>This is the endpoint reference</p>
-<ul>
-<li>Endpoint name - v1-items-index</li>
-<li>Path - /v1/items</li>
-<li>Verb - DELETE</li>
-<li>Query Parameters
-<ul>
-<li>app_id, <em>required</em></li>
-<li>index, <em>required</em></li>
-<li>token, <em>required with permissions</em></li>
-</ul>
-</li>
-</ul>
-<p>The body of this endpoint is an array with one optional position with
-key <code>items</code> and an array of <a href="/api-reference/model.html#itemuuid">ItemUUID</a>
-objects as value.</p>
-<p>This is a write-only endpoint, and eventually, all write only endpoints could be
-processed in an asynchronous way</p>
-<p>You can try this endpoint by using this curl snippet. As you can see, you should
-replace the placeholders with your own data. In order to make sure that no one
-has a default values in their installation, and creating a vulnerability, no
-default values are created.</p>
-<pre><code class="language-bash">curl -XDELETE <span class="hljs-string">"http://localhost:8100/v1/items?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>  -d<span class="hljs-string">'
-{
-    "items": [
-        {
-            "id": "1",
-            "type": "product"
-        },
-        {
-            "id": "2",
-            "type": "product"
-        }
-    ]
-}
-'</span>
-</code></pre>
-<h2 id="update-items"><a name="update-items" class="fa fa-link" href="#"></a>Update Items</h2>
-<h2 id="query"><a name="query" class="fa fa-link" href="#"></a>Query</h2>
-<p>By using this endpoint you will make a simple query to one or several indices in
-an existing app. Here some related model objects you may know.</p>
-<ul>
-<li><a href="/api-reference/model.html#query">Api Reference - Query</a></li>
-<li><a href="/api-client/query.html#building-a-query">Api Client - Building a Query</a></li>
-</ul>
-<p>This is the endpoint reference</p>
-<ul>
-<li>Endpoint name - v1-query</li>
-<li>Path - /v1</li>
-<li>Verb - GET</li>
-<li>Query Parameters
-<ul>
-<li>app_id, <em>required</em></li>
-<li>index, <em>not required, can be multiple separated by comma</em></li>
-<li>token, <em>required with permissions</em></li>
+<li>app_id, <strong>required</strong></li>
+<li>index, <strong>required</strong></li>
+<li>token, <strong>required with permissions</strong></li>
 </ul>
 </li>
 </ul>
 <p>The body of the endpoint should be an array with one optional position with
-key <code>query</code> and a <a href="/api-reference/model.html#query">Query</a>
+key <code>config</code> and a <a href="/api-reference/model.html#immutableconfig">ImmutableConfig</a>
 object as value.</p>
+<p>This is a write-only endpoint, and eventually, all write only endpoints could be
+processed in an asynchronous way</p>
 <p>You can try this endpoint by using this curl snippet. As you can see, you should
 replace the placeholders with your own data. In order to make sure that no one
 has a default values in their installation, and creating a vulnerability, no
 default values are created.</p>
-<pre><code class="language-bash">curl -XGET <span class="hljs-string">"http://localhost:8100/v1?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>  -d<span class="hljs-string">'
+<pre><code class="language-bash">curl -XPOST -H <span class="hljs-string">"Content-Type: application/json"</span> <span class="hljs-string">"http://localhost:8100/v1/index?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>  -d<span class="hljs-string">'
 {
-    "query": {
-        "q": "house"
+    "config": {
+      "language": "ca",
+      "store_searchable_metadata": false,
+      "synonyms": [
+        {
+          "words": [
+            "house",
+            "building",
+            "cottage"
+          ]
+        },
+        {
+          "words": [
+            "large",
+            "big"
+          ]
+        }
+      ]
     }
 }
 '</span>
 </code></pre>
-<p>This endpoint will return a <a href="/api-reference/model.html#result">Result</a> object.</p>
+<p>This config value is optional, so by not providing this object, it should work
+by creating a new index with default configuration.</p>
+<pre><code class="language-bash">curl -XPOST <span class="hljs-string">"http://localhost:8100/v1/index?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>
+</code></pre>
+<h2 id="delete-index"><a name="delete-index" class="fa fa-link" href="#"></a>Delete Index</h2>
+<p>By using this endpoint you will be able to delete an existing index. If the
+index is not previously created, then this action will be skipped and nothing
+will happen.</p>
+<p>Here some related model objects you may know.</p>
+<ul>
+<li><a href="/api-client/repository.html#delete">Api Client - Delete Repository</a></li>
+</ul>
+<p>This is the endpoint reference</p>
+<ul>
+<li>Endpoint name - v1-index-delete</li>
+<li>Path - <strong>/v1/index</strong></li>
+<li>Verb - <strong>DELETE</strong></li>
+<li>Query Parameters
+<ul>
+<li>app_id, <strong>required</strong></li>
+<li>index, <strong>required</strong></li>
+<li>token, <strong>required with permissions</strong></li>
+</ul>
+</li>
+</ul>
+<p>This is a write-only endpoint, and eventually, all write only endpoints could be
+processed in an asynchronous way</p>
+<p>You can try this endpoint by using this curl snippet. As you can see, you should
+replace the placeholders with your own data. In order to make sure that no one
+has a default values in their installation, and creating a vulnerability, no
+default values are created.</p>
+<pre><code class="language-bash">curl -XDELETE <span class="hljs-string">"http://localhost:8100/v1/index?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>
+</code></pre>
+<h2 id="reset-index"><a name="reset-index" class="fa fa-link" href="#"></a>Reset Index</h2>
+<p>By using this endpoint you will be able to reset an existing index. If the
+index is not previously created, then this action will be skipped and nothing
+will happen.</p>
+<p>This is the endpoint reference</p>
+<ul>
+<li>Endpoint name - v1-index-reset</li>
+<li>Path - <strong>/v1/index/reset</strong></li>
+<li>Verb - <strong>POST</strong></li>
+<li>Query Parameters
+<ul>
+<li>app_id, <strong>required</strong></li>
+<li>index, <strong>required</strong></li>
+<li>token, <strong>required with permissions</strong></li>
+</ul>
+</li>
+</ul>
+<p>This is a write-only endpoint, and eventually, all write only endpoints could be
+processed in an asynchronous way</p>
+<p>You can try this endpoint by using this curl snippet. As you can see, you should
+replace the placeholders with your own data. In order to make sure that no one
+has a default values in their installation, and creating a vulnerability, no
+default values are created.</p>
+<pre><code class="language-bash">curl -XPOST <span class="hljs-string">"http://localhost:8100/v1/index/reset?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>
+</code></pre>
+<h2 id="add-token"><a name="add-token" class="fa fa-link" href="#"></a>Add Token</h2>
+<p>By using this endpoint you will be able to create a new App token. If the token
+exists, so it’s been created previously with a certain configuration, this new
+token will completely overwrite the old one.</p>
+<p>This is the endpoint reference</p>
+<ul>
+<li>Endpoint name - v1-token-add</li>
+<li>Path - <strong>/v1/token</strong></li>
+<li>Verb - <strong>POST</strong></li>
+<li>Query Parameters
+<ul>
+<li>app_id, <strong>required</strong></li>
+<li>token, <strong>required with permissions</strong></li>
+</ul>
+</li>
+</ul>
+<p>The body of the endpoint should be an array with one position with key <code>token</code>
+and a <a href="/api-reference/model.html#token">Token</a> object as value.</p>
+<p>This is a write-only endpoint, and eventually, all write only endpoints could be
+processed in an asynchronous way</p>
+<p>You can try this endpoint by using this curl snippet. As you can see, you should
+replace the placeholders with your own data. In order to make sure that no one
+has a default values in their installation, and creating a vulnerability, no
+default values are created.</p>
+<pre><code class="language-bash">curl -XPOST -H <span class="hljs-string">"Content-Type: application/json"</span> <span class="hljs-string">"http://localhost:8100/v1/token?app_id={{ your_app_id }}&amp;token={{ your_token }}"</span> -d<span class="hljs-string">'
+{
+    "token": {
+        "uuid": {
+            "id": "aaaa"
+        },
+        "app_id": "1234",
+        "indices": {
+            "index1",
+            "index2"
+        }
+    }
+}
+'</span>
+</code></pre>
+<h2 id="delete-token"><a name="delete-token" class="fa fa-link" href="#"></a>Delete Token</h2>
+<p>By using this endpoint you will be able to delete an existing index. If the
+delete is not previously created, then this action will be skipped and nothing
+will happen.</p>
+<p>This is the endpoint reference</p>
+<ul>
+<li>Endpoint name - v1-token-delete</li>
+<li>Path - <strong>/v1/token</strong></li>
+<li>Verb - <strong>DELETE</strong></li>
+<li>Query Parameters
+<ul>
+<li>app_id, <strong>required</strong></li>
+<li>token, <strong>required with permissions</strong></li>
+</ul>
+</li>
+</ul>
+<p>The body of the endpoint should be an array with one position with key <code>token</code>
+and a <a href="/api-reference/model.html#tokenuuid">TokenUUID</a> object as value.</p>
+<p>This is a write-only endpoint, and eventually, all write only endpoints could be
+processed in an asynchronous way</p>
+<p>You can try this endpoint by using this curl snippet. As you can see, you should
+replace the placeholders with your own data. In order to make sure that no one
+has a default values in their installation, and creating a vulnerability, no
+default values are created.</p>
+<pre><code class="language-bash">curl -XPOST -H <span class="hljs-string">"Content-Type: application/json"</span> <span class="hljs-string">"http://localhost:8100/v1/token?app_id={{ your_app_id }}&amp;token={{ your_token }}"</span> -d<span class="hljs-string">'
+{
+    "token": {
+        "id": "aaaa"
+    }
+}
+'</span>
+</code></pre>
+<h2 id="delete-tokens"><a name="delete-tokens" class="fa fa-link" href="#"></a>Delete Tokens</h2>
+<p>By using this endpoint you will be able to delete all existing index.</p>
+<p>This is the endpoint reference</p>
+<ul>
+<li>Endpoint name - v1-token-delete</li>
+<li>Path - <strong>/v1/tokens</strong></li>
+<li>Verb - <strong>DELETE</strong></li>
+<li>Query Parameters
+<ul>
+<li>app_id, <strong>required</strong></li>
+<li>token, <strong>required with permissions</strong></li>
+</ul>
+</li>
+</ul>
+<p>This is a write-only endpoint, and eventually, all write only endpoints could be
+processed in an asynchronous way</p>
+<p>You can try this endpoint by using this curl snippet. As you can see, you should
+replace the placeholders with your own data. In order to make sure that no one
+has a default values in their installation, and creating a vulnerability, no
+default values are created.</p>
+<pre><code class="language-bash">curl -XPOST <span class="hljs-string">"http://localhost:8100/v1/tokens?app_id={{ your_app_id }}&amp;token={{ your_token }}"</span>
+</code></pre>
+<h2 id="get-tokens"><a name="get-tokens" class="fa fa-link" href="#"></a>Get Tokens</h2>
+<p>By using this endpoint you will be able to check all existing tokens inside an
+existing App.</p>
+<p>This is the endpoint reference</p>
+<ul>
+<li>Endpoint name - v1-token-delete-all</li>
+<li>Path - <strong>/v1/tokens</strong></li>
+<li>Verb - <strong>GET</strong></li>
+<li>Query Parameters
+<ul>
+<li>app_id, <strong>required</strong></li>
+<li>token, <strong>required with permissions</strong></li>
+</ul>
+</li>
+</ul>
+<p>You can try this endpoint by using this curl snippet. As you can see, you should
+replace the placeholders with your own data. In order to make sure that no one
+has a default values in their installation, and creating a vulnerability, no
+default values are created.</p>
+<pre><code class="language-bash">curl -XGET <span class="hljs-string">"http://localhost:8100/v1/tokens?app_id={{ your_app_id }}&amp;token={{ your_token }}"</span>
+</code></pre>
+<p>This endpoint will return an array of <a href="/api-reference/model.html#token">Token</a>
+objects.</p>
+<h2 id="check-health"><a name="check-health" class="fa fa-link" href="#"></a>Check Health</h2>
+<h2 id="ping"><a name="ping" class="fa fa-link" href="#"></a>Ping</h2>
 
                     <!-- /Content -->
 
                     <hr>
                     <a class="c-content__editOnGithub"
                        target="_blank"
-                       href="https://github.com/apisearch-io/docs/tree/source/src/content/api-reference/search.md">
+                       href="https://github.com/apisearch-io/docs/tree/source/src/content/api-reference/application-api.md">
                         <i class="fa fa-github" aria-hidden="true"></i>
                         Edit this page!
                     </a>
@@ -602,37 +693,72 @@ default values are created.</p>
                 <ul class="c-toc__nav nav nav-pills flex-column">
                     <li class="c-toc__navItem c-toc__navItem--1 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#search-api"
+                           href="#application-api"
                         >
-                            Search API
+                            Application API
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#index-items"
+                           href="#create-index"
                         >
-                            Index Items
+                            Create Index
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#delete-items"
+                           href="#delete-index"
                         >
-                            Delete Items
+                            Delete Index
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#update-items"
+                           href="#reset-index"
                         >
-                            Update Items
+                            Reset Index
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#query"
+                           href="#add-token"
                         >
-                            Query
+                            Add Token
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#delete-token"
+                        >
+                            Delete Token
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#delete-tokens"
+                        >
+                            Delete Tokens
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#get-tokens"
+                        >
+                            Get Tokens
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#check-health"
+                        >
+                            Check Health
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#ping"
+                        >
+                            Ping
                         </a>
                     </li>
 
