@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>FAQS about the admin</title>
+    <title>Integrations</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="FAQs - About the admin">
+    <meta name="description" content="Apisearch framework integrations, Symfony, Laravel, Django, etc.">
     <meta name="author" content="Apisearch team">
     <meta name="keywords" content="Apisearch, Elasticsearch search engine, fast search demo, Apisearch official website">
 
@@ -27,7 +27,7 @@
     <meta name="theme-color" content="#ffffff">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="./../assets/css/docs.css">
+    <link rel="stylesheet" href="./assets/css/docs.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
           rel="stylesheet"
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
@@ -111,10 +111,10 @@
                                 <a href="/">Apisearch docs</a>
                             </li>
                                 <li class="c-breadcrumb__item breadcrumb-item">
-                                    <a href="#">FAQs</a>
+                                    <a href="#">Integrations</a>
                                 </li>
                             <li class="c-breadcrumb__item--active breadcrumb-item active" aria-current="page">
-                                FAQS about the admin
+                                Integrations
                             </li>
                         </ol>
                     </nav>
@@ -124,18 +124,6 @@
                     <!-- language selector -->
                     <nav class="c-languageSelector">
                         <ol class="c-languageSelector__list">
-                                <li class="c-languageSelector__item">
-                                    <span data-lang="js"
-                                          class="c-languageSelector__link">
-                                        js
-                                    </span>
-                                </li>
-                                <li class="c-languageSelector__item">
-                                    <span data-lang="php"
-                                          class="c-languageSelector__link">
-                                        php
-                                    </span>
-                                </li>
                         </ol>
                     </nav>
                     <!-- /language selector -->
@@ -450,57 +438,37 @@
             </div>            <!-- Sidebar -->
 
             <!-- Main -->
-            <main class="col-sm-8 col-md-9 col-lg-8 ml-sm-auto mr-lg-auto pt-3" role="main">
+            <main class="col-sm-8 col-md-9 col-lg-10 ml-sm-auto pt-3" role="main">
                 <section class="c-content">
                     <!-- Content -->
-                    <h2 id="how-can-i-export-my-index"><a name="how-can-i-export-my-index" class="fa fa-link" href="#"></a>How can I export my index?</h2>
-<h2 id="how-can-i-import-my-index"><a name="how-can-i-import-my-index" class="fa fa-link" href="#"></a>How can I import my index?</h2>
+                    <h1 id="plugins"><a name="plugins" class="fa fa-link" href="#"></a>Plugins</h1>
+<p>Do you know how you can make your own Apisearch instance much more amazing that
+it is by default? By using Apisearch Plugins you can expand as much as you want
+the software by only following some simple instructions.</p>
+<p>You will find some base plugins in the main server repository, and some other
+official plugins developed by our partners.</p>
+<h2 id="metadata-fieldspluginsmetadata-fieldshtml"><a name="metadata-fieldspluginsmetadata-fieldshtml" class="fa fa-link" href="#"></a><a href="plugins/metadata-fields.html">Metadata Fields</a></h2>
+<ul>
+<li>Source - <a href="https://github.com/apisearch-io/search-server">Github</a></li>
+<li>Current versions - <a href="https://github.com/apisearch-io/search-server/releases">0.1.*</a></li>
+<li>Status - <a href="https://travis-ci.org/apisearch-io/search-server"><img src="https://travis-ci.org/apisearch-io/search-server.svg?branch=master" alt="Build Status"></a></li>
+</ul>
+<h2 id="make-your-own-plugin"><a name="make-your-own-plugin" class="fa fa-link" href="#"></a>Make your own plugin</h2>
+<p>Apisearch is based on PHP and Symfony. That means that we follow the basic
+Symfony structure and bundles strategy. So, we can af</p>
 
                     <!-- /Content -->
 
                     <hr>
                     <a class="c-content__editOnGithub"
                        target="_blank"
-                       href="https://github.com/apisearch-io/docs/tree/source/src/content/faqs/admin.md">
+                       href="https://github.com/apisearch-io/docs/tree/source/src/content/integrations.md">
                         <i class="fa fa-github" aria-hidden="true"></i>
                         Edit this page!
                     </a>
                 </section>
             </main>
             <!-- /Main -->
-
-            <!-- Toc here -->
-            <div class="c-toc col-lg-2 d-none d-lg-block">
-                <ul class="c-toc__nav nav nav-pills flex-column">
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#how-can-i-export-my-index"
-                        >
-                            How can I export my index?
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#how-can-i-import-my-index"
-                        >
-                            How can I import my index?
-                        </a>
-                    </li>
-
-                    <li class="c-toc__navItem c-toc__navItem--needHelp nav-item">
-                        Need help?
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--needHelp c-toc__navLink--title nav-link"
-                           href="https://gitter.im/apisearch_io" target="_blank"
-                        >
-                            <img class="c-toc__navLinkImage" src="/assets/media/gitter-logo.png" />
-                            Talk with us
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <!-- End toc -->
 
             <!-- Footer -->
             <footer class="c-footer col-sm-9 ml-sm-auto col-md-10 pt-3">
@@ -606,6 +574,6 @@
     <!-- /Go up -->
 
     <!-- Scripts -->
-    <script src="./../assets/js/app.js"></script>
+    <script src="./assets/js/app.js"></script>
 </body>
 </html>
