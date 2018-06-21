@@ -575,7 +575,7 @@ inside Symfony environment. Enable the Bundle in our kernel.</p>
 <span class="hljs-bullet">    -</span> <span class="hljs-string">Apisearch\Server\ApisearchServerBundle</span>
 <span class="hljs-bullet">    -</span> <span class="hljs-string">Apisearch\Plugin\Callbacks\CallbacksPluginBundle</span>
 </code></pre>
-<h2 id="adding-a-middleware"><a name="adding-a-middleware" class="fa fa-link" href="#"></a>Adding a Middleware</h2>
+<h2 id="creating-a-middleware"><a name="creating-a-middleware" class="fa fa-link" href="#"></a>Creating a Middleware</h2>
 <p>Let’s add some action in our plugin. And to do that, we are going to create a
 new middleware called <code>QueryMiddleware</code>. We’re going to configure the middleware
 in order to make some action <strong>ONLY</strong> when a new Query is done and the command
@@ -708,7 +708,84 @@ an index, and always previous verification of a valid token.</p>
 <li>QueryLogs - Makes a query over all generated logs</li>
 </ul>
 <h2 id="events-in-apisearch"><a name="events-in-apisearch" class="fa fa-link" href="#"></a>Events in Apisearch</h2>
-<p>// WIP</p>
+<p>By using Middlewares what we do is to change the compositions of the Commands
+themselves or the results that the associated handlers produce. But this is only
+one part of the Plugins environment. What happens if we want to add an specific
+action when Items are indexed in the system? Here some options for you.</p>
+<ul>
+<li>Add a middleware before these items are really indexed, and pray for not to
+have an exception. Otherwise you’ll have inconsistent data.</li>
+<li>Add a middleware after these items are really indexed, but this point is
+specially designed for response manipulation. What if this action creates
+several related actions, and you need one of them? For sure, you’ll not be able
+to access to this data</li>
+</ul>
+<p>In order to take some actions at the same moment these happen, we introduce you
+the Apisearch Domain Events. These are specially created to make sure you have
+all needed information of what happen inside the project. And Event Subscribers
+are the right way of subscribing to these events.</p>
+<blockquote>
+<p>If you define Apisearch to consume events, instead of a default inline mode,
+in an asynchronous way, you will not recieve these events once they happen,
+but when they are taken from the queue</p>
+</blockquote>
+<h2 id="creating-an-event-subscriber"><a name="creating-an-event-subscriber" class="fa fa-link" href="#"></a>Creating an Event Subscriber</h2>
+<p>Let’s see a simple event subscriber implementation.</p>
+<pre><code class="language-php"><span class="hljs-comment">/**
+ * Class MyEventSubscriber.
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyEventSubscriber</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">EventSubscriber</span>
+</span>{
+    <span class="hljs-comment">/**
+     * Subscriber should handle event.
+     *
+     * <span class="hljs-doctag">@param</span> DomainEventWithRepositoryReference $domainEventWithRepositoryReference
+     *
+     * <span class="hljs-doctag">@return</span> bool
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">shouldHandleEvent</span><span class="hljs-params">(DomainEventWithRepositoryReference $domainEventWithRepositoryReference)</span>: <span class="hljs-title">bool</span>
+    </span>{
+        <span class="hljs-keyword">return</span> Query::class;
+    }
+
+    <span class="hljs-comment">/**
+     * Handle event.
+     *
+     * <span class="hljs-doctag">@param</span> DomainEventWithRepositoryReference $domainEventWithRepositoryReference
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handle</span><span class="hljs-params">(DomainEventWithRepositoryReference $domainEventWithRepositoryReference)</span>
+    </span>{
+        <span class="hljs-comment">// Do something when a new Query is handled by Apisearch</span>
+        
+        $repositoryReference = $domainEventWithRepositoryReference-&gt;getRepositoryReference();
+        $domainEvent = $domainEventWithRepositoryReference-&gt;getDomainEvent();
+    }
+}
+</code></pre>
+<p>The first method would return if, given a Domain Event, the subscribe is valid.
+One Domain Event, one subscriber. That will help us the split between files all
+our domain logic.</p>
+<p>After we created the class, we need to publish it as an event subscriber.</p>
+<pre><code class="language-yml"><span class="hljs-attr">services:</span>
+<span class="hljs-attr">    my_service:</span>
+<span class="hljs-attr">        class:</span> <span class="hljs-string">My\Event\Subscriber</span>
+<span class="hljs-attr">        tags:</span>
+<span class="hljs-bullet">            -</span> <span class="hljs-string">{</span> <span class="hljs-attr">name:</span> <span class="hljs-string">apisearch_server.domain_event_subscriber</span> <span class="hljs-string">}</span>
+</code></pre>
+<h2 id="domain-events"><a name="domain-events" class="fa fa-link" href="#"></a>Domain Events</h2>
+<p>These are the available Domain Events inside Apisearch.</p>
+<ul>
+<li>IndexWasConfigured - An existing Index has been configured</li>
+<li>IndexWasReset - Index has been reset and all Items inside were removed</li>
+<li>InteractionWasAdded - A new interaction has been added</li>
+<li>ItemsWereDeleted - Some items have been deleted from the engine</li>
+<li>ItemsWereAdded - Some items have been added in the engine</li>
+<li>ItemsWereUpdated - Some items have been updated</li>
+<li>QueryWasMade - A new Query has been done</li>
+<li>TokensWereDeleted - All tokens were deleted</li>
+<li>TokenWasAdded - A new token has been added</li>
+<li>TokenWasDeleted - An existing token was deleted</li>
+</ul>
 
                     <!-- /Content -->
 

@@ -10733,7 +10733,7 @@ var resultSearchTemplate = exports.resultSearchTemplate = "\n    {{#items}}\n   
 
 const apisearchConfig = {
     appId: "4186e76c",
-    index: "6de535c5",
+    indexId: "6de535c5",
     token: "7975ac41-6cbf-4a48-afd0-30746219bc3b",
     queryToken: "e3aee575-2b0a-4a95-b0ce-88fa316c4eff",
     hostname: "api.apisear.ch",
