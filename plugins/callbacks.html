@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>First steps</title>
+    <title>Callback Plugin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="How to start with Apisearch from the scratch">
+    <meta name="description" content="Apisearch plugins - Callbacks">
     <meta name="author" content="Apisearch team">
     <meta name="keywords" content="Apisearch, Elasticsearch search engine, fast search demo, Apisearch official website">
 
@@ -27,7 +27,7 @@
     <meta name="theme-color" content="#ffffff">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="./assets/css/docs.css">
+    <link rel="stylesheet" href="./../assets/css/docs.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
           rel="stylesheet"
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
@@ -111,10 +111,10 @@
                                 <a href="/">Apisearch docs</a>
                             </li>
                                 <li class="c-breadcrumb__item breadcrumb-item">
-                                    <a href="#">First Steps</a>
+                                    <a href="#">Plugins</a>
                                 </li>
                             <li class="c-breadcrumb__item--active breadcrumb-item active" aria-current="page">
-                                First steps
+                                Callback Plugin
                             </li>
                         </ol>
                     </nav>
@@ -468,292 +468,109 @@
             <main class="col-sm-8 col-md-9 col-lg-8 ml-sm-auto mr-lg-auto pt-3" role="main">
                 <section class="c-content">
                     <!-- Content -->
-                    <h1 id="first-steps"><a name="first-steps" class="fa fa-link" href="#"></a>First steps</h1>
-<p>Apisearch is a easy-to-integrate search engine for your business.</p>
-<p>By using our libraries, integration packages and clients you will be able to
-boost your website and applications to the next level, introducing predictive
-features, allowing your final users to find what they are looking for in a way
-you never dreamed, and increasing your conversion rate.</p>
-<p>You will be able, as well, to manage all your data across several platforms just
-by enabling some plugins, to join marketplaces, analyze your users behavior in
-your site in order to take smart decisions, and know your business in a way you
-did not expect until now.</p>
-<p>In this documentation you should be able to find everything you need to start by
-using Apisearch with no pain. The documentation itself has been designed,
-precisely, to make you comfortable in front of all searches. Use our docs search
-bar placed in the top of the website. Find by words, by examples, by code lines
-or by whatever you have. You should find everything as fast as possible.</p>
-<h2 id="is-this-for-me"><a name="is-this-for-me" class="fa fa-link" href="#"></a>Is this for me?</h2>
-<p>Well. It depends. What kind of project are you working on? We are trying to
-cover a small of use cases, so you’re lucky if yours is one of them.
-Of course, they are some projects we’ve been explicitly covering while we were
-building the product, but we’re sure than even many more can be properly covered
-using Apisearch.</p>
-<ul>
-<li>E-commerce : We offer some integration tools for your e-commerce. Your
-public data will be stored in our servers and served in an amazing way to your
-users by using our Javascript UI libraries. Even if you’re not using any
-e-commerce framework, you can use our clients and plugins to make it on your own
-way. Everything is ready for you to use it.</li>
-<li>Sample website . Offer to your final users the better experience possible,
-even if your sample is millions items large. We can scale as much as you need.</li>
-<li>Crawling : One of the scenarios we were thinking when designing the project
-was when making some Crawling. No hard persistence layer needed, but
-evolutionary data can be reviewed. Great to show how data changed over the time.</li>
-<li>Database-less applications : We can be your database. That simple. Accessible
-from everywhere, make all your applications work with the same entry point.</li>
-</ul>
-<h2 id="download-and-install-apisearch"><a name="download-and-install-apisearch" class="fa fa-link" href="#"></a>Download and install Apisearch</h2>
-<p>Apisearch is an open source project. This means that you can download Apisearch
-for free and install it in your own servers.</p>
-<p>In order to start using Apisearch, you only need a server with these installed
-packages</p>
-<ul>
-<li><a href="https://docs.docker.com/install/">docker</a></li>
-<li><a href="https://docs.docker.com/compose/install/">docker-compose</a>.</li>
-</ul>
-<p>With these two tools you will be able to have running your Apisearch Server
-instance in 2 minutes. Let’s do it!</p>
-<p>First of all we need to get the repository from the source. Because this
-repository does’nt really need dependencies, we will download it by using wget
-instead of git.</p>
-<p>Check the version of the tarball in order to always get the last one or an
-specific one, depending on your needs</p>
-<pre><code class="language-bash">wget --no-check-certificate --content-disposition -O docker-search-server.tar.gz https://github.com/apisearch-io/docker-search-server/tarball/0.0.1
-tar -xvzf docker-search-server.tar.gz
-<span class="hljs-built_in">cd</span> docker-search-server
+                    <h1 id="callback-plugin"><a name="callback-plugin" class="fa fa-link" href="#"></a>Callback Plugin</h1>
+<p>With this plugin you will be able to add some callbacks to external services
+during the execution of all Apisearch processes.</p>
+<p>Let’s see an example.</p>
+<pre><code class="language-yaml"><span class="hljs-attr">apisearch_plugin_callbacks:</span>
+<span class="hljs-attr">    endpoints:</span>
+<span class="hljs-attr">        on_query:</span>
+<span class="hljs-attr">            command:</span> <span class="hljs-string">Query</span>
+<span class="hljs-attr">            endpoint:</span> <span class="hljs-attr">http://myserver.org/endpoint/change-query</span>
+<span class="hljs-attr">            method:</span> <span class="hljs-string">GET</span>
+<span class="hljs-attr">            moment:</span> <span class="hljs-string">before</span>
+<span class="hljs-attr">        on_query_result:</span>
+<span class="hljs-attr">            command:</span> <span class="hljs-string">Query</span>
+<span class="hljs-attr">            endpoint:</span> <span class="hljs-attr">http://myserver.org/endpoint/change-result</span>
+<span class="hljs-attr">            method:</span> <span class="hljs-string">GET</span>
+<span class="hljs-attr">            moment:</span> <span class="hljs-string">after</span>
+<span class="hljs-attr">        on_items_items:</span>
+<span class="hljs-attr">            command:</span> <span class="hljs-string">IndexItems</span>
+<span class="hljs-attr">            endpoint:</span> <span class="hljs-attr">http://myserver.org/endpoint/index-items</span>
+<span class="hljs-attr">            method:</span> <span class="hljs-string">POST</span>
+<span class="hljs-attr">            moment:</span> <span class="hljs-string">before</span>
+        
 </code></pre>
-<p>You can also get the last master code. This will get the last code pushed in
-master, but not tagged as stable yet.</p>
-<pre><code class="language-bash">wget --no-check-certificate --content-disposition -O docker-search-server.tar.gz https://github.com/apisearch-io/docker-search-server/archive/master.tar.gz
-tar -xvzf docker-search-server.tar.gz
-<span class="hljs-built_in">cd</span> docker-search-server
-</code></pre>
-<p>Once our code is properly downloaded, we only need to configure some environment
-variable to customize as much as we want the server and build and run all our
-containers.</p>
+<p>As you can see, you can define your callback before the main command handler is
+executed, so in this case you will only have access to the command itself, or
+after the command handler has created the result, where you’ll be able to modify
+the result itself.</p>
 <blockquote>
-<p>By using this docker script, and because we need <code>.env</code> variable both for
-installing the docker containers, and for the server installation, we <strong>MUST</strong>
-make a copy of all the <code>.env</code> file inside the <code>search-server/</code> folder.</p>
+<p>You will notice that some of the Commands only will work by defining the
+callback as <code>before</code>. This is because Commands never return result, so has no
+sense to define callbacks after the handler</p>
 </blockquote>
-<p>Apisearch works with a file called <code>.env</code> placed in the root of the project.
-You might update some of these values with your own values (we don’t setup
-default values to prevent security issues)</p>
-<pre><code><span class="hljs-attr">APISEACH_PORT</span>=<span class="hljs-number">8100</span>
-<span class="hljs-attr">APISEARCH_GOD_TOKEN</span>=<span class="hljs-string">"xxx"</span>
-<span class="hljs-attr">APISEARCH_PING_TOKEN</span>=<span class="hljs-string">"xxx"</span>
+<h2 id="query-before-handler"><a name="query-before-handler" class="fa fa-link" href="#"></a>Query - before handler</h2>
+<p>When a Query is created, you can modify this query by adding some extra logic,
+for example, with an integration of a machine learning engine.</p>
+<pre><code class="language-yaml"><span class="hljs-attr">apisearch_plugin_callbacks:</span>
+<span class="hljs-attr">    endpoints:</span>
+<span class="hljs-attr">        on_query:</span>
+<span class="hljs-attr">            command:</span> <span class="hljs-string">Query</span>
+<span class="hljs-attr">            endpoint:</span> <span class="hljs-attr">http://myserver.org/endpoint/change-query</span>
+<span class="hljs-attr">            method:</span> <span class="hljs-string">GET</span>
+<span class="hljs-attr">            moment:</span> <span class="hljs-string">before</span>
+        
 </code></pre>
-<p>Make sure you <strong>update this values</strong> before building your containers.
-Once finished, let’s build and run all our containers.</p>
-<pre><code class="language-bash">docker-compose up --build
+<p>Your endpoint will receive exactly the same query that the system has received.
+You can check this format in the
+<a href="/api-reference/search-api.html#query">Query Api Reference</a>.
+Your endpoint should return exactly the same body than has received.</p>
+<h2 id="query-after-handler"><a name="query-after-handler" class="fa fa-link" href="#"></a>Query - after handler</h2>
+<p>After the query has been executed, and when we have created a new Result
+instance, we can add some callbacks in order to manipulate, filter and enrich
+your data.</p>
+<pre><code class="language-yaml"><span class="hljs-attr">apisearch_plugin_callbacks:</span>
+<span class="hljs-attr">    endpoints:</span>
+<span class="hljs-attr">        on_query_result:</span>
+<span class="hljs-attr">            command:</span> <span class="hljs-string">Query</span>
+<span class="hljs-attr">            endpoint:</span> <span class="hljs-attr">http://myserver.org/endpoint/change-result</span>
+<span class="hljs-attr">            method:</span> <span class="hljs-string">GET</span>
+<span class="hljs-attr">            moment:</span> <span class="hljs-string">after</span>
+        
 </code></pre>
-<blockquote>
-<p>This process might be a little bit long. Maybe a couple of minutes, depending
-on how fast your internet connection is. Take the opportunity to drink a glass
-of water and move a little bit your legs :)</p>
-</blockquote>
-<p>At this point you might encounter some of these problems. Please, check all of
-them if you have any issue, and if any of them is not included in this list,
-please ping the organization in our
-<a href="https://gitter.im/apisearch_io">Gitter Channel</a> or
-<a href="https://github.com/apisearch-io/search-server/issues/new">Open an Issue</a></p>
-<blockquote>
-<p>Docker cannot even start. This message appears: <strong>WARNING: The APISEARCH_PORT
-variable is not set. Defaulting to a blank string.</strong><br>
-In this case, please check that there is a file called <strong>.env</strong> in the root of
-Apisearch server with the required APISEARCH_* environment values.</p>
-</blockquote>
-<blockquote>
-<p>Docker starts, but the server workers restart once and again, before going to
-a terminal state. If you check the supervisor folder inside this project you
-will see that you can check the logs. For example the <code>search-server-0.log</code>.
-If you see the line <strong>Unable to read the environment file at
-/var/www/apisearch/bin/…/.env</strong> is because you <strong>MUST</strong> copy the <strong>.env</strong>
-file inside the <code>search-server</code> folder as well, with the same values defined
-in the root one.</p>
-</blockquote>
-<blockquote>
-<p>Docker is telling that some ports are already mapped by anyone else.<br>
-This project exports these ports: <strong>8100</strong> as the balancer entrypoint (this
-value is defined as an environment value, feel free to change it),
-<strong>8200…8204</strong> as the Apisearch enabled workers, <strong>9200</strong> as the Elasticsearch
-port, and <strong>6379</strong> as the redis port.<br>
-Make sure that these ports are not being used in your local host or in any
-Docker container</p>
-</blockquote>
-<blockquote>
-<p>Elasticsearch stops with a message like this: <strong>apisearch_elasticsearch | [1]:
-max virtual memory areas vm.max_map_count [65530] is too low, increase to at
-least [262144]</strong>.<br>
-Follow the instructions <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode">Here</a>
-to solve that problem and restart the docker</p>
-</blockquote>
-<blockquote>
-<p>Apisearch do not respond properly with the admin token you’ve proposed.
-In this case, please check that there is a file called <strong>.env</strong> in the root of
-Apisearch server with the required APISEARCH_* environment values.</p>
-</blockquote>
-<p>That’s it. Congratulations. You already have Apisearch running in your server.
-Now let’s go a little bit further with that. Let’s create a new index with a
-write-read token for you to start using Apisearch as fast as possble.</p>
-<pre><code>docker exec -<span class="hljs-selector-tag">i</span> -t $(docker ps -qf <span class="hljs-string">"name=apisearch_server"</span>) /easy-setup<span class="hljs-selector-class">.sh</span>
+<p>Your endpoint will receive a Result instance, and should return exactly the same
+body structure that has received.</p>
+<h2 id="indexitems-before-handler"><a name="indexitems-before-handler" class="fa fa-link" href="#"></a>IndexItems - before handler</h2>
+<p>Each time we index some items, we can call our endpoints to manipulate, filter
+and enrich them before going to the search engine.</p>
+<pre><code class="language-yaml"><span class="hljs-attr">apisearch_plugin_callbacks:</span>
+<span class="hljs-attr">    endpoints:</span>
+<span class="hljs-attr">        on_items_items:</span>
+<span class="hljs-attr">            command:</span> <span class="hljs-string">IndexItems</span>
+<span class="hljs-attr">            endpoint:</span> <span class="hljs-attr">http://myserver.org/endpoint/index-items</span>
+<span class="hljs-attr">            method:</span> <span class="hljs-string">POST</span>
+<span class="hljs-attr">            moment:</span> <span class="hljs-string">before</span>
+        
 </code></pre>
-<p>It is important the output of this command execution. The command will generate
-you some random tokens for your application. To start fast with a simple demo,
-you should use the admin one for indexing and deleting from your private
-application. Take in account that with this token anyone could manage your data,
-and even destroy it, so keep it secret.</p>
-<p>You can use the query one for your public applications, for example the
-javascript integration. This token has only read-only permissions.</p>
-<p>Let’s ping our new index using our admin token. Replace <code>{{admin_token}}</code> with
-your auto generated admin token.</p>
-<pre><code class="language-bash">curl --silent --head --write-out <span class="hljs-string">'%{http_code}\n'</span> <span class="hljs-string">'http://localhost:8100?app_id=96a53eaf&amp;index=e7185a86&amp;token={{ admin_token }}'</span>
+<p>Your endpoint will receive exactly the same array of items that the system has
+received. You can check this format in the
+<a href="/api-reference/search-api.html#index-items">Query Api Reference</a>.
+Your endpoint should return exactly the same body than has received.</p>
+<h2 id="addtoken-before-handler"><a name="addtoken-before-handler" class="fa fa-link" href="#"></a>AddToken - before handler</h2>
+<p>Each time we create or update a new Token, we can call our endpoints to
+manipulate, filter and enrich them before going to the Token Repository.</p>
+<pre><code class="language-yaml"><span class="hljs-attr">apisearch_plugin_callbacks:</span>
+<span class="hljs-attr">    endpoints:</span>
+<span class="hljs-attr">        on_add_token:</span>
+<span class="hljs-attr">            command:</span> <span class="hljs-string">AddToken</span>
+<span class="hljs-attr">            endpoint:</span> <span class="hljs-attr">http://myserver.org/endpoint/add-token</span>
+<span class="hljs-attr">            method:</span> <span class="hljs-string">POST</span>
+<span class="hljs-attr">            moment:</span> <span class="hljs-string">before</span>
+        
 </code></pre>
-<blockquote>
-<p>Take in account that in this example we’re using 8100 as our default port. If
-you changed this port in your environment file, consider changing it here as
-well.</p>
-</blockquote>
-<p>You should have a 200 response code. And this means that your repository is
-ready to be used by any application.</p>
-<p>Let’s make another fast check of our infrastructure by calling our check
-endpoint. This endpoint will give some information about the status of the
-cluster and the services working inside.</p>
-<pre><code class="language-bash">curl <span class="hljs-string">'http://localhost:8203/health?app_id=96a53eaf&amp;index=e7185a86&amp;token=745377d6-3cb7-431e-b048-4fa0e419e169'</span>
-</code></pre>
-<p>At this point you could just follow this Quick Start document, or go to the
-official API specifications; The main one, where you’ll be able how to use
-Apisearch through HTTP, and the</p>
-<ul>
-<li><a href="/api-reference">API Reference</a></li>
-<li><a href="/api-client">API Client</a></li>
-</ul>
-<h2 id="create-your-first-application"><a name="create-your-first-application" class="fa fa-link" href="#"></a>Create your first application</h2>
-<pre><code>&gt; This section is under construction
-</code></pre>
-<h2 id="add-some-data"><a name="add-some-data" class="fa fa-link" href="#"></a>Add some data</h2>
-<p>In Apisearch you can work with some accepted and common formats. Some of them
-are basically implemented because are multi platform, like CSV or JSON, but some
-of them are specifically implemented because are human friendly, like Yaml. In
-this chapter we will use this last one.</p>
-<p>Let’s add some fake items in our index. You will find a simple <em>Add Items</em>
-button in your index main page. In that page, you will be able to add items
-manually, or import an existing file. You will find some information about how
-to export and import your index in our <a href="faqs/admin.html">FAQS ahout the admin</a>.</p>
-<p>You items would look like this.</p>
-<pre><code class="language-yaml"><span class="hljs-attr">header:</span>
-<span class="hljs-attr">    metadata:</span> <span class="hljs-string">[name,</span> <span class="hljs-string">description,</span> <span class="hljs-string">image]</span>
-<span class="hljs-attr">    indexed_metadata:</span> <span class="hljs-string">[sku,</span> <span class="hljs-string">type]</span>
-<span class="hljs-attr">    searchable_metadata:</span> <span class="hljs-string">[name,</span> <span class="hljs-string">description]</span>
-<span class="hljs-attr">item_1:</span>
-<span class="hljs-attr">    id:</span> <span class="hljs-number">1</span>
-<span class="hljs-attr">    sku:</span> <span class="hljs-number">74398742973428</span>
-<span class="hljs-attr">    name:</span> <span class="hljs-string">T-shirt</span> <span class="hljs-string">future</span>
-<span class="hljs-attr">    description:</span> <span class="hljs-string">T-shirt</span> <span class="hljs-string">from</span> <span class="hljs-string">the</span> <span class="hljs-string">future</span>
-<span class="hljs-attr">    type:</span> <span class="hljs-string">t-shirt</span>
-<span class="hljs-attr">    image:</span> <span class="hljs-string">/img/t-shirt1.jpg</span>
-<span class="hljs-attr">item_2:</span>
-<span class="hljs-attr">    id:</span> <span class="hljs-number">2</span>
-<span class="hljs-attr">    sku:</span> <span class="hljs-number">43289748932744</span>
-<span class="hljs-attr">    name:</span> <span class="hljs-string">Alabama</span> <span class="hljs-string">T-shirt</span>
-<span class="hljs-attr">    description:</span> <span class="hljs-string">Model</span> <span class="hljs-string">from</span> <span class="hljs-string">Alabama.</span> <span class="hljs-string">Will</span> <span class="hljs-string">show</span> <span class="hljs-string">you</span> <span class="hljs-string">how</span> <span class="hljs-string">amazing</span> <span class="hljs-string">can</span> <span class="hljs-string">it</span> <span class="hljs-string">be</span>
-<span class="hljs-attr">    type:</span> <span class="hljs-string">t-shirt</span>
-<span class="hljs-attr">    image:</span> <span class="hljs-string">/img/t-shirt2.jpg</span>
-<span class="hljs-attr">item_3:</span>
-<span class="hljs-attr">    id:</span> <span class="hljs-number">3</span>
-<span class="hljs-attr">    sku:</span> <span class="hljs-number">43289748932744</span>
-<span class="hljs-attr">    name:</span> <span class="hljs-string">Model</span> <span class="hljs-string">R</span>
-<span class="hljs-attr">    description:</span> <span class="hljs-string">R</span> <span class="hljs-string">from</span> <span class="hljs-string">Romania.</span> <span class="hljs-string">Will</span> <span class="hljs-string">shine</span> <span class="hljs-string">in</span> <span class="hljs-string">th</span> <span class="hljs-string">dark</span>
-<span class="hljs-attr">    type:</span> <span class="hljs-string">t-shirt</span>
-<span class="hljs-attr">    image:</span> <span class="hljs-string">/img/t-shirt3.jpg</span>
-<span class="hljs-attr">item_4:</span>
-<span class="hljs-attr">    id:</span> <span class="hljs-number">4</span>
-<span class="hljs-attr">    sku:</span> <span class="hljs-number">37897489278798</span>
-<span class="hljs-attr">    name:</span> <span class="hljs-string">Customizable</span> <span class="hljs-string">T-shirt</span>
-<span class="hljs-attr">    description:</span> <span class="hljs-string">Customize</span> <span class="hljs-string">your</span> <span class="hljs-string">t-shirt</span>
-<span class="hljs-attr">    type:</span> <span class="hljs-string">t-shirt</span>
-<span class="hljs-attr">    image:</span> <span class="hljs-string">/img/t-shirt4.jpg</span>
-</code></pre>
-<p>With that code, you would add 2 items with these fields, and with the
-particularity that:</p>
-<ul>
-<li>You could filter your data by sku and type fields</li>
-<li>You could search your data by name and description fields</li>
-<li>Fields name, description and image would only be saved, but would not be
-filtered by them</li>
-</ul>
-<h2 id="create-my-first-search-bar"><a name="create-my-first-search-bar" class="fa fa-link" href="#"></a>Create my first search bar</h2>
-<p>Finally. Let’s check some important steps here</p>
-<ul>
-<li>We have an App with an id</li>
-<li>We have an Index with an id</li>
-<li>We have some generated tokens. At least, one with read-only permissions</li>
-<li>We have some data indexed</li>
-</ul>
-<p>So, what’s next? Let’s create a simple search widget, where we can search by a
-text field. This widget will be simple, but in the future you could add some
-extra UI widgets in order to make your environment more powerful and complex.</p>
-<p>To create your first search bar, first of all you should add our JS library as
-a javascript line in your html.</p>
-<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.jsdelivr.net/npm/apisearch-ui/dist/apisearch-ui.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-</code></pre>
-<p>Then, let’s build our searcher. The first step is to build a simple Apisearch
-client. In order to identify properly your credentials, check how to create
-properly the Client. Remember to fill this data with yours.</p>
-<pre><code class="language-javascript"><span class="hljs-comment">// Create instance</span>
-<span class="hljs-keyword">const</span> ui = apisearchUI({
-    <span class="hljs-attr">appId</span>: <span class="hljs-string">'xxx'</span>,
-    <span class="hljs-attr">indexId</span>: <span class="hljs-string">'yyy'</span>,
-    <span class="hljs-attr">apiKey</span>: <span class="hljs-string">'zzz'</span>
-});
-</code></pre>
-<p>OK. Client done. Let’s start by doing a simple skeleton in your html code. That
-skeleton should be enough for you to make as many customizations as you need,
-and to make the search engine very website friendly.</p>
-<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"search-container"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"results-container"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
-<p>That will be enough. Let’s create the required widgets to make it work. Two
-widgets needed. The first one for the searcher itself, and the second one for
-the results container.</p>
-<pre><code class="language-javascript">ui.addWidgets(
-    ui.widgets.simpleSearch({
-        <span class="hljs-attr">target</span>: <span class="hljs-string">'.search-container'</span>,
-    }),
-    ui.widgets.result({
-        <span class="hljs-attr">target</span>: <span class="hljs-string">'.result-container'</span>,
-        <span class="hljs-attr">template</span>: {
-            <span class="hljs-attr">itemsList</span>: <span class="hljs-string">'&lt;ul&gt;{{#items}} &lt;li&gt;{{metadata.name}}&lt;/li&gt; {{/items}}&lt;/ul&gt;'</span>,
-        }
-    })
-);
-</code></pre>
-<p>That simple. This will make the magic.
-Once your widget is properly defined, we need just another last step.<br>
-Initialize the widgets.</p>
-<pre><code class="language-javascript">ui.init();
-</code></pre>
-<h2 id="next-steps"><a name="next-steps" class="fa fa-link" href="#"></a>Next steps</h2>
-<p>You have created your first search widget. And we’re so happy you did it. Now we
-offer you some links in case you want to continue digging into the project. We
-enriched so much our FAQS with interesting information, so don’t hesitate to
-take a look at them</p>
-<ul>
-<li><a href="integrations.html">How can I integrate with Apisearch</a></li>
-<li><a href="ui.html">A little bit more about UI</a></li>
-<li><a href="faqs.html">FAQS</a></li>
-</ul>
-<p>Furthermore, if you don’t find an specific topic, you can use our search bar
-from every single corner of our documentation. It is build on top of Apisearch
-as well, so we encourage you to use each time you need to find something.</p>
+<p>Your endpoint will receive exactly the same Token that the system has received.
+You can check this format in the
+<a href="/api-reference/application-api.html#add-token">Query Api Reference</a>.
+Your endpoint should return exactly the same body than has received.</p>
+<h2 id="more-to-be-added"><a name="more-to-be-added" class="fa fa-link" href="#"></a>More to be added</h2>
 
                     <!-- /Content -->
 
                     <hr>
                     <a class="c-content__editOnGithub"
                        target="_blank"
-                       href="https://github.com/apisearch-io/docs/tree/source/src/content/index.md">
+                       href="https://github.com/apisearch-io/docs/tree/source/src/content/plugins/callbacks.md">
                         <i class="fa fa-github" aria-hidden="true"></i>
                         Edit this page!
                     </a>
@@ -766,51 +583,44 @@ as well, so we encourage you to use each time you need to find something.</p>
                 <ul class="c-toc__nav nav nav-pills flex-column">
                     <li class="c-toc__navItem c-toc__navItem--1 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#first-steps"
+                           href="#callback-plugin"
                         >
-                            First steps
+                            Callback Plugin
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#is-this-for-me"
+                           href="#query-before-handler"
                         >
-                            Is this for me?
+                            Query - before handler
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#download-and-install-apisearch"
+                           href="#query-after-handler"
                         >
-                            Download and install Apisearch
+                            Query - after handler
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#create-your-first-application"
+                           href="#indexitems-before-handler"
                         >
-                            Create your first application
+                            IndexItems - before handler
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#add-some-data"
+                           href="#addtoken-before-handler"
                         >
-                            Add some data
+                            AddToken - before handler
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#create-my-first-search-bar"
+                           href="#more-to-be-added"
                         >
-                            Create my first search bar
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#next-steps"
-                        >
-                            Next steps
+                            More to be added
                         </a>
                     </li>
 
@@ -933,6 +743,6 @@ as well, so we encourage you to use each time you need to find something.</p>
     <!-- /Go up -->
 
     <!-- Scripts -->
-    <script src="./assets/js/app.js"></script>
+    <script src="./../assets/js/app.js"></script>
 </body>
 </html>

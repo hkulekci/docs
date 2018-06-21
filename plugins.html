@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Integrations</title>
+    <title>Plugins</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Apisearch framework integrations, Symfony, Laravel, Django, etc.">
+    <meta name="description" content="Apisearch plugins.">
     <meta name="author" content="Apisearch team">
     <meta name="keywords" content="Apisearch, Elasticsearch search engine, fast search demo, Apisearch official website">
 
@@ -111,10 +111,10 @@
                                 <a href="/">Apisearch docs</a>
                             </li>
                                 <li class="c-breadcrumb__item breadcrumb-item">
-                                    <a href="#">Integrations</a>
+                                    <a href="#">Plugins</a>
                                 </li>
                             <li class="c-breadcrumb__item--active breadcrumb-item active" aria-current="page">
-                                Integrations
+                                Plugins
                             </li>
                         </ol>
                     </nav>
@@ -288,20 +288,28 @@
                             </ul>
                         <li class="c-sidebar__navItem nav-item">
                             <a class="c-sidebar__navLink c-sidebar__navLink--title nav-link"
-                               href="/integrations.html"
+                               href="/plugins.html"
                             >
-                                <i class="fa fa-chain" aria-hidden="true"></i>
-                                Integrations
+                                <i class="fa fa-plug" aria-hidden="true"></i>
+                                Plugins
                             </a>
                         </li>
 
                             <ul class="c-sidebar__nav c-sidebar__nav--sub-1 nav nav-pills flex-column">
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/integrations/symfony-bundle.html"
+                                           href="/plugins/callbacks.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Symfony Bundle
+                                            Callback Plugin
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/metadata-fields.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Metadata Fields Plugin
                                         </a>
                                     </li>
                             </ul>
@@ -337,6 +345,25 @@
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                                             Events UI
+                                        </a>
+                                    </li>
+                            </ul>
+                        <li class="c-sidebar__navItem nav-item">
+                            <a class="c-sidebar__navLink c-sidebar__navLink--title nav-link"
+                               href="/integrations.html"
+                            >
+                                <i class="fa fa-chain" aria-hidden="true"></i>
+                                Integrations
+                            </a>
+                        </li>
+
+                            <ul class="c-sidebar__nav c-sidebar__nav--sub-1 nav nav-pills flex-column">
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/integrations/symfony-bundle.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Symfony Bundle
                                         </a>
                                     </li>
                             </ul>
@@ -448,21 +475,247 @@ the software by only following some simple instructions.</p>
 <p>You will find some base plugins in the main server repository, and some other
 official plugins developed by our partners.</p>
 <h2 id="metadata-fieldspluginsmetadata-fieldshtml"><a name="metadata-fieldspluginsmetadata-fieldshtml" class="fa fa-link" href="#"></a><a href="plugins/metadata-fields.html">Metadata Fields</a></h2>
+<p>Save your read-only fields in a key-value technology instead of storing it
+inside your search infrastructure. Populate your items with these values
+depending on your needs every moment.</p>
 <ul>
-<li>Source - <a href="https://github.com/apisearch-io/search-server">Github</a></li>
+<li>Source - <a href="https://github.com/apisearch-io/search-server/tree/master/Plugin/MetadataFields">Github</a></li>
 <li>Current versions - <a href="https://github.com/apisearch-io/search-server/releases">0.1.*</a></li>
-<li>Status - <a href="https://travis-ci.org/apisearch-io/search-server"><img src="https://travis-ci.org/apisearch-io/search-server.svg?branch=master" alt="Build Status"></a></li>
+</ul>
+<h2 id="callbackspluginscallbackshtml"><a name="callbackspluginscallbackshtml" class="fa fa-link" href="#"></a><a href="plugins/callbacks.html">Callbacks</a></h2>
+<p>Make additional callbacks before or after your calls. By doing them before you
+will be able to modify the input data, and by doing them after, you will be able
+to change the result value.</p>
+<ul>
+<li>Source - <a href="https://github.com/apisearch-io/search-server/tree/master/Plugin/Callbacks">Github</a></li>
+<li>Current versions - <a href="https://github.com/apisearch-io/search-server/releases">0.1.*</a></li>
 </ul>
 <h2 id="make-your-own-plugin"><a name="make-your-own-plugin" class="fa fa-link" href="#"></a>Make your own plugin</h2>
-<p>Apisearch is based on PHP and Symfony. That means that we follow the basic
-Symfony structure and bundles strategy. So, we can af</p>
+<p>Apisearch is implemented by doing <a href="https://www.martinfowler.com/bliki/CQRS.html">CQRS</a>.
+This means that each time anyone uses Apisearch, a new command is created as a
+Value Object. This value should not be changed by anyone during it’s life. This
+objects is taken by one and only one handler, and some actions are done by this
+handler.</p>
+<p>For example.</p>
+<p>You make a query. Inside the controller, the more external layer of the
+application, we create a ValueObject called <code>Query</code> and we add this object into
+an engine called Command Bus. This bus is like a tube, with an start and a
+finale. Inside our controller we have the start, and the handler would be the
+finale of the tube.</p>
+<p>The magic part of this tube is that, between the start and the finale, we have
+several (as many as we want) holes, where we can intercept all the Commands that
+we want, read them and even change them.</p>
+<blockquote>
+<p>By default, the CQRS pattern would say that the command should’nt be
+changeable, but by adding this new plugins layer, some commands can be
+replaced by new ValueObjects of the same class.</p>
+</blockquote>
+<blockquote>
+<p>The project uses a specific CQRS pattern implementation, and is not to be a
+perfect pattern implementation project.</p>
+</blockquote>
+<p>And there’s where Apisearch Plugins take their effect. A plugin can basically
+change the behavior of all actions by creating Middlewares. Let’s see an example
+of a Plugin with one mission. Each time a query is done, we want to add a new
+Filter that would allow us to only serve those items inside a group. For
+example, very useful for adding an extra layer of security.</p>
+<h2 id="creating-the-plugin-base"><a name="creating-the-plugin-base" class="fa fa-link" href="#"></a>Creating the plugin base</h2>
+<p>An Apisearch, by default, is a Symfony plugin. You can see some examples of how
+these plugins are designed in our default set of Plugins, but let’s talk about
+a simple bundle architecture</p>
+<pre><code>plugin/
+|<span class="hljs-string">
+</span>|<span class="hljs-string">-- DependencyInjection/
+</span>|<span class="hljs-string">    </span>|<span class="hljs-string">-- CompilerPass/ ..
+     </span>|<span class="hljs-string">-- MyPluginExtension.php
+     </span>|<span class="hljs-string">-- MyPluginConfiguration.php
+</span>|<span class="hljs-string">-- Domain
+</span>|<span class="hljs-string">    </span>|<span class="hljs-string">-- Model/ ..
+</span>|<span class="hljs-string">    </span>|<span class="hljs-string">-- Middleware/
+</span>|<span class="hljs-string">         </span>|<span class="hljs-string">-- QueryMiddleware.php
+</span>|<span class="hljs-string">         </span>|<span class="hljs-string">-- IndexItemsMiddleware.php
+</span>|<span class="hljs-string">         </span>|<span class="hljs-string">-- DeleteItemsMiddleware.php
+</span>|<span class="hljs-string">    </span>|<span class="hljs-string">-- Repository/
+</span>|<span class="hljs-string">         </span>|<span class="hljs-string">-- MyRepository.php
+</span>|<span class="hljs-string">         </span>|<span class="hljs-string">-- MyInMemoryRepository.php
+</span>|<span class="hljs-string">-- Resources/ ..
+</span>|<span class="hljs-string">-- Redis/
+</span>|<span class="hljs-string">    </span>|<span class="hljs-string">-- MyRedisRepository.php
+</span>|<span class="hljs-string">-- MyPluginBundle.php
+</span></code></pre>
+<p>As you can see, anything different than other simple bundles inside the Symfony
+environment.</p>
+<p>The difference between a simple Bundle and a Apisearch plugin is an interface.
+As simple as it sounds.</p>
+<pre><code class="language-php"><span class="hljs-comment">/**
+ * Class CallbacksPluginBundle.
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CallbacksPluginBundle</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseBundle</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Plugin</span>
+</span>{
+    <span class="hljs-comment">/**
+     * Get plugin name.
+     *
+     * <span class="hljs-doctag">@return</span> string
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getPluginName</span><span class="hljs-params">()</span>: <span class="hljs-title">string</span>
+    </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'callbacks'</span>;
+    }
+}
+</code></pre>
+<p>The method that any plugin must implement is the <code>getPluginName</code>. It will be
+used mainly for enabling desired plugins when using an specific token. For
+example, this one we’re building now, we could configure some tokens where this
+filter will be applied by enabling this plugin. But we could have other regular
+tokens with all plugins disabled.</p>
+<h2 id="enabling-the-plugin"><a name="enabling-the-plugin" class="fa fa-link" href="#"></a>Enabling the plugin</h2>
+<p>Of course, we need to enable the plugin. Again, same strategy that is used
+inside Symfony environment. Enable the Bundle in our kernel.</p>
+<pre><code class="language-yml"><span class="hljs-attr">bundles:</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">Apisearch\Server\ApisearchServerBundle</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">Apisearch\Plugin\Callbacks\CallbacksPluginBundle</span>
+</code></pre>
+<h2 id="adding-a-middleware"><a name="adding-a-middleware" class="fa fa-link" href="#"></a>Adding a Middleware</h2>
+<p>Let’s add some action in our plugin. And to do that, we are going to create a
+new middleware called <code>QueryMiddleware</code>. We’re going to configure the middleware
+in order to make some action <strong>ONLY</strong> when a new Query is done and the command
+<code>Query</code> is passed through the command bus.</p>
+<pre><code class="language-php"><span class="hljs-comment">/**
+ * Class QueryApplySomeFiltersMiddleware.
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">QueryApplySomeFiltersMiddleware</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">PluginMiddleware</span>
+</span>{
+    <span class="hljs-comment">/**
+     * Execute middleware.
+     *
+     * <span class="hljs-doctag">@param</span> CommandWithRepositoryReferenceAndToken $command
+     * <span class="hljs-doctag">@param</span> callable                               $next
+     *
+     * <span class="hljs-doctag">@return</span> mixed
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">execute</span><span class="hljs-params">(
+        CommandWithRepositoryReferenceAndToken $command,
+        $next
+    )</span> </span>{
+        <span class="hljs-comment">// Do some action before the Command handler is executed. We would place</span>
+        <span class="hljs-comment">// the filters here</span>
+        
+        $result = $next($command);
+
+        <span class="hljs-comment">// Do some action after the Command handler is executed, and before the</span>
+        <span class="hljs-comment">// value is returned to the previous middleware</span>
+
+        <span class="hljs-keyword">return</span> $result;
+    }
+
+    <span class="hljs-comment">/**
+     * Events subscribed namespace.
+     *
+     * <span class="hljs-doctag">@return</span> string[]
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSubscribedEvents</span><span class="hljs-params">()</span>: <span class="hljs-title">array</span>
+    </span>{
+        <span class="hljs-keyword">return</span> [Query::class];
+    }
+}
+</code></pre>
+<p>As you can see, the method <code>getSubscribedEvents</code> allow us to work with different
+commands in the same class. But remember that different actions related to
+different commands should be placed in several middleware classes.</p>
+<p>After defined our class, we need to create the middleware service and tell
+Apisearch that this is a middleware that should be executed inside a plugin. For
+such action, let’s create a service definition with the tag
+<code>apisearch_plugin.middleware</code>.</p>
+<pre><code class="language-yml"><span class="hljs-attr">services:</span>
+
+    <span class="hljs-comment">#</span>
+    <span class="hljs-comment"># Middlewares</span>
+    <span class="hljs-comment">#</span>
+    <span class="hljs-string">apisearch_plugin.my_plugin.query_apply_some_filters:</span>
+<span class="hljs-attr">        class:</span> <span class="hljs-string">Apisearch\Plugin\MetadataFields\Domain\Middleware\IndexItemsMiddleware</span>
+<span class="hljs-attr">        arguments:</span>
+<span class="hljs-bullet">            -</span> <span class="hljs-string">"@apisearch_plugin.metadata_fields.repository"</span>
+<span class="hljs-attr">        tags:</span>
+<span class="hljs-bullet">            -</span> <span class="hljs-string">{</span> <span class="hljs-attr">name:</span> <span class="hljs-string">apisearch_plugin.middleware</span> <span class="hljs-string">}</span>
+</code></pre>
+<blockquote>
+<p>Apisearch will not ensure you the order between middleware classes, so you
+should only work with main Apisearch specification, and never have a hard
+dependency with other plugins.</p>
+</blockquote>
+<h2 id="apisearch-commands-and-queries"><a name="apisearch-commands-and-queries" class="fa fa-link" href="#"></a>Apisearch Commands and Queries</h2>
+<p>But what is a Command and a Query? And the most important question, what
+Commands and Queries can we find here in Apisearch? This project uses</p>
+<p>A Command is this Value Object that we generate in all these first layers that
+we can find around Apisearch. For example, the first layer when we come from the
+HTTP layer is called Controller, and the first layer when we come from the
+console is called command. A Command is like an imperative action, and should
+follow the same format always, no matter the interface we’re using, for example.</p>
+<p>So, the difference between a Command and a Query? Well, a Command is an action
+that will change the internal status of the application, a write operation. The
+status before and after applying this command could be barely different.</p>
+<p>And can a Command have a response? Not at all. Only changes the state, and
+because this operation could be asynchronous, we must assume that we will not
+receive any response.</p>
+<p>So, the question is, how can we retrieve information from Apisearch? Well, by
+using Queries. A Query is a type of Command that instead of changing the status
+of the application, only gets information from it and returns it.</p>
+<ul>
+<li>So, if I need to make a change into Apisearch and return it’s new value, can
+I do it by using Commands?</li>
+<li>Nopes. You can’t. A single action means a single action, and this can be a
+write action, what could be executed asynchronously sometime from a queue, or a
+read action, which in this case you would return the value instantly.</li>
+</ul>
+<h2 id="commands"><a name="commands" class="fa fa-link" href="#"></a>Commands</h2>
+<p>This is the main list of Apisaerch Commands. As you will see, all these actions
+could be applied by using a queue, in an asynchronous way, and don’t really need
+to return any value.</p>
+<blockquote>
+<p>Some of these Commands application action is reduced to an specific app_id,
+an index, and always previous verification of a valid token.</p>
+</blockquote>
+<ul>
+<li>AddInteraction - A new interaction has been inserted in the system</li>
+<li>AddToken - Adds a new token</li>
+<li>ConfigureIndex - Configures an existing and previously created index. This
+action may require to stop the index some time</li>
+<li>CreateIndex - Creates a new index</li>
+<li>DeleteAllInteractions - Deletes all available interactions</li>
+<li>DeleteIndex - Deletes an existing index</li>
+<li>DeleteItems - Deletes a set of Items defined by their identifiers</li>
+<li>DeleteToken - Deletes an existing token</li>
+<li>DeleteTokens - Deletes all existing tokens</li>
+<li>IndexItems - Indexes a set of items.</li>
+<li>ResetIndex - Resets the index. Removed all existing information.</li>
+<li>UpdateItems - Applies some updates over the existing items</li>
+</ul>
+<h2 id="queries"><a name="queries" class="fa fa-link" href="#"></a>Queries</h2>
+<p>This is the main list of Apisearch Queries. As you will see, all these actions
+don’t change the status of the application, and only ask for some information
+from inside the system</p>
+<blockquote>
+<p>Some of these Query application action is reduced to an specific app_id,
+an index, and always previous verification of a valid token.</p>
+</blockquote>
+<ul>
+<li>CheckHealth - Checks the cluster health</li>
+<li>CheckIndex - Checks if an index is available</li>
+<li>GetTokens - Return all the existing tokens</li>
+<li>Ping - Makes a simple ping</li>
+<li>Query - Makes a query over all the existing Items</li>
+<li>QueryEvents - Makes a query over all generated events</li>
+<li>QueryLogs - Makes a query over all generated logs</li>
+</ul>
+<h2 id="events-in-apisearch"><a name="events-in-apisearch" class="fa fa-link" href="#"></a>Events in Apisearch</h2>
+<p>// WIP</p>
 
                     <!-- /Content -->
 
                     <hr>
                     <a class="c-content__editOnGithub"
                        target="_blank"
-                       href="https://github.com/apisearch-io/docs/tree/source/src/content/integrations.md">
+                       href="https://github.com/apisearch-io/docs/tree/source/src/content/plugins.md">
                         <i class="fa fa-github" aria-hidden="true"></i>
                         Edit this page!
                     </a>
