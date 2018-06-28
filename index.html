@@ -541,14 +541,14 @@ make a copy of all the <code>.env</code> file inside the <code>search-server/</c
 You might update some of these values with your own values (we don’t setup
 default values to prevent security issues). You will find an skeleton of the
 file inside the root of the project with the name <code>.env.dist</code></p>
-<pre><code><span class="hljs-attr">APISEACH_PORT</span>=<span class="hljs-number">8100</span>
-<span class="hljs-attr">APISEARCH_GOD_TOKEN</span>=<span class="hljs-string">"xxx"</span>
-<span class="hljs-attr">APISEARCH_PING_TOKEN</span>=<span class="hljs-string">"xxx"</span>
+<pre><code><span class="hljs-attr">APISEARCH_PORT</span>=<span class="hljs-number">8100</span>
+<span class="hljs-attr">APISEARCH_GOD_TOKEN</span>=
+<span class="hljs-attr">APISEARCH_PING_TOKEN</span>=
 
-<span class="hljs-attr">ELASTICSEARCH_HOST</span>=<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>
+<span class="hljs-attr">ELASTICSEARCH_HOST</span>=apisearch_elasticsearch
 <span class="hljs-attr">ELASTICSEARCH_PORT</span>=<span class="hljs-number">9200</span>
 
-<span class="hljs-attr">REDIS_HOST</span>=<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>
+<span class="hljs-attr">REDIS_HOST</span>=apisearch_redis
 <span class="hljs-attr">REDIS_PORT</span>=<span class="hljs-number">6379</span>
 </code></pre>
 <p>Make sure you <strong>update this values</strong> before building your containers.
