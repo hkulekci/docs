@@ -593,7 +593,7 @@ case using the <strong>APISEARCH_PING_TOKEN</strong>, and specific token with on
 possible action of ping.</p>
 <p>Once we have our engine running, let’s create a new index with a write-read
 token for you to start using Apisearch as fast as possble with real data.</p>
-<pre><code>docker exec -<span class="hljs-selector-tag">i</span> -t $(docker ps -qf <span class="hljs-string">"name=apisearch_server"</span>) /easy-setup<span class="hljs-selector-class">.sh</span>
+<pre><code>docker <span class="hljs-keyword">exec</span> -i -t $(docker ps -qf <span class="hljs-string">"name=apisearch_server_0"</span>) apisearch/scripts/easy-setup
 </code></pre>
 <blockquote>
 <p>Check the output of the command. You will see that the system has generated
