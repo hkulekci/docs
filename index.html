@@ -525,16 +525,12 @@ tar -xvzf docker-search-server.tar.gz
 <p>Once our code is properly downloaded, we only need to configure some environment
 variable to customize as much as we want the server and build and run all our
 containers.</p>
-<blockquote>
-<p>By using this docker script, and because we need <code>.env</code> variable both for
-installing the docker containers, and for the server installation, we <strong>MUST</strong>
-make a copy of all the <code>.env</code> file inside the <code>search-server/</code> folder.</p>
-</blockquote>
 <p>Apisearch works with a file called <code>.env</code> placed in the root of the project.
 You might update some of these values with your own values (we don’t setup
 default values to prevent security issues). You will find an skeleton of the
 file inside the root of the project with the name <code>.env.dist</code></p>
 <pre><code><span class="hljs-attr">APISEARCH_PORT</span>=<span class="hljs-number">8100</span>
+
 <span class="hljs-attr">APISEARCH_GOD_TOKEN</span>=
 <span class="hljs-attr">APISEARCH_PING_TOKEN</span>=
 
@@ -563,15 +559,6 @@ please ping the organization in our
 variable is not set. Defaulting to a blank string.</strong><br>
 In this case, please check that there is a file called <strong>.env</strong> in the root of
 Apisearch server with the required APISEARCH_* environment values.</p>
-</blockquote>
-<blockquote>
-<p>Docker starts, but the server workers restart once and again, before going to
-a terminal state. If you check the supervisor folder inside this project you
-will see that you can check the logs. For example the <code>search-server-0.log</code>.
-If you see the line <strong>Unable to read the environment file at
-/var/www/apisearch/bin/…/.env</strong> is because you <strong>MUST</strong> copy the <strong>.env</strong>
-file inside the <code>search-server</code> folder as well, with the same values defined
-in the root one.</p>
 </blockquote>
 <blockquote>
 <p>Docker is telling that some ports are already mapped by anyone else.<br>
@@ -718,12 +705,20 @@ a javascript line in your html.</p>
 client. In order to identify properly your credentials, check how to create
 properly the Client. Remember to fill this data with yours.</p>
 <pre><code class="language-javascript"><span class="hljs-comment">// Create instance</span>
-<span class="hljs-keyword">const</span> ui = apisearchUI({
-    <span class="hljs-attr">appId</span>: <span class="hljs-string">'xxx'</span>,
-    <span class="hljs-attr">indexId</span>: <span class="hljs-string">'yyy'</span>,
-    <span class="hljs-attr">apiKey</span>: <span class="hljs-string">'zzz'</span>
+<span class="hljs-keyword">const</span> ui = apisearchUI.create({
+    <span class="hljs-attr">app_id</span>: <span class="hljs-string">'xxx'</span>,
+    <span class="hljs-attr">index_id</span>: <span class="hljs-string">'yyy'</span>,
+    <span class="hljs-attr">token</span>: <span class="hljs-string">'zzz'</span>,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">endpoint</span>: <span class="hljs-string">'http://localhost:8100'</span>
+    }
 });
 </code></pre>
+<blockquote>
+<p>Check that all the values in the configuration matches the installation you
+are actually trying. You should check as well the endpoint, both the host and
+the port used.</p>
+</blockquote>
 <p>OK. Client done. Let’s start by doing a simple skeleton in your html code. That
 skeleton should be enough for you to make as many customizations as you need,
 and to make the search engine very website friendly.</p>
