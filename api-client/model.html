@@ -130,6 +130,12 @@
                                         php
                                     </span>
                                 </li>
+                                <li class="c-languageSelector__item">
+                                    <span data-lang="typescript"
+                                          class="c-languageSelector__link">
+                                        typescript
+                                    </span>
+                                </li>
                         </ol>
                     </nav>
                     <!-- /language selector -->
@@ -316,6 +322,22 @@
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                                             Metadata Fields Plugin
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/multilanguage.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Multilanguage Plugin
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/new-relic.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            New Relic Plugin
                                         </a>
                                     </li>
                             </ul>
@@ -568,7 +590,13 @@ of the entities with same type? Then, we need a representation of this Unique
 id.</p>
 <p>And this representation is the object ItemUUID. A simple class that contains an
 id and a type. Let’s see how to build one of these.</p>
-<pre><code class="language-php">$itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
+<pre><code class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">ItemUUID</span>;
+
+$itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
+</code></pre>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {ItemUUID} <span class="hljs-keyword">from</span> <span class="hljs-string">"apisearch"</span>;
+
+<span class="hljs-keyword">const</span> itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
 </code></pre>
 <p>This is a real Unique Id representation of our model, and this instance should
 be unique in all our universe.</p>
@@ -578,12 +606,23 @@ different ways, we will use static factories instead of the private
 <em>__construct</em> method.</p>
 <p>If you remember, all data but id and type is not required, so a simple
 implementation of a new Item could be as simple as that.</p>
-<pre><code class="language-php">$itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
+<pre><code class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">ItemUUID</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">Item</span>;
+
+$itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
 $item = Item::create($itemUUID);
+</code></pre>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {ItemUUID, Item} <span class="hljs-keyword">from</span> <span class="hljs-string">"apisearch"</span>;
+
+<span class="hljs-keyword">const</span> itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
+<span class="hljs-keyword">const</span> item = Item.create(itemUUID);
 </code></pre>
 <p>This Item would not have any parameter, and would be equivalent to this piece of
 code.</p>
-<pre><code class="language-php">$itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
+<pre><code class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">ItemUUID</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">Item</span>;
+
+$itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
 $item = Item::create(
     $itemUUID,
     [], <span class="hljs-comment">// Metadata</span>
@@ -593,13 +632,28 @@ $item = Item::create(
     []  <span class="hljs-comment">// Suggest elements</span>
 );
 </code></pre>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {ItemUUID, Item} <span class="hljs-keyword">from</span> <span class="hljs-string">"apisearch"</span>;
+
+<span class="hljs-keyword">const</span> itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
+<span class="hljs-keyword">const</span> item = Item.create(
+    itemUUID,
+    {}, <span class="hljs-comment">// Metadata</span>
+    {}, <span class="hljs-comment">// Indexed Metadata</span>
+    {}, <span class="hljs-comment">// Searchable Metadata</span>
+    [], <span class="hljs-comment">// Exact Matching Metadata</span>
+    []  <span class="hljs-comment">// Suggest elements</span>
+);
+</code></pre>
 <p>Lets add some extra data to have a nice representation of our first example.</p>
-<pre><code class="language-php">$itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
+<pre><code class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">ItemUUID</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">Item</span>;
+
+$itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
 $item = Item::create(
     $itemUUID,
     [
         <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'T-shirt blue and red'</span>,
-        <span class="hljs-string">'description'</span> =&gt; <span class="hljs-string">'This is an amazing T-shirt'</span>
+        <span class="hljs-string">'description'</span> =&gt; <span class="hljs-string">'This is an amazing T-shirt'</span>,
         <span class="hljs-string">'ean'</span> =&gt; <span class="hljs-number">7827298738293</span>
     ], 
     [
@@ -613,29 +667,75 @@ $item = Item::create(
             <span class="hljs-string">'Red'</span>,
         ],
         <span class="hljs-string">'price'</span> =&gt; <span class="hljs-number">10</span>,
-        <span class="hljs-string">'old_price =&gt; 15,
-        '</span>brand<span class="hljs-string">' =&gt; '</span>Supershirts<span class="hljs-string">',
-        '</span>created_at<span class="hljs-string">' =&gt; new DateTime(),
+        <span class="hljs-string">'old_price'</span> =&gt; <span class="hljs-number">15</span>,
+        <span class="hljs-string">'brand'</span> =&gt; <span class="hljs-string">'Supershirts'</span>,
     ],
     [
-        '</span>name<span class="hljs-string">' =&gt; '</span>T-shirt blue <span class="hljs-keyword">and</span> red<span class="hljs-string">',
-        '</span>description<span class="hljs-string">', '</span>This is an amazing T-shirt<span class="hljs-string">',
-        '</span>brand<span class="hljs-string">', '</span>Supershirts<span class="hljs-string">',
+        <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'T-shirt blue and red'</span>,
+        <span class="hljs-string">'description'</span> =&gt; <span class="hljs-string">'This is an amazing T-shirt'</span>,
+        <span class="hljs-string">'brand'</span> =&gt; <span class="hljs-string">'Supershirts'</span>,
     ],
     [
-        '</span><span class="hljs-number">4303</span>ui203<span class="hljs-string">',
-        '</span><span class="hljs-number">7827298738293</span><span class="hljs-string">'
+        <span class="hljs-string">'4303ui203'</span>,
+        <span class="hljs-string">'7827298738293'</span>
     ],
     [
-        '</span>T-shirt<span class="hljs-string">'
+        <span class="hljs-string">'T-shirt'</span>
     ]
 );
-</span></code></pre>
+</code></pre>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {ItemUUID, Item} <span class="hljs-keyword">from</span> <span class="hljs-string">"apisearch"</span>;
+
+<span class="hljs-keyword">const</span> itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
+<span class="hljs-keyword">const</span> item = Item.create(
+    itemUUID,
+    {
+        <span class="hljs-string">'name'</span>: <span class="hljs-string">'T-shirt blue and red'</span>,
+        <span class="hljs-string">'description'</span>: <span class="hljs-string">'This is an amazing T-shirt'</span>,
+        <span class="hljs-string">'ean'</span>: <span class="hljs-number">7827298738293</span>
+    }, 
+    {
+        <span class="hljs-string">'sizes'</span>: [
+            <span class="hljs-string">'M'</span>,
+            <span class="hljs-string">'L'</span>,
+            <span class="hljs-string">'XL'</span>,
+        ],
+        <span class="hljs-string">'colors'</span>: [
+            <span class="hljs-string">'Blue'</span>,
+            <span class="hljs-string">'Red'</span>,
+        ],
+        <span class="hljs-string">'price'</span>: <span class="hljs-number">10</span>,
+        <span class="hljs-string">'old_price'</span>: <span class="hljs-number">15</span>,
+        <span class="hljs-string">'brand'</span>: <span class="hljs-string">'Supershirts'</span>
+    },
+    {
+        <span class="hljs-string">'name'</span>: <span class="hljs-string">'T-shirt blue and red'</span>,
+        <span class="hljs-string">'description'</span>: <span class="hljs-string">'This is an amazing T-shirt'</span>,
+        <span class="hljs-string">'brand'</span>: <span class="hljs-string">'Supershirts'</span>,
+    },
+    [
+        <span class="hljs-string">'4303ui203'</span>,
+        <span class="hljs-string">'7827298738293'</span>
+    ],
+    [
+        <span class="hljs-string">'T-shirt'</span>
+    ]
+);
+</code></pre>
 <p>This Item would map exactly as shown in the first example.</p>
 <h2 id="coordinate"><a name="coordinate" class="fa fa-link" href="#"></a>Coordinate</h2>
 <p>A simple Coordinate is composed by a latitude and a longitude values. That
 simple. Both values are float formatted.</p>
-<pre><code class="language-php">$itemCoordinate = <span class="hljs-keyword">new</span> Coordinate(
+<pre><code class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">Coordinate</span>;
+
+$itemCoordinate = <span class="hljs-keyword">new</span> Coordinate(
+    <span class="hljs-number">40.12</span>, 
+    <span class="hljs-number">-71.34</span>
+);
+</code></pre>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {Coordinate} <span class="hljs-keyword">from</span> <span class="hljs-string">"apisearch"</span>;
+
+<span class="hljs-keyword">const</span> itemCoordinate = <span class="hljs-keyword">new</span> Coordinate(
     <span class="hljs-number">40.12</span>, 
     <span class="hljs-number">-71.34</span>
 );
@@ -645,7 +745,11 @@ simple. Both values are float formatted.</p>
 method <code>createLocated</code>. Because a located item must have a location, otherwise
 this would be a conventional Item, then both an ItemUUID and Coordinate
 instances must be passed as parameters.</p>
-<pre><code class="language-php">$itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'12345'</span>, <span class="hljs-string">'product'</span>);
+<pre><code class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">ItemUUID</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">Item</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">Coordinate</span>;
+
+$itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
 $itemCoordinate = <span class="hljs-keyword">new</span> Coordinate(
     <span class="hljs-number">40.12</span>, 
     <span class="hljs-number">-71.34</span>
@@ -655,9 +759,25 @@ $item = Item::createLocated(
     $itemCoordinate
 );
 </code></pre>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {Item, ItemUUID, Coordinate} <span class="hljs-keyword">from</span> <span class="hljs-string">"apisearch"</span>;
+
+<span class="hljs-keyword">const</span> itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
+<span class="hljs-keyword">const</span> itemCoordinate = <span class="hljs-keyword">new</span> Coordinate(
+    <span class="hljs-number">40.12</span>, 
+    <span class="hljs-number">-71.34</span>
+);
+<span class="hljs-keyword">const</span> item = Item.createLocated(
+    itemUUID,
+    itemCoordinate
+);
+</code></pre>
 <p>As before, this method allow all other parameters to be defined after the
 coordinate.</p>
-<pre><code class="language-php">$itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'12345'</span>, <span class="hljs-string">'product'</span>);
+<pre><code class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">ItemUUID</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">Item</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">Coordinate</span>;
+
+$itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
 $itemCoordinate = <span class="hljs-keyword">new</span> Coordinate(
     <span class="hljs-number">40.12</span>, 
     <span class="hljs-number">-71.34</span>
@@ -672,6 +792,23 @@ $item = Item::createLocated(
     []  <span class="hljs-comment">// Suggest elements</span>
 );
 </code></pre>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {Item, ItemUUID, Coordinate} <span class="hljs-keyword">from</span> <span class="hljs-string">"apisearch"</span>;
+
+<span class="hljs-keyword">const</span> itemUUID = <span class="hljs-keyword">new</span> ItemUUID(<span class="hljs-string">'4303ui203'</span>, <span class="hljs-string">'product'</span>);
+<span class="hljs-keyword">const</span> itemCoordinate = <span class="hljs-keyword">new</span> Coordinate(
+    <span class="hljs-number">40.12</span>, 
+    <span class="hljs-number">-71.34</span>
+);
+<span class="hljs-keyword">const</span> item = Item.createLocated(
+    itemUUID,
+    itemCoordinate,
+    {}, <span class="hljs-comment">// Metadata</span>
+    {}, <span class="hljs-comment">// Indexed Metadata</span>
+    {}, <span class="hljs-comment">// Searchable Metadata</span>
+    [], <span class="hljs-comment">// Exact Matching Metadata</span>
+    []  <span class="hljs-comment">// Suggest elements</span>
+);
+</code></pre>
 <h2 id="item-manipulation"><a name="item-manipulation" class="fa fa-link" href="#"></a>Item manipulation</h2>
 <p>After the creation of an Item instance, or even after its retrieval from the
 repository, you can manage all metadata (single metadata and indexed metadata)
@@ -680,6 +817,11 @@ values by using the specific getters and setters.</p>
 $metadata[<span class="hljs-string">'something'</span>] = <span class="hljs-string">'value'</span>;
 $item-&gt;setMetadata($metadata);
 $item-&gt;addMetadata(<span class="hljs-string">'another_thing'</span>, <span class="hljs-string">'another_value'</span>);
+</code></pre>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> metadata = item.getMetadata();
+metadata[<span class="hljs-string">'something'</span>] = <span class="hljs-string">'value'</span>;
+item.setMetadata(metadata);
+item.addMetadata(<span class="hljs-string">'another_thing'</span>, <span class="hljs-string">'another_value'</span>);
 </code></pre>
 <p>In order to provide an object as much resistant as possible in front of changes,
 you can consider all metadata data sets as a unique data set, even if internally
@@ -690,16 +832,18 @@ project, if you will access to this value by using the <code>getMetadata</code> 
 accessing to the desired position.</p>
 <pre><code class="language-php">$item-&gt;getMetadata()[<span class="hljs-string">'price'</span>];
 </code></pre>
+<pre><code class="language-typescript">item.getMetadata()[<span class="hljs-string">'price'</span>];
+</code></pre>
 <p>But what happens if your price needs to be indexed? Then you should change your
 indexing point, and instead of placing the element as a simple metadata, you
 should place it as an indexed metadata. So, what happens with all the code
 points where you’ve been requiring the price value? You should change it
 well, right?</p>
-<p>This will not work anymore</p>
-<pre><code class="language-php">$item-&gt;getMetadata()[<span class="hljs-string">'price'</span>];
-</code></pre>
-<p>Instead of that, you’ll need to start using this</p>
+<p>This last example will not work anymore. Instead of that, you’ll need to start
+using this new method.</p>
 <pre><code class="language-php">$item-&gt;getIndexedMetadata()[<span class="hljs-string">'price'</span>];
+</code></pre>
+<pre><code class="language-typescript">item.getIndexedMetadata()[<span class="hljs-string">'price'</span>];
 </code></pre>
 <p>Well, this would be something that may cause you too many code changes, where
 should be something insignificant.</p>
@@ -714,6 +858,8 @@ indexed_metadata, so even if you change price from one to the other, nothing bad
 will happen :)</p>
 <pre><code class="language-php">$item-&gt;get(<span class="hljs-string">'price'</span>);
 </code></pre>
+<pre><code class="language-typescript">item.get(<span class="hljs-string">'price'</span>);
+</code></pre>
 <h2 id="location-ranges"><a name="location-ranges" class="fa fa-link" href="#"></a>Location Ranges</h2>
 <p>When talking about located items, and when retrieving and filtering them, we
 need to know so well a small part of our model called Location Ranges. They are
@@ -724,7 +870,17 @@ them.</p>
 <p>Given a center point, defined as a Coordinate instance, and a distance, defined
 as an integer and a distance unit (km or mi) joined in a string, you can define
 a simple filtering range. You must use an object called <code>CoordinateAndDistance</code>.</p>
-<pre><code class="language-php">$locationRange = <span class="hljs-keyword">new</span> CoordinateAndDistance(
+<pre><code class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Geo</span>\<span class="hljs-title">CoordinateAndDistance</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">Coordinate</span>;
+
+$locationRange = <span class="hljs-keyword">new</span> CoordinateAndDistance(
+    <span class="hljs-keyword">new</span> Coordinate(<span class="hljs-number">40.9</span>, <span class="hljs-number">-70.0</span>),
+    <span class="hljs-string">'50km'</span>
+);
+</code></pre>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {CoordinateAndDistance, Coordinate} <span class="hljs-keyword">from</span> <span class="hljs-string">"apisearch"</span>;
+
+<span class="hljs-keyword">const</span> locationRange = <span class="hljs-keyword">new</span> CoordinateAndDistance(
     <span class="hljs-keyword">new</span> Coordinate(<span class="hljs-number">40.9</span>, <span class="hljs-number">-70.0</span>),
     <span class="hljs-string">'50km'</span>
 );
@@ -738,7 +894,17 @@ can provide a better experience to the final user</p>
 <p>If you have the top-left coordinate and the bottom-right coordinate of a square,
 inside of where you want to locate all the items, you can use this filter
 type. In that case, you need both Coordinate instances.</p>
-<pre><code class="language-php">$locationRange = <span class="hljs-keyword">new</span> Square(
+<pre><code class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Geo</span>\<span class="hljs-title">Square</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">Coordinate</span>;
+
+$locationRange = <span class="hljs-keyword">new</span> Square(
+    <span class="hljs-keyword">new</span> Coordinate(<span class="hljs-number">40.9</span>, <span class="hljs-number">-70.0</span>),
+    <span class="hljs-keyword">new</span> Coordinate(<span class="hljs-number">39.4</span>, <span class="hljs-number">-69.1</span>),
+);
+</code></pre>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {Square, Coordinate} <span class="hljs-keyword">from</span> <span class="hljs-string">"apisearch"</span>;
+
+<span class="hljs-keyword">const</span> locationRange = <span class="hljs-keyword">new</span> Square(
     <span class="hljs-keyword">new</span> Coordinate(<span class="hljs-number">40.9</span>, <span class="hljs-number">-70.0</span>),
     <span class="hljs-keyword">new</span> Coordinate(<span class="hljs-number">39.4</span>, <span class="hljs-number">-69.1</span>),
 );
@@ -753,12 +919,23 @@ coordinates (top-left, bottom-right) we can look the items we want to show</p>
 will draw a polygon, and all items inside the are of this polygon will be
 considered as valid result.</p>
 <p>All coordinates must be Coordinate instances.</p>
-<pre><code class="language-php">$locationRange = <span class="hljs-keyword">new</span> Polygon(
+<pre><code class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Geo</span>\<span class="hljs-title">Polygon</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">Coordinate</span>;
+
+$locationRange = <span class="hljs-keyword">new</span> Polygon([
     <span class="hljs-keyword">new</span> Coordinate(<span class="hljs-number">40.9</span>, <span class="hljs-number">-70.0</span>),
     <span class="hljs-keyword">new</span> Coordinate(<span class="hljs-number">40.9</span>, <span class="hljs-number">-69.1</span>),
     <span class="hljs-keyword">new</span> Coordinate(<span class="hljs-number">39.4</span>, <span class="hljs-number">-69.1</span>),
     <span class="hljs-comment">//...</span>
-);
+]);
+</code></pre>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {Polygon, Coordinate} <span class="hljs-keyword">from</span> <span class="hljs-string">"apisearch"</span>;
+
+<span class="hljs-keyword">const</span> locationRange = <span class="hljs-keyword">new</span> Polygon([
+    <span class="hljs-keyword">new</span> Coordinate(<span class="hljs-number">40.9</span>, <span class="hljs-number">-70.0</span>),
+    <span class="hljs-keyword">new</span> Coordinate(<span class="hljs-number">40.9</span>, <span class="hljs-number">-69.1</span>),
+    <span class="hljs-keyword">new</span> Coordinate(<span class="hljs-number">39.4</span>, <span class="hljs-number">-69.1</span>),
+]);
 </code></pre>
 <p>You can add as many coordinates as you need in order to build the desired area.</p>
 <blockquote>

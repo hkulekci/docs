@@ -312,6 +312,22 @@
                                             Metadata Fields Plugin
                                         </a>
                                     </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/multilanguage.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Multilanguage Plugin
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/new-relic.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            New Relic Plugin
+                                        </a>
+                                    </li>
                             </ul>
                         <li class="c-sidebar__navItem nav-item">
                             <a class="c-sidebar__navLink c-sidebar__navLink--title nav-link"
@@ -482,6 +498,21 @@ depending on your needs every moment.</p>
 <li>Source - <a href="https://github.com/apisearch-io/search-server/tree/master/Plugin/MetadataFields">Github</a></li>
 <li>Current versions - <a href="https://github.com/apisearch-io/search-server/releases">0.1.*</a></li>
 </ul>
+<h2 id="new-relicpluginsnew-relichtml"><a name="new-relicpluginsnew-relichtml" class="fa fa-link" href="#"></a><a href="plugins/new-relic.html">New Relic</a></h2>
+<p>Integrate Apisearch with <strong>New Relic</strong> and improve your control over Apisearch.</p>
+<ul>
+<li>Source - <a href="https://github.com/apisearch-io/search-server/tree/master/Plugin/NewRelic">Github</a></li>
+<li>Current versions - <a href="https://github.com/apisearch-io/search-server/releases">0.1.*</a></li>
+</ul>
+<h2 id="multilanguagepluginsmultilanguagehtml"><a name="multilanguagepluginsmultilanguagehtml" class="fa fa-link" href="#"></a><a href="plugins/multilanguage.html">Multilanguage</a></h2>
+<p>If your index is written in multiple languages, like spanish and english at the
+same time, then this plugin is specifically designed for you. Split your data in
+several indices, each one specifically designed to work with an specific
+language.</p>
+<ul>
+<li>Source - <a href="https://github.com/apisearch-io/search-server/tree/master/Plugin/Multilanguage">Github</a></li>
+<li>Current versions - <a href="https://github.com/apisearch-io/search-server/releases">0.1.*</a></li>
+</ul>
 <h2 id="callbackspluginscallbackshtml"><a name="callbackspluginscallbackshtml" class="fa fa-link" href="#"></a><a href="plugins/callbacks.html">Callbacks</a></h2>
 <p>Make additional callbacks before or after your calls. By doing them before you
 will be able to modify the input data, and by doing them after, you will be able
@@ -490,6 +521,51 @@ to change the result value.</p>
 <li>Source - <a href="https://github.com/apisearch-io/search-server/tree/master/Plugin/Callbacks">Github</a></li>
 <li>Current versions - <a href="https://github.com/apisearch-io/search-server/releases">0.1.*</a></li>
 </ul>
+<h2 id="enable-a-plugin"><a name="enable-a-plugin" class="fa fa-link" href="#"></a>Enable a plugin</h2>
+<p>By default, Apisearch comes with only the basic plugins. That means that, if you
+don’t configure your installation, only the Elasticsearch and Redis plugins will
+be enabled.</p>
+<p>There are many ways to enable plugins in Apisearch.</p>
+<h3 id="enable-plugins-in-your-appyml"><a name="enable-plugins-in-your-appyml" class="fa fa-link" href="#"></a>Enable plugins in your app.yml</h3>
+<p>A plugin is a simple Symfony Bundle, so enabling a plugin means enabling it
+inside the Symfony kernel.</p>
+<p>We use a simple <code>app.yml</code> configuration file in order to create the application,
+so, if you check the first part of the file you will find an array of enabled
+plugins.</p>
+<p>Add yours there.</p>
+<pre><code class="language-yml"><span class="hljs-attr">bundles:</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">Apisearch\Server\ApisearchServerBundle</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">Apisearch\Server\ApisearchPluginsBundle</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">My\Own\Plugin\Namespace</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">My\Other\Plugin\Namespace</span>
+</code></pre>
+<h3 id="enable-plugins-in-your-env-file"><a name="enable-plugins-in-your-env-file" class="fa fa-link" href="#"></a>Enable plugins in your .env file</h3>
+<p>If you’re using the <code>.env</code> to configure your installation, you can manage your
+plugins by using the variable <code>APISEARCH_ENABLED_PLUGINS</code> as a concatenation of
+namespaces, splitted by a simple comma.</p>
+<pre><code><span class="hljs-attr">APISEARCH_GOD_TOKEN</span>=xxx
+<span class="hljs-attr">APISEARCH_PING_TOKEN</span>=xxx
+<span class="hljs-attr">APISEARCH_ENABLED_PLUGINS</span>=<span class="hljs-string">"My\Own\Plugin\Namespace, My\Other\Plugin\Namespace"</span>
+</code></pre>
+<p>You can use a better format in order to make sure your environment file is easy
+to read and understand.</p>
+<pre><code><span class="hljs-attr">APISEARCH_GOD_TOKEN</span>=xxx
+<span class="hljs-attr">APISEARCH_PING_TOKEN</span>=xxx
+<span class="hljs-attr">APISEARCH_ENABLED_PLUGINS</span>=<span class="hljs-string">"
+    My\Own\Plugin\Namespace,
+    My\Other\Plugin\Namespace
+"</span>
+</code></pre>
+<h3 id="enable-plugins-in-your-docker-run"><a name="enable-plugins-in-your-docker-run" class="fa fa-link" href="#"></a>Enable plugins in your docker run</h3>
+<p>If you use docker and you need to enable specific plugins when deploying a
+container, then you can pass these environment variables in the docker run</p>
+<pre><code class="language-bash">docker run -d \
+    --name <span class="hljs-string">"apisearch_server"</span> \
+    --link <span class="hljs-string">"apisearch_redis"</span> \
+    --link <span class="hljs-string">"apisearch_elasticsearch"</span> \
+    -e <span class="hljs-string">"APISEARCH_ENABLED_PLUGINS=My\Own\Plugin\Namespace, My\Other\Plugin\Namespace"</span>
+    apisearch/server/new-relic
+</code></pre>
 <h2 id="make-your-own-plugin"><a name="make-your-own-plugin" class="fa fa-link" href="#"></a>Make your own plugin</h2>
 <p>Apisearch is implemented by doing <a href="https://www.martinfowler.com/bliki/CQRS.html">CQRS</a>.
 This means that each time anyone uses Apisearch, a new command is created as a

@@ -312,6 +312,22 @@
                                             Metadata Fields Plugin
                                         </a>
                                     </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/multilanguage.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Multilanguage Plugin
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/new-relic.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            New Relic Plugin
+                                        </a>
+                                    </li>
                             </ul>
                         <li class="c-sidebar__navItem nav-item">
                             <a class="c-sidebar__navLink c-sidebar__navLink--title nav-link"
@@ -520,7 +536,7 @@ instead of git.</p>
 <p>Until there’s no stable releases, we will work with the HEAD of master version.</p>
 <pre><code class="language-bash">wget --no-check-certificate --content-disposition -O basic-infrastructure.tar.gz https://github.com/apisearch-io/basic-infrastructure/archive/master.tar.gz
 tar -xvzf basic-infrastructure.tar.gz
-<span class="hljs-built_in">cd</span> basic-infrastructure
+<span class="hljs-built_in">cd</span> basic-infrastructuregra
 </code></pre>
 <p>Once our code is properly downloaded, we only need to configure some environment
 variable to customize as much as we want the server and build and run all our
@@ -532,6 +548,7 @@ file inside the root of the project with the name <code>.env.dist</code></p>
 <pre><code><span class="hljs-attr">APISEARCH_PORT</span>=<span class="hljs-number">8100</span>
 
 <span class="hljs-attr">APISEARCH_GOD_TOKEN</span>=
+<span class="hljs-attr">APISEARCH_READONLY_TOKEN</span>=
 <span class="hljs-attr">APISEARCH_PING_TOKEN</span>=
 
 <span class="hljs-attr">ELASTICSEARCH_HOST</span>=apisearch_elasticsearch
