@@ -566,11 +566,30 @@ Once finished, let’s build and run all our containers.</p>
 on how fast your internet connection is. Take the opportunity to drink a glass
 of water and move a little bit your legs :)</p>
 </blockquote>
+<p>That’s it. Congratulations. You already have Apisearch running in your server.
+Now let’s go a little bit further with that. First of all, our first call to
+Apisearch, the Apisearch <em>hello world</em>. As you can see, we will use the
+environment variable <strong>APISEARCH_GOD_TOKEN</strong> as the token to use everywhere,
+with full access to the entire environment.</p>
+<pre><code class="language-bash">curl --silent --head --write-out <span class="hljs-string">'%{http_code}\n'</span> <span class="hljs-string">'http://localhost:8100?token={{ APISEARCH_GOD_TOKEN }}'</span>
+</code></pre>
+<p>That curl should return us a <strong>200</strong>. You could try the same action, but in this
+case using the <strong>APISEARCH_PING_TOKEN</strong>, and specific token with only one
+possible action of ping.</p>
+<p>Let’s make another fast check of our infrastructure by calling our check
+endpoint. This endpoint will give some information about the status of the
+cluster and the services working inside.</p>
+<pre><code class="language-bash">curl <span class="hljs-string">'http://localhost:8100/health?token={{ APISEARCH_GOD_TOKEN }}'</span>
+</code></pre>
+<h3 id="have-any-problem"><a name="have-any-problem" class="fa fa-link" href="#"></a>Have any problem?</h3>
 <p>At this point you might encounter some of these problems. Please, check all of
 them if you have any issue, and if any of them is not included in this list,
-please ping the organization in our
-<a href="https://gitter.im/apisearch_io">Gitter Channel</a> or
-<a href="https://github.com/apisearch-io/search-server/issues/new">Open an Issue</a></p>
+please ping the organization in our</p>
+<ul>
+<li><a href="https://gitter.im/apisearch_io">Ping us on our Gitter Channel</a></li>
+<li><a href="https://github.com/apisearch-io/search-server/issues/new">Open an Issue on Github</a></li>
+<li><a href="https://twitter.com/apisearch_io">Tweet us</a></li>
+</ul>
 <blockquote>
 <p>Docker cannot even start. This message appears: <strong>WARNING: The APISEARCH_PORT
 variable is not set. Defaulting to a blank string.</strong><br>
@@ -598,21 +617,6 @@ to solve that problem and restart the docker</p>
 In this case, please check that there is a file called <strong>.env</strong> in the root of
 Apisearch server with the required APISEARCH_* environment values.</p>
 </blockquote>
-<p>That’s it. Congratulations. You already have Apisearch running in your server.
-Now let’s go a little bit further with that. First of all, our first call to
-Apisearch, the Apisearch <em>hello world</em>. As you can see, we will use the
-environment variable <strong>APISEARCH_GOD_TOKEN</strong> as the token to use everywhere,
-with full access to the entire environment.</p>
-<pre><code class="language-bash">curl --silent --head --write-out <span class="hljs-string">'%{http_code}\n'</span> <span class="hljs-string">'http://localhost:8100?token={{ APISEARCH_GOD_TOKEN }}'</span>
-</code></pre>
-<p>That curl should return us a <strong>200</strong>. You could try the same action, but in this
-case using the <strong>APISEARCH_PING_TOKEN</strong>, and specific token with only one
-possible action of ping.</p>
-<p>Let’s make another fast check of our infrastructure by calling our check
-endpoint. This endpoint will give some information about the status of the
-cluster and the services working inside.</p>
-<pre><code class="language-bash">curl <span class="hljs-string">'http://localhost:8100/health?token={{ APISEARCH_GOD_TOKEN }}'</span>
-</code></pre>
 <h2 id="create-your-first-application"><a name="create-your-first-application" class="fa fa-link" href="#"></a>Create your first application</h2>
 <p>Once we have our engine running, it’s time to create our first application.
 The server will always be accessible by its own API endpoints, but in this small
@@ -768,7 +772,6 @@ file where the token is defined, and add yours.</p>
 <p>Once added, you can access directly to this file by using your browser… and
 you’ll be using Apisearch for the first time :)</p>
 <p><img src="/assets/media/marvel-example.jpg" alt="alt text" title="Marvel example"></p>
-<p>Congratulations!</p>
 <h2 id="next-steps"><a name="next-steps" class="fa fa-link" href="#"></a>Next steps</h2>
 <p>You have created your first search widget. And we’re so happy you did it. Now we
 offer you some links in case you want to continue digging into the project. We
@@ -782,6 +785,13 @@ take a look at them</p>
 <p>Furthermore, if you don’t find an specific topic, you can use our search bar
 from every single corner of our documentation. It is build on top of Apisearch
 as well, so we encourage you to use each time you need to find something.</p>
+<h2 id="support-us"><a name="support-us" class="fa fa-link" href="#"></a>Support us</h2>
+<p>Apisearch is an open source project, so the more you use us, the more you
+contribute and the more issues you find, the best project it is. Beyond that,
+you can actively support the project by making us a small star in our main
+Github repository
+<a href="https://github.com/apisearch-io/search-server">Search Server</a>.
+We will appreciate it so much :)</p>
 
                     <!-- /Content -->
 
@@ -820,6 +830,13 @@ as well, so we encourage you to use each time you need to find something.</p>
                             Download and install Apisearch
                         </a>
                     </li>
+                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#have-any-problem"
+                        >
+                            Have any problem?
+                        </a>
+                    </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#create-your-first-application"
@@ -846,6 +863,13 @@ as well, so we encourage you to use each time you need to find something.</p>
                            href="#next-steps"
                         >
                             Next steps
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#support-us"
+                        >
+                            Support us
                         </a>
                     </li>
 
