@@ -545,6 +545,27 @@ default values are created.</p>
 by creating a new index with default configuration.</p>
 <pre><code class="language-bash">curl -XPOST <span class="hljs-string">"http://localhost:8100/v1/index?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>
 </code></pre>
+<h2 id="list-indices"><a name="list-indices" class="fa fa-link" href="#"></a>List Indices</h2>
+<p>By using this endpoint, you will be able to list existing indices. If there is no indices created, this action returns empty array.</p>
+<p>Here some related model objects you may know.</p>
+<ul>
+<li><a href="/api-reference/model.html#index">Api Client - Index Model</a></li>
+</ul>
+<p>This is the endpoint reference</p>
+<ul>
+<li>Endpoint name - v1-index-delete</li>
+<li>Path - <strong>/v1/indices</strong></li>
+<li>Verb - <strong>GET</strong></li>
+<li>Query Parameters
+<ul>
+<li>token, <strong>required with permissions</strong></li>
+<li>app_id, <strong>optional</strong></li>
+</ul>
+</li>
+</ul>
+<p>This is read-only endpoint and you can filter indices with <code>app_id</code> query parameter.</p>
+<pre><code class="language-bash">curl -XGET <span class="hljs-string">"http://localhost:8100/v1/indices?app_id={{ your_app_id }&amp;token={{ your_token }}"</span>
+</code></pre>
 <h2 id="delete-index"><a name="delete-index" class="fa fa-link" href="#"></a>Delete Index</h2>
 <p>By using this endpoint you will be able to delete an existing index. If the
 index is not previously created, then this action will be skipped and nothing
@@ -760,6 +781,13 @@ objects.</p>
                            href="#create-index"
                         >
                             Create Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#list-indices"
+                        >
+                            List Indices
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">

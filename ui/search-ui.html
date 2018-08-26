@@ -511,9 +511,9 @@ your assets folder, or use a CDN like jsDelivr.</p>
 input with a result container using a custom template
 engine.</p>
 <pre><code class="language-javascript"><span class="hljs-comment">// Create instance</span>
-<span class="hljs-keyword">const</span> ui = apisearchUI({
-    <span class="hljs-attr">appId</span>: <span class="hljs-string">'your_app_id'</span>,
-    <span class="hljs-attr">indexId</span>: <span class="hljs-string">'your_index_id'</span>,
+<span class="hljs-keyword">const</span> ui = apisearchUI.create({
+    <span class="hljs-attr">app_id</span>: <span class="hljs-string">'your_app_id'</span>,
+    <span class="hljs-attr">index_id</span>: <span class="hljs-string">'your_index_id'</span>,
     <span class="hljs-attr">token</span>: <span class="hljs-string">'your_app_QUERY_token'</span>
 });
 
@@ -534,8 +534,8 @@ ui.addWidgets(
 ui.init();
 </code></pre>
 <p>Before configuring your widgets, first you need to create
-a new instance of <code>apisearchUI</code>, passing an <code>appId</code>,
-an <code>indexId</code> and an <strong>events</strong> <code>token</code>.</p>
+a new instance of <code>apisearchUI</code>, passing an <code>app_id</code>,
+an <code>index_id</code> and an <strong>Query</strong> accessible <code>token</code>.</p>
 <p>All widgets are passed using <code>.addWidget(widget)</code> method,
 or using <code>.addWidgets(...widgets)</code> to add widgets in a bulk mode,
 like in the example below.</p>
@@ -550,17 +550,18 @@ and no data will be fetched.</p>
 <a href="https://github.com/apisearch-io/search-ui/tree/master/examples">apisearch-ui/examples</a>!</p>
 <h2 id="anatomy"><a name="anatomy" class="fa fa-link" href="#"></a>Anatomy</h2>
 <p>This is the anatomy of the ApisearchUI configuration:</p>
-<pre><code class="language-javascript"><span class="hljs-keyword">const</span> ui = apisearchUI({
-    <span class="hljs-attr">appId</span>: !string,
-    <span class="hljs-attr">indexId</span>: !string,
-    <span class="hljs-attr">token</span>: !string,
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> ui = apisearchUI.create({
+    <span class="hljs-attr">app_id</span>: string,
+    <span class="hljs-attr">index_id</span>: string,
+    <span class="hljs-attr">token</span>: string,
     <span class="hljs-attr">options</span>: {
-        <span class="hljs-attr">endpoint</span>: ?string,
-        <span class="hljs-attr">apiVersion</span>: ?string,
-        <span class="hljs-attr">timeout</span>: ?int[<span class="hljs-number">10000</span>],
-        <span class="hljs-attr">overrideQueries</span>: ?bool[<span class="hljs-literal">true</span>],
-        <span class="hljs-attr">inMemoryCache</span>: ?bool[<span class="hljs-literal">true</span>]
-    }
+        <span class="hljs-attr">endpoint</span>: string,
+        api_version?: string,
+        timeout?: number,
+        override_queries?: boolean,
+        cache?: KeyValueCache,
+        http_client?: HttpClient,
+    },
 });
 </code></pre>
 <h2 id="widgets"><a name="widgets" class="fa fa-link" href="#"></a>Widgets</h2>

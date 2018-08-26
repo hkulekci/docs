@@ -527,6 +527,29 @@ top right of the website.</p>
 <li><a href="/api-client/model.html#item">Api Client - Item</a></li>
 <li><a href="/api-client/model.html#itemuuid">Api Client - Item UUID</a></li>
 </ul>
+<h2 id="index"><a name="index" class="fa fa-link" href="#"></a>Index</h2>
+<p>Index reference. This is the representation of all your indices. Inside this model you can find information about your index.</p>
+<pre><code>{
+  <span class="hljs-attr">"app_id"</span>: string,
+  <span class="hljs-attr">"name"</span>: string,
+  <span class="hljs-attr">"doc_count"</span>: int
+}
+</code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$index = Index::createFromArray([
+    <span class="hljs-string">'app_id'</span> =&gt; <span class="hljs-string">'test'</span>,
+    <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'default'</span>,
+    <span class="hljs-string">'doc_count'</span> =&gt; <span class="hljs-number">0</span>,
+]);
+
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"app_id"</span>: <span class="hljs-string">"test"</span>,
+  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"default"</span>,
+  <span class="hljs-attr">"doc_count"</span>: <span class="hljs-number">0</span>
+}
+</code></pre>
 <h2 id="item"><a name="item" class="fa fa-link" href="#"></a>Item</h2>
 <p>Item reference. This is the representation of all your searchable elements.
 Inside this model class you will be able to work with all your data and classify
@@ -1380,6 +1403,13 @@ top right of the website.</p>
                            href="#itemuuid"
                         >
                             ItemUUID
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#index"
+                        >
+                            Index
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">

@@ -536,7 +536,7 @@ instead of git.</p>
 <p>Until there’s no stable releases, we will work with the HEAD of master version.</p>
 <pre><code class="language-bash">wget --no-check-certificate --content-disposition -O basic-infrastructure.tar.gz https://github.com/apisearch-io/basic-infrastructure/archive/master.tar.gz
 tar -xvzf basic-infrastructure.tar.gz
-<span class="hljs-built_in">cd</span> basic-infrastructuregra
+<span class="hljs-built_in">cd</span> basic-infrastructure-master
 </code></pre>
 <p>Once our code is properly downloaded, we only need to configure some environment
 variable to customize as much as we want the server and build and run all our
@@ -608,160 +608,167 @@ with full access to the entire environment.</p>
 <p>That curl should return us a <strong>200</strong>. You could try the same action, but in this
 case using the <strong>APISEARCH_PING_TOKEN</strong>, and specific token with only one
 possible action of ping.</p>
-<p>Once we have our engine running, let’s create a new index with a write-read
-token for you to start using Apisearch as fast as possble with real data.</p>
-<pre><code>docker <span class="hljs-keyword">exec</span> -i -t $(docker ps -qf <span class="hljs-string">"name=apisearch_server_0"</span>) apisearch/scripts/easy-setup
-</code></pre>
-<blockquote>
-<p>Check the output of the command. You will see that the system has generated
-you a random app_id and a random index_id for security reasons.<br>
-Use them in your next specific app and index commands.</p>
-</blockquote>
-<p>It is important the output of this command execution. The command will generate
-you some random tokens for your application. To start fast with a simple demo,
-you should use the admin one for indexing and deleting from your private
-application. Take in account that with this token anyone could manage your data,
-and even destroy it, so keep it secret.</p>
-<p>You can use the query one for your public applications, for example the
-javascript integration. This token has only read-only permissions.</p>
-<p>Let’s make an empty query (match all) on our new index using our admin token.
-Replace <code>{{admin_token}}</code> with your auto generated admin token. We’ll be able to
-use this token only when calling this app or index related endpoints, but never
-for environment actions (use <strong>APISEARCH_PING_TOKEN</strong> for such actions).</p>
-<pre><code class="language-bash">curl <span class="hljs-string">'http://localhost:8100/v1?app_id={{ app_id }}&amp;index={{ index_id }}&amp;token={{ admin_token }}'</span>
-</code></pre>
-<blockquote>
-<p>Take in account that in this example we’re using 8100 as our default port. If
-you changed this port in your environment file, consider changing it here as
-well.</p>
-</blockquote>
-<p>You should have a 200 response code and an empty set of items as response. This
-means that your repository is ready to be used by any application.</p>
 <p>Let’s make another fast check of our infrastructure by calling our check
 endpoint. This endpoint will give some information about the status of the
 cluster and the services working inside.</p>
 <pre><code class="language-bash">curl <span class="hljs-string">'http://localhost:8100/health?token={{ APISEARCH_GOD_TOKEN }}'</span>
 </code></pre>
-<p>At this point you could just follow this Quick Start document, or go to the
-official API specifications; The main one, where you’ll be able how to use
-Apisearch through HTTP, and the</p>
-<ul>
-<li><a href="/api-reference">API Reference</a></li>
-<li><a href="/api-client">API Client</a></li>
-</ul>
 <h2 id="create-your-first-application"><a name="create-your-first-application" class="fa fa-link" href="#"></a>Create your first application</h2>
-<pre><code>&gt; This section is under construction
-</code></pre>
-<h2 id="add-some-data"><a name="add-some-data" class="fa fa-link" href="#"></a>Add some data</h2>
-<p>In Apisearch you can work with some accepted and common formats. Some of them
-are basically implemented because are multi platform, like CSV or JSON, but some
-of them are specifically implemented because are human friendly, like Yaml. In
-this chapter we will use this last one.</p>
-<p>Let’s add some fake items in our index. You will find a simple <em>Add Items</em>
-button in your index main page. In that page, you will be able to add items
-manually, or import an existing file. You will find some information about how
-to export and import your index in our <a href="faqs/admin.html">FAQS ahout the admin</a>.</p>
-<p>You items would look like this.</p>
-<pre><code class="language-yaml"><span class="hljs-attr">header:</span>
-<span class="hljs-attr">    metadata:</span> <span class="hljs-string">[name,</span> <span class="hljs-string">description,</span> <span class="hljs-string">image]</span>
-<span class="hljs-attr">    indexed_metadata:</span> <span class="hljs-string">[sku,</span> <span class="hljs-string">type]</span>
-<span class="hljs-attr">    searchable_metadata:</span> <span class="hljs-string">[name,</span> <span class="hljs-string">description]</span>
-<span class="hljs-attr">item_1:</span>
-<span class="hljs-attr">    id:</span> <span class="hljs-number">1</span>
-<span class="hljs-attr">    sku:</span> <span class="hljs-number">74398742973428</span>
-<span class="hljs-attr">    name:</span> <span class="hljs-string">T-shirt</span> <span class="hljs-string">future</span>
-<span class="hljs-attr">    description:</span> <span class="hljs-string">T-shirt</span> <span class="hljs-string">from</span> <span class="hljs-string">the</span> <span class="hljs-string">future</span>
-<span class="hljs-attr">    type:</span> <span class="hljs-string">t-shirt</span>
-<span class="hljs-attr">    image:</span> <span class="hljs-string">/img/t-shirt1.jpg</span>
-<span class="hljs-attr">item_2:</span>
-<span class="hljs-attr">    id:</span> <span class="hljs-number">2</span>
-<span class="hljs-attr">    sku:</span> <span class="hljs-number">43289748932744</span>
-<span class="hljs-attr">    name:</span> <span class="hljs-string">Alabama</span> <span class="hljs-string">T-shirt</span>
-<span class="hljs-attr">    description:</span> <span class="hljs-string">Model</span> <span class="hljs-string">from</span> <span class="hljs-string">Alabama.</span> <span class="hljs-string">Will</span> <span class="hljs-string">show</span> <span class="hljs-string">you</span> <span class="hljs-string">how</span> <span class="hljs-string">amazing</span> <span class="hljs-string">can</span> <span class="hljs-string">it</span> <span class="hljs-string">be</span>
-<span class="hljs-attr">    type:</span> <span class="hljs-string">t-shirt</span>
-<span class="hljs-attr">    image:</span> <span class="hljs-string">/img/t-shirt2.jpg</span>
-<span class="hljs-attr">item_3:</span>
-<span class="hljs-attr">    id:</span> <span class="hljs-number">3</span>
-<span class="hljs-attr">    sku:</span> <span class="hljs-number">43289748932744</span>
-<span class="hljs-attr">    name:</span> <span class="hljs-string">Model</span> <span class="hljs-string">R</span>
-<span class="hljs-attr">    description:</span> <span class="hljs-string">R</span> <span class="hljs-string">from</span> <span class="hljs-string">Romania.</span> <span class="hljs-string">Will</span> <span class="hljs-string">shine</span> <span class="hljs-string">in</span> <span class="hljs-string">th</span> <span class="hljs-string">dark</span>
-<span class="hljs-attr">    type:</span> <span class="hljs-string">t-shirt</span>
-<span class="hljs-attr">    image:</span> <span class="hljs-string">/img/t-shirt3.jpg</span>
-<span class="hljs-attr">item_4:</span>
-<span class="hljs-attr">    id:</span> <span class="hljs-number">4</span>
-<span class="hljs-attr">    sku:</span> <span class="hljs-number">37897489278798</span>
-<span class="hljs-attr">    name:</span> <span class="hljs-string">Customizable</span> <span class="hljs-string">T-shirt</span>
-<span class="hljs-attr">    description:</span> <span class="hljs-string">Customize</span> <span class="hljs-string">your</span> <span class="hljs-string">t-shirt</span>
-<span class="hljs-attr">    type:</span> <span class="hljs-string">t-shirt</span>
-<span class="hljs-attr">    image:</span> <span class="hljs-string">/img/t-shirt4.jpg</span>
-</code></pre>
-<p>With that code, you would add 2 items with these fields, and with the
-particularity that:</p>
-<ul>
-<li>You could filter your data by sku and type fields</li>
-<li>You could search your data by name and description fields</li>
-<li>Fields name, description and image would only be saved, but would not be
-filtered by them</li>
-</ul>
-<h2 id="create-my-first-search-bar"><a name="create-my-first-search-bar" class="fa fa-link" href="#"></a>Create my first search bar</h2>
-<p>Finally. Let’s check some important steps here</p>
-<ul>
-<li>We have an App with an id</li>
-<li>We have an Index with an id</li>
-<li>We have some generated tokens. At least, one with read-only permissions</li>
-<li>We have some data indexed</li>
-</ul>
-<p>So, what’s next? Let’s create a simple search widget, where we can search by a
-text field. This widget will be simple, but in the future you could add some
-extra UI widgets in order to make your environment more powerful and complex.</p>
-<p>To create your first search bar, first of all you should add our JS library as
-a javascript line in your html.</p>
-<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.jsdelivr.net/npm/apisearch-ui/dist/apisearch-ui.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-</code></pre>
-<p>Then, let’s build our searcher. The first step is to build a simple Apisearch
-client. In order to identify properly your credentials, check how to create
-properly the Client. Remember to fill this data with yours.</p>
-<pre><code class="language-javascript"><span class="hljs-comment">// Create instance</span>
-<span class="hljs-keyword">const</span> ui = apisearchUI.create({
-    <span class="hljs-attr">app_id</span>: <span class="hljs-string">'xxx'</span>,
-    <span class="hljs-attr">index_id</span>: <span class="hljs-string">'yyy'</span>,
-    <span class="hljs-attr">token</span>: <span class="hljs-string">'zzz'</span>,
-    <span class="hljs-attr">options</span>: {
-        <span class="hljs-attr">endpoint</span>: <span class="hljs-string">'http://localhost:8100'</span>
-    }
-});
+<p>Once we have our engine running, it’s time to create our first application.
+The server will always be accessible by its own API endpoints, but in this small
+tutorial, we will use the internal commands placed in the same server by
+entering inside one of the server docker containers.</p>
+<pre><code>docker <span class="hljs-keyword">exec</span> -i -t $(docker ps -qf <span class="hljs-string">"name=apisearch_server_0"</span>) bash
 </code></pre>
 <blockquote>
-<p>Check that all the values in the configuration matches the installation you
-are actually trying. You should check as well the endpoint, both the host and
-the port used.</p>
+<p>From this point, all commands will be executed inside this container.</p>
 </blockquote>
-<p>OK. Client done. Let’s start by doing a simple skeleton in your html code. That
-skeleton should be enough for you to make as many customizations as you need,
-and to make the search engine very website friendly.</p>
-<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"search-container"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"results-container"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<p>Inside the container, we need to place ourselves inside the server root. Once we
+are there, we can list all the available commands.</p>
+<pre><code>cd /var/www/apisearch
+bin<span class="hljs-built_in">/console </span><span class="hljs-attribute">--env</span>=prod
 </code></pre>
-<p>That will be enough. Let’s create the required widgets to make it work. Two
-widgets needed. The first one for the searcher itself, and the second one for
-the results container.</p>
-<pre><code class="language-javascript">ui.addWidgets(
-    ui.widgets.simpleSearch({
-        <span class="hljs-attr">target</span>: <span class="hljs-string">'.search-container'</span>,
-    }),
-    ui.widgets.result({
-        <span class="hljs-attr">target</span>: <span class="hljs-string">'.result-container'</span>,
-        <span class="hljs-attr">template</span>: {
-            <span class="hljs-attr">itemsList</span>: <span class="hljs-string">'&lt;ul&gt;{{#items}} &lt;li&gt;{{metadata.name}}&lt;/li&gt; {{/items}}&lt;/ul&gt;'</span>,
-        }
-    })
-);
+<p>Our next steps will be</p>
+<ul>
+<li>Create a new empty application index</li>
+<li>Create some tokens in order to manage the access of our data across all our
+applications.</li>
+</ul>
+<p>Let’s do it!</p>
+<p>First of all, let’s create a new application index. For this purpose, we will
+need an application identifier and an index identifier. The different between
+them is that an Application can handle different indices, each of them hosting
+different type of items. By placing your data into different indices you will be
+able to create tokens with permissions in some indices, implementing a very
+strict security layer in your application. You will be able to query across
+different indices as well, so index architecture should be as much flexible as
+your requisites need.</p>
+<blockquote>
+<p>Make sure your identifiers are unique and random to prevent security holes.
+You can use some online service to generate UUID values like
+<a href="https://www.uuidgenerator.net/">uuidgenerator.net</a></p>
+</blockquote>
+<blockquote>
+<p>We recommend to use 8 hex characters for identifier ids, and UUID v4 values
+for tokens. This is a recommendation, but of course, feel free to use as much
+security as you need for your application. The more security, the best for you</p>
+</blockquote>
+<p>After these recommendations, and in order to be clear for you in this tutorial,
+we will use a much more clear unique identifiers.</p>
+<p>Use the specific command to create a new index. The application id will be
+<code>marvel</code> as our application will handle multiple type of elements, all related
+to the marvel world. The index we are going to create first of all inside
+<code>marvel</code> application will be <code>comics</code>, so in this index we will store mainly
+marvel comics.</p>
+<pre><code>bin<span class="hljs-built_in">/console </span>apisearch-server:create-index marvel comics <span class="hljs-attribute">--env</span>=prod
 </code></pre>
-<p>That simple. This will make the magic.
-Once your widget is properly defined, we need just another last step.<br>
-Initialize the widgets.</p>
-<pre><code class="language-javascript">ui.init();
+<p>Your output should be something like that. The server output will always be as
+much verbose as the occasion needs by default.</p>
+<pre><code>[Apisearch] Command started at Sat, 25 Aug 2018 23:31:23 +0000
+
+[<span class="hljs-keyword">Create</span> <span class="hljs-keyword">index</span>] App <span class="hljs-keyword">ID</span>: marvel
+[<span class="hljs-keyword">Create</span> <span class="hljs-keyword">index</span>] <span class="hljs-keyword">Index</span> <span class="hljs-keyword">ID</span>: comics
+[<span class="hljs-keyword">Create</span> <span class="hljs-keyword">index</span>] <span class="hljs-keyword">Index</span> created properly
+
+[Apisearch] Command finished <span class="hljs-keyword">in</span> <span class="hljs-number">122</span> milliseconds
+[Apisearch] <span class="hljs-keyword">Max</span> <span class="hljs-keyword">memory</span> used: <span class="hljs-number">8388608</span> <span class="hljs-keyword">bytes</span>
 </code></pre>
+<p>It seems that we already have an index created, right? But you know, never trust
+a console before checking yourself that everything was fine</p>
+<pre><code>bin<span class="hljs-built_in">/console </span>apisearch-server:check-index marvel comics <span class="hljs-attribute">--env</span>=prod
+</code></pre>
+<p>This command will check if given configuration is valid and the index under
+given application id already exists. That should be the output for the command</p>
+<pre><code>[Apisearch] Command started at Sun, 26 Aug 2018 01:37:47 +0200
+
+[<span class="hljs-keyword">Check</span> <span class="hljs-keyword">index</span>] <span class="hljs-keyword">Index</span> available
+
+[Apisearch] Command finished <span class="hljs-keyword">in</span> <span class="hljs-number">10</span> milliseconds
+[Apisearch] <span class="hljs-keyword">Max</span> <span class="hljs-keyword">memory</span> used: <span class="hljs-number">16777216</span> <span class="hljs-keyword">bytes</span>
+</code></pre>
+<p>We can check as well all our created indices by listing them all. In order to
+filter your indices by an specific application, you can define this application
+as well.</p>
+<pre><code>bin<span class="hljs-built_in">/console </span>apisearch-server:print-indices <span class="hljs-attribute">--env</span>=prod
+bin<span class="hljs-built_in">/console </span>apisearch-server:print-indices <span class="hljs-attribute">--app-id</span>=marvel <span class="hljs-attribute">--env</span>=prod
+</code></pre>
+<p>Finally, let’s create some tokens for our application. As a simple information,
+you will be able to create as many tokens as you want by only using this
+console, or by using the API, but for this small tutorial, we will use a special
+command placed in the server to generate a simple set of usable random tokens.</p>
+<p>Tokens are generated for an application, and granted for one or multiple
+indices, endpoints and plugins. These generated tokens will be generated for all
+application indices.</p>
+<pre><code>bin<span class="hljs-built_in">/console </span>apisearch-server:generate-basic-tokens marvel <span class="hljs-attribute">--env</span>=prod
+</code></pre>
+<p>This command should generate an output like this.</p>
+<pre><code>[Apisearch] Command started at Sun, 26 Aug 2018 01:50:21 +0200
+
+[<span class="hljs-keyword">Create</span> basic tokens] App <span class="hljs-keyword">ID</span>: marvel
+[<span class="hljs-keyword">Create</span> basic tokens] Token <span class="hljs-keyword">with</span> <span class="hljs-keyword">UUID</span> d5d9dc37<span class="hljs-number">-1</span>a88<span class="hljs-number">-4</span>d1e-a7bd<span class="hljs-number">-8</span>c7c41020546 <span class="hljs-keyword">generated</span> <span class="hljs-keyword">for</span> <span class="hljs-keyword">admin</span>
+[<span class="hljs-keyword">Create</span> basic tokens] Token <span class="hljs-keyword">with</span> <span class="hljs-keyword">UUID</span> ab0e9cd7<span class="hljs-number">-9180</span><span class="hljs-number">-4</span>c51-a419<span class="hljs-number">-467</span>da5421e7f <span class="hljs-keyword">generated</span> <span class="hljs-keyword">for</span> <span class="hljs-keyword">query</span> <span class="hljs-keyword">only</span>
+[<span class="hljs-keyword">Create</span> basic tokens] Token <span class="hljs-keyword">with</span> <span class="hljs-keyword">UUID</span> <span class="hljs-number">6</span>f839034<span class="hljs-number">-801e-45</span>eb<span class="hljs-number">-9</span>c33<span class="hljs-number">-8</span>c45c373c827 <span class="hljs-keyword">generated</span> <span class="hljs-keyword">for</span> <span class="hljs-keyword">events</span>
+[<span class="hljs-keyword">Create</span> basic tokens] Token <span class="hljs-keyword">with</span> <span class="hljs-keyword">UUID</span> <span class="hljs-number">3017</span>a802-b8e5<span class="hljs-number">-4368</span><span class="hljs-number">-8</span>ca1-e088e9bcf188 <span class="hljs-keyword">generated</span> <span class="hljs-keyword">for</span> interaction
+[<span class="hljs-keyword">Create</span> basic tokens] Tokens created properly
+
+[Apisearch] Command finished <span class="hljs-keyword">in</span> <span class="hljs-number">8</span> milliseconds
+[Apisearch] <span class="hljs-keyword">Max</span> <span class="hljs-keyword">memory</span> used: <span class="hljs-number">8388608</span> <span class="hljs-keyword">bytes</span>
+</code></pre>
+<p>As you can see, some tokens have been generated randomly for you. In order to
+check that the tokens have properly been generated, we can list all application
+tokens.</p>
+<pre><code>bin<span class="hljs-built_in">/console </span>apisearch-server:print-tokens marvel <span class="hljs-attribute">--env</span>=prod
+</code></pre>
+<p>So that’s it! At this point we should have</p>
+<ul>
+<li>An application called <code>marvel</code> with the empty index <code>comics</code></li>
+<li>Some tokens generated with different permissions</li>
+</ul>
+<h2 id="import-some-items"><a name="import-some-items" class="fa fa-link" href="#"></a>Import some items</h2>
+<p>Once we have a created index, let’s add some data into it. For this example, we
+will use a small repository placed in our main Github organization called
+<a href="https://github.com/apisearch-io/example-marvel">Example Marvel</a>.</p>
+<p>We don’t really have to download the repository, so the import command accept
+both local files and remote files. Let’s see how to import this file.</p>
+<pre><code><span class="hljs-keyword">bin/console </span>apisearch-server:<span class="hljs-meta">import</span>-index <span class="hljs-keyword">marvel </span>comics https://raw.githubusercontent.com/apisearch-io/example-<span class="hljs-keyword">marvel/master/marvel.as
+</span></code></pre>
+<p>This command will import the file into your previously generated index, so if
+you list all your indices again, you will see a small change; the number of
+items inside the index.</p>
+<pre><code>bin<span class="hljs-built_in">/console </span>apisearch-server:print-indices <span class="hljs-attribute">--app-id</span>=marvel <span class="hljs-attribute">--env</span>=prod
+</code></pre>
+<p>This command, now, will output something like this</p>
+<pre><code>[Apisearch] Command started at Sun, 26 Aug 2018 00:07:57 +0000
+
+<span class="hljs-code">+--------+</span>--------<span class="hljs-code">+-----------+</span>
+<span class="hljs-section">| AppId  | Name   | Doc Count |
++--------+--------+-----------+</span>
+<span class="hljs-section">| marvel | comics | 11343     |
++--------+--------+-----------+</span>
+
+[Apisearch] Command finished in 10 milliseconds
+[Apisearch] Max memory used: 14680064 bytes
+</code></pre>
+<p>So, we have already some items inside the index!
+Yay!</p>
+<h2 id="create-my-first-search-bar"><a name="create-my-first-search-bar" class="fa fa-link" href="#"></a>Create my first search bar</h2>
+<p>Now we can exit the docker container, so the data is already inside the server.
+We should focus now on our application, and by application we mean the frontend
+website where you will place the search engine.</p>
+<p>In this tutorial, we will create a small Marvel comics search bar, where we will
+be able to search across some comic titles, filter by some elements and search
+our favourite saga in milliseconds.</p>
+<p>In order to do that, we will download in our local filesystem the
+<a href="https://github.com/apisearch-io/example-marvel">Example Marvel</a> repository. You
+can clone the repository and use yours in order to push changes if you need to.</p>
+<p>Once cloned, and if you followed this tutorial as it is with no alternative
+changes, you <strong>ONLY</strong> need to make a simple addition; the token your server
+generated in order to be able to query over your index. Check the <code>index.html</code>
+file where the token is defined, and add yours.</p>
+<p>Once added, you can access directly to this file by using your browser… and
+you’ll be using Apisearch for the first time :)</p>
+<p><img src="/assets/media/marvel-example.jpg" alt="alt text" title="Marvel example"></p>
+<p>Congratulations!</p>
 <h2 id="next-steps"><a name="next-steps" class="fa fa-link" href="#"></a>Next steps</h2>
 <p>You have created your first search widget. And we’re so happy you did it. Now we
 offer you some links in case you want to continue digging into the project. We
@@ -822,9 +829,9 @@ as well, so we encourage you to use each time you need to find something.</p>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#add-some-data"
+                           href="#import-some-items"
                         >
-                            Add some data
+                            Import some items
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
