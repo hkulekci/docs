@@ -136,6 +136,12 @@
                                         json
                                     </span>
                                 </li>
+                                <li class="c-languageSelector__item">
+                                    <span data-lang="javascript"
+                                          class="c-languageSelector__link">
+                                        javascript
+                                    </span>
+                                </li>
                         </ol>
                     </nav>
                     <!-- /language selector -->
@@ -502,6 +508,97 @@ is important because across all repositories, and maybe inside specific client
 implementations you will see some objects and you will know how they work
 internally.</p>
 <p>Then this is your chapter.</p>
+<h2 id="appuuid"><a name="appuuid" class="fa fa-link" href="#"></a>AppUUID</h2>
+<p>AppUUID reference. The composition of this object should represent one and only
+one application in your system.</p>
+<pre><code>{
+  <span class="hljs-attr">"id"</span>: !string,
+}
+</code></pre>
+<blockquote>
+<p>This value should never contain the character “_” as is reserved</p>
+</blockquote>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$appUUID = AppUUID::createFromArray([
+    <span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">'12345'</span>,
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"id"</span>: <span class="hljs-string">"12345"</span>
+}
+</code></pre>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> appUUID = AppUUID.createFromArray({
+    <span class="hljs-string">"id"</span>: <span class="hljs-string">"12345"</span>
+});
+</code></pre>
+<h2 id="indexuuid"><a name="indexuuid" class="fa fa-link" href="#"></a>IndexUUID</h2>
+<p>IndexUUID reference. The composition of this object should represent one and
+only one index in your application. Different applications could (but never
+should) repeat UUID.</p>
+<pre><code>{
+  <span class="hljs-attr">"id"</span>: !string,
+}
+</code></pre>
+<blockquote>
+<p>This value should never contain the character “_” as is reserved</p>
+</blockquote>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$indexUUID = IndexUUID::createFromArray([
+    <span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">'12345'</span>,
+]);
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"id"</span>: <span class="hljs-string">"12345"</span>
+}
+</code></pre>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> indexUUID = IndexUUID.createFromArray({
+    <span class="hljs-string">"id"</span>: <span class="hljs-string">"12345"</span>
+});
+</code></pre>
+<h2 id="index"><a name="index" class="fa fa-link" href="#"></a>Index</h2>
+<p>Index reference. This is the representation of all your indices. Inside this model you can find information about your index.</p>
+<pre><code>{
+  <span class="hljs-attr">"uuid"</span>: !IndexUUID,
+  <span class="hljs-attr">"app_uuid"</span>: !AppUUID,
+  <span class="hljs-attr">"doc_count"</span>: ?int,
+  <span class="hljs-attr">"is_ok"</span>: ?boolean,
+  <span class="hljs-attr">"size"</span>: ?string
+}
+</code></pre>
+<p>Some examples for you. Feel free to change the language of your examples in the
+top right of the website.</p>
+<pre><code class="language-php">$index = Index::createFromArray([
+    <span class="hljs-string">'uuid'</span> =&gt; IndexUUID::createById(<span class="hljs-string">"1234"</span>),
+    <span class="hljs-string">'app_uuid'</span> =&gt; AppUUID::createById(<span class="hljs-string">"5678"</span>),
+    <span class="hljs-string">'doc_count'</span> =&gt; <span class="hljs-number">0</span>,
+    <span class="hljs-string">'is_ok'</span> =&gt; <span class="hljs-keyword">true</span>,
+    <span class="hljs-string">'size'</span> =&gt; <span class="hljs-string">'10mb'</span>,
+]);
+
+</code></pre>
+<pre><code class="language-json">{
+  <span class="hljs-attr">"app_id"</span>: <span class="hljs-string">"test"</span>,
+  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"default"</span>,
+  <span class="hljs-attr">"doc_count"</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-attr">"is_ok"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"size"</span>: <span class="hljs-string">"10mb"</span>
+}
+</code></pre>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> index = Index.createFromArray({
+    <span class="hljs-string">'uuid'</span>: IndexUUID.createById(<span class="hljs-string">"1234"</span>),
+    <span class="hljs-string">'app_uuid'</span>: AppUUID.createById(<span class="hljs-string">"5678"</span>),
+    <span class="hljs-string">'doc_count'</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-string">'is_ok'</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">'size'</span>: <span class="hljs-string">'10mb'</span>
+});
+</code></pre>
+<p>Some links of interest</p>
+<ul>
+<li><a href="/api-reference/model.html#appuuid">Api Reference - AppUUID</a></li>
+<li><a href="/api-reference/model.html#itemuuid">Api Reference - ItemUUID</a></li>
+</ul>
 <h2 id="itemuuid"><a name="itemuuid" class="fa fa-link" href="#"></a>ItemUUID</h2>
 <p>ItemUUID reference. The composition of this object should be unique in your
 repository.</p>
@@ -525,31 +622,8 @@ top right of the website.</p>
 <p>Some links of interest</p>
 <ul>
 <li><a href="/api-client/model.html#item">Api Client - Item</a></li>
-<li><a href="/api-client/model.html#itemuuid">Api Client - Item UUID</a></li>
+<li><a href="/api-client/model.html#itemuuid">Api Client - ItemUUID</a></li>
 </ul>
-<h2 id="index"><a name="index" class="fa fa-link" href="#"></a>Index</h2>
-<p>Index reference. This is the representation of all your indices. Inside this model you can find information about your index.</p>
-<pre><code>{
-  <span class="hljs-attr">"app_id"</span>: string,
-  <span class="hljs-attr">"name"</span>: string,
-  <span class="hljs-attr">"doc_count"</span>: int
-}
-</code></pre>
-<p>Some examples for you. Feel free to change the language of your examples in the
-top right of the website.</p>
-<pre><code class="language-php">$index = Index::createFromArray([
-    <span class="hljs-string">'app_id'</span> =&gt; <span class="hljs-string">'test'</span>,
-    <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'default'</span>,
-    <span class="hljs-string">'doc_count'</span> =&gt; <span class="hljs-number">0</span>,
-]);
-
-</code></pre>
-<pre><code class="language-json">{
-  <span class="hljs-attr">"app_id"</span>: <span class="hljs-string">"test"</span>,
-  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"default"</span>,
-  <span class="hljs-attr">"doc_count"</span>: <span class="hljs-number">0</span>
-}
-</code></pre>
 <h2 id="item"><a name="item" class="fa fa-link" href="#"></a>Item</h2>
 <p>Item reference. This is the representation of all your searchable elements.
 Inside this model class you will be able to work with all your data and classify
@@ -620,7 +694,7 @@ top right of the website.</p>
 <p>Some links of interest</p>
 <ul>
 <li><a href="/api-client/model.html#item">Api Client - Item</a></li>
-<li><a href="/api-client/model.html#itemuuid">Api Client - Item UUID</a></li>
+<li><a href="/api-client/model.html#itemuuid">Api Client - ItemUUID</a></li>
 </ul>
 <h2 id="user"><a name="user" class="fa fa-link" href="#"></a>User</h2>
 <p>User reference. The composition of this object should represent one and
@@ -855,9 +929,9 @@ top right of the website.</p>
   ]
 }
 </code></pre>
-<h2 id="immutableconfig"><a name="immutableconfig" class="fa fa-link" href="#"></a>ImmutableConfig</h2>
-<p>This configuration is used when a new index instance is created. Is called
-immutable because cannot be changed after this index creation.</p>
+<h2 id="config"><a name="config" class="fa fa-link" href="#"></a>Config</h2>
+<p>This configuration is used when a new index instance is created or is configured
+after its creation.</p>
 <pre><code>{
   <span class="hljs-attr">"language"</span>: ?string (default <span class="hljs-literal">null</span>),
   <span class="hljs-attr">"store_searchable_metadata"</span>: ?bool (default <span class="hljs-literal">true</span>),
@@ -866,7 +940,7 @@ immutable because cannot be changed after this index creation.</p>
 </code></pre>
 <p>Some examples for you. Feel free to change the language of your examples in the
 top right of the website.</p>
-<pre><code class="language-php">$immutableConfig = ImmutableConfig::createFromArray([
+<pre><code class="language-php">$immutableConfig = Config::createFromArray([
     <span class="hljs-string">'language'</span> =&gt; <span class="hljs-string">'ca'</span>,
     <span class="hljs-string">'store_searchable_metadata'</span> =&gt; <span class="hljs-keyword">false</span>,
     <span class="hljs-string">'synonyms'</span> =&gt; [
@@ -905,6 +979,24 @@ top right of the website.</p>
     }
   ]
 }
+</code></pre>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> config = Config.createFromArray({
+    <span class="hljs-string">"language"</span>: <span class="hljs-string">"ca"</span>,
+    <span class="hljs-string">"store_searchable_metadata"</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-string">"synonyms"</span>: [{
+        <span class="hljs-string">"words"</span>: [
+            <span class="hljs-string">"house"</span>,
+            <span class="hljs-string">"building"</span>,
+            <span class="hljs-string">"cottage"</span>
+        ]
+    },
+    {
+        <span class="hljs-string">"words"</span>: [
+            <span class="hljs-string">"large"</span>,
+            <span class="hljs-string">"big"</span>
+        ]
+    }]
+});
 </code></pre>
 <h2 id="queryaggregation"><a name="queryaggregation" class="fa fa-link" href="#"></a>QueryAggregation</h2>
 <p>Query Aggregation reference. Used in Query repository.</p>
@@ -1400,9 +1492,16 @@ top right of the website.</p>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#itemuuid"
+                           href="#appuuid"
                         >
-                            ItemUUID
+                            AppUUID
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#indexuuid"
+                        >
+                            IndexUUID
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
@@ -1410,6 +1509,13 @@ top right of the website.</p>
                            href="#index"
                         >
                             Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#itemuuid"
+                        >
+                            ItemUUID
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
@@ -1470,9 +1576,9 @@ top right of the website.</p>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#immutableconfig"
+                           href="#config"
                         >
-                            ImmutableConfig
+                            Config
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">

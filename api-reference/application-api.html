@@ -499,54 +499,62 @@ Here some related model objects you may know.</p>
 <ul>
 <li>Endpoint name - v1-index-create</li>
 <li>Path - <strong>/v1/index</strong></li>
-<li>Verb - <strong>POST</strong></li>
+<li>Verb - <strong>PUT</strong></li>
 <li>Query Parameters
 <ul>
 <li>app_id, <strong>required</strong></li>
-<li>index, <strong>required</strong></li>
 <li>token, <strong>required with permissions</strong></li>
 </ul>
 </li>
 </ul>
-<p>The body of the endpoint should be an array with one optional position with
-key <code>config</code> and a <a href="/api-reference/model.html#immutableconfig">ImmutableConfig</a>
-object as value.</p>
+<p>The body of the endpoint should be an array with one required element, a
+<a href="/api-reference/model.html#indexuuid">IndexUUID</a> object as value under key
+<code>index</code>, and an optional position under key <code>config</code> with a
+<a href="/api-reference/model.html#config">Config</a> object as value.</p>
 <p>This is a write-only endpoint, and eventually, all write only endpoints could be
 processed in an asynchronous way</p>
 <p>You can try this endpoint by using this curl snippet. As you can see, you should
 replace the placeholders with your own data. In order to make sure that no one
 has a default values in their installation, and creating a vulnerability, no
 default values are created.</p>
-<pre><code class="language-bash">curl -XPOST -H <span class="hljs-string">"Content-Type: application/json"</span> <span class="hljs-string">"http://localhost:8100/v1/index?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>  -d<span class="hljs-string">'
+<pre><code class="language-bash">curl -XPUT -H <span class="hljs-string">"Content-Type: application/json"</span> <span class="hljs-string">"http://localhost:8100/v1/index?app_id={{ your_app_id }}&amp;token={{ your_token }}"</span>  -d<span class="hljs-string">'
 {
+    "index": {
+        "id": {{ your_index }}
+    },
     "config": {
-      "language": "ca",
-      "store_searchable_metadata": false,
-      "synonyms": [
-        {
-          "words": [
-            "house",
-            "building",
-            "cottage"
-          ]
+        "language": "ca",
+        "store_searchable_metadata": false,
+        "synonyms": [{
+            "words": [
+                "house",
+                "building",
+                "cottage"
+            ]
         },
         {
-          "words": [
-            "large",
-            "big"
-          ]
-        }
-      ]
+            "words": [
+                "large",
+                "big"
+            ]
+        }]
     }
 }
 '</span>
 </code></pre>
 <p>This config value is optional, so by not providing this object, it should work
 by creating a new index with default configuration.</p>
-<pre><code class="language-bash">curl -XPOST <span class="hljs-string">"http://localhost:8100/v1/index?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>
+<pre><code class="language-bash">curl -XPUT -H <span class="hljs-string">"Content-Type: application/json"</span> <span class="hljs-string">"http://localhost:8100/v1/index?app_id={{ your_app_id }}&amp;token={{ your_token }}"</span>  -d<span class="hljs-string">'
+{
+    "index": {
+        "id": {{ your_index }}
+    }
+}
+'</span>
 </code></pre>
 <h2 id="list-indices"><a name="list-indices" class="fa fa-link" href="#"></a>List Indices</h2>
-<p>By using this endpoint, you will be able to list existing indices. If there is no indices created, this action returns empty array.</p>
+<p>By using this endpoint, you will be able to list existing indices. If there is
+no indices created, this action returns empty array.</p>
 <p>Here some related model objects you may know.</p>
 <ul>
 <li><a href="/api-reference/model.html#index">Api Client - Index Model</a></li>
@@ -559,11 +567,11 @@ by creating a new index with default configuration.</p>
 <li>Query Parameters
 <ul>
 <li>token, <strong>required with permissions</strong></li>
-<li>app_id, <strong>optional</strong></li>
+<li>app_id, <strong>required</strong></li>
 </ul>
 </li>
 </ul>
-<p>This is read-only endpoint and you can filter indices with <code>app_id</code> query parameter.</p>
+<p>This is read-only endpoint.</p>
 <pre><code class="language-bash">curl -XGET <span class="hljs-string">"http://localhost:8100/v1/indices?app_id={{ your_app_id }&amp;token={{ your_token }}"</span>
 </code></pre>
 <h2 id="delete-index"><a name="delete-index" class="fa fa-link" href="#"></a>Delete Index</h2>
@@ -619,6 +627,65 @@ replace the placeholders with your own data. In order to make sure that no one
 has a default values in their installation, and creating a vulnerability, no
 default values are created.</p>
 <pre><code class="language-bash">curl -XPOST <span class="hljs-string">"http://localhost:8100/v1/index/reset?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>
+</code></pre>
+<h2 id="configure-index"><a name="configure-index" class="fa fa-link" href="#"></a>Configure Index</h2>
+<p>By using this endpoint you will be able to configure an existing index. If the
+index does not exist, then this action will be skipped and nothing will happen.
+Here some related model objects you may know.</p>
+<ul>
+<li><a href="/api-client/repository.html#index">Api Client - Index Repository</a></li>
+</ul>
+<p>This is the endpoint reference</p>
+<ul>
+<li>Endpoint name - v1-index-config</li>
+<li>Path - <strong>/v1/index</strong></li>
+<li>Verb - <strong>POST</strong></li>
+<li>Query Parameters
+<ul>
+<li>app_id, <strong>required</strong></li>
+<li>index, <strong>required</strong></li>
+<li>token, <strong>required with permissions</strong></li>
+</ul>
+</li>
+</ul>
+<p>The body of the endpoint should be an array with one optional position under
+key <code>config</code> with a <a href="/api-reference/model.html#config">Config</a> object as value.</p>
+<p>This is a write-only endpoint, and eventually, all write only endpoints could be
+processed in an asynchronous way</p>
+<blockquote>
+<p>This endpoint should take the same config body as creating an index. The main
+difference is the verb and that, in this case, the index is passed as part of
+the authentication (url) instead of part of the content (body)</p>
+</blockquote>
+<p>You can try this endpoint by using this curl snippet. As you can see, you should
+replace the placeholders with your own data. In order to make sure that no one
+has a default values in their installation, and creating a vulnerability, no
+default values are created.</p>
+<pre><code class="language-bash">curl -XPOST -H <span class="hljs-string">"Content-Type: application/json"</span> <span class="hljs-string">"http://localhost:8100/v1/index?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>  -d<span class="hljs-string">'
+{
+    "config": {
+        "language": "ca",
+        "store_searchable_metadata": false,
+        "synonyms": [{
+            "words": [
+                "house",
+                "building",
+                "cottage"
+            ]
+        },
+        {
+            "words": [
+                "large",
+                "big"
+            ]
+        }]
+    }
+}
+'</span>
+</code></pre>
+<p>This config value is optional, so by not providing this object, it should work
+by creating a new index with default configuration.</p>
+<pre><code class="language-bash">curl -XPUT -H <span class="hljs-string">"Content-Type: application/json"</span> <span class="hljs-string">"http://localhost:8100/v1/index?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>  -d<span class="hljs-string">''</span>
 </code></pre>
 <h2 id="add-token"><a name="add-token" class="fa fa-link" href="#"></a>Add Token</h2>
 <p>By using this endpoint you will be able to create a new App token. If the token
@@ -802,6 +869,13 @@ objects.</p>
                            href="#reset-index"
                         >
                             Reset Index
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#configure-index"
+                        >
+                            Configure Index
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
