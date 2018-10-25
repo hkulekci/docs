@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Events API</title>
+    <title>Metadata Fields Plugin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Api Reference - Events">
+    <meta name="description" content="Apisearch plugins - Metadata Fields">
     <meta name="author" content="Apisearch team">
     <meta name="keywords" content="Apisearch, Elasticsearch search engine, fast search demo, Apisearch official website">
 
@@ -111,10 +111,10 @@
                                 <a href="/">Apisearch docs</a>
                             </li>
                                 <li class="c-breadcrumb__item breadcrumb-item">
-                                    <a href="#">API Reference</a>
+                                    <a href="#">Plugins</a>
                                 </li>
                             <li class="c-breadcrumb__item--active breadcrumb-item active" aria-current="page">
-                                Events API
+                                Metadata Fields Plugin
                             </li>
                         </ol>
                     </nav>
@@ -210,22 +210,6 @@
                                             Interaction API
                                         </a>
                                     </li>
-                                    <li class="c-sidebar__navItem--sub-1 nav-item">
-                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/api-reference/events.html"
-                                        >
-                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Events API
-                                        </a>
-                                    </li>
-                                    <li class="c-sidebar__navItem--sub-1 nav-item">
-                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/api-reference/events.html"
-                                        >
-                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Logs API
-                                        </a>
-                                    </li>
                             </ul>
                         <li class="c-sidebar__navItem nav-item">
                             <a class="c-sidebar__navLink c-sidebar__navLink--title nav-link"
@@ -271,14 +255,6 @@
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/api-client/event.html"
-                                        >
-                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Event
-                                        </a>
-                                    </li>
-                                    <li class="c-sidebar__navItem--sub-1 nav-item">
-                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
                                            href="/api-client/config.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -306,10 +282,18 @@
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/plugins/metadata-fields.html"
+                                           href="/plugins/elk.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Metadata Fields Plugin
+                                            ELK Plugin
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/most-relevant-words.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Most Relevant Words Plugin
                                         </a>
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
@@ -326,6 +310,22 @@
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                                             New Relic Plugin
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/metadata-fields.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Metadata Fields Plugin
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/static-tokens.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Static Tokens Plugin
                                         </a>
                                     </li>
                             </ul>
@@ -353,14 +353,6 @@
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                                             Autocomplete UI
-                                        </a>
-                                    </li>
-                                    <li class="c-sidebar__navItem--sub-1 nav-item">
-                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/ui/events-ui.html"
-                                        >
-                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Events UI
                                         </a>
                                     </li>
                             </ul>
@@ -484,14 +476,14 @@
             <main class="col-sm-8 col-md-9 col-lg-8 ml-sm-auto mr-lg-auto pt-3" role="main">
                 <section class="c-content">
                     <!-- Content -->
-                    <h3 id="query-events"><a name="query-events" class="fa fa-link" href="#"></a>Query Events</h3>
+                    <h1 id="redis-metadata-fields"><a name="redis-metadata-fields" class="fa fa-link" href="#"></a>Redis Metadata Fields</h1>
 
                     <!-- /Content -->
 
                     <hr>
                     <a class="c-content__editOnGithub"
                        target="_blank"
-                       href="https://github.com/apisearch-io/docs/tree/source/src/content/api-reference/events.md">
+                       href="https://github.com/apisearch-io/docs/tree/source/src/content/plugins/metadata-fields.md">
                         <i class="fa fa-github" aria-hidden="true"></i>
                         Edit this page!
                     </a>
@@ -502,11 +494,11 @@
             <!-- Toc here -->
             <div class="c-toc col-lg-2 d-none d-lg-block">
                 <ul class="c-toc__nav nav nav-pills flex-column">
-                    <li class="c-toc__navItem c-toc__navItem--3 nav-item">
+                    <li class="c-toc__navItem c-toc__navItem--1 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#query-events"
+                           href="#redis-metadata-fields"
                         >
-                            Query Events
+                            Redis Metadata Fields
                         </a>
                     </li>
 

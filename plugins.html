@@ -210,22 +210,6 @@
                                             Interaction API
                                         </a>
                                     </li>
-                                    <li class="c-sidebar__navItem--sub-1 nav-item">
-                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/api-reference/events.html"
-                                        >
-                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Events API
-                                        </a>
-                                    </li>
-                                    <li class="c-sidebar__navItem--sub-1 nav-item">
-                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/api-reference/events.html"
-                                        >
-                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Logs API
-                                        </a>
-                                    </li>
                             </ul>
                         <li class="c-sidebar__navItem nav-item">
                             <a class="c-sidebar__navLink c-sidebar__navLink--title nav-link"
@@ -271,14 +255,6 @@
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/api-client/event.html"
-                                        >
-                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Event
-                                        </a>
-                                    </li>
-                                    <li class="c-sidebar__navItem--sub-1 nav-item">
-                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
                                            href="/api-client/config.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -306,10 +282,18 @@
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/plugins/metadata-fields.html"
+                                           href="/plugins/elk.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Metadata Fields Plugin
+                                            ELK Plugin
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/most-relevant-words.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Most Relevant Words Plugin
                                         </a>
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
@@ -326,6 +310,22 @@
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                                             New Relic Plugin
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/metadata-fields.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Metadata Fields Plugin
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/static-tokens.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Static Tokens Plugin
                                         </a>
                                     </li>
                             </ul>
@@ -353,14 +353,6 @@
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                                             Autocomplete UI
-                                        </a>
-                                    </li>
-                                    <li class="c-sidebar__navItem--sub-1 nav-item">
-                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/ui/events-ui.html"
-                                        >
-                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Events UI
                                         </a>
                                     </li>
                             </ul>
@@ -490,12 +482,12 @@ it is by default? By using Apisearch Plugins you can expand as much as you want
 the software by only following some simple instructions.</p>
 <p>You will find some base plugins in the main server repository, and some other
 official plugins developed by our partners.</p>
-<h2 id="metadata-fieldspluginsmetadata-fieldshtml"><a name="metadata-fieldspluginsmetadata-fieldshtml" class="fa fa-link" href="#"></a><a href="plugins/metadata-fields.html">Metadata Fields</a></h2>
+<h2 id="redis-metadata-fieldspluginsredis-metadata-fieldshtml"><a name="redis-metadata-fieldspluginsredis-metadata-fieldshtml" class="fa fa-link" href="#"></a><a href="plugins/redis-metadata-fields.html">Redis Metadata Fields</a></h2>
 <p>Save your read-only fields in a key-value technology instead of storing it
 inside your search infrastructure. Populate your items with these values
 depending on your needs every moment.</p>
 <ul>
-<li>Source - <a href="https://github.com/apisearch-io/search-server/tree/master/Plugin/MetadataFields">Github</a></li>
+<li>Source - <a href="https://github.com/apisearch-io/search-server/tree/master/Plugin/RedisMetadataFields">Github</a></li>
 <li>Current versions - <a href="https://github.com/apisearch-io/search-server/releases">0.1.*</a></li>
 </ul>
 <h2 id="new-relicpluginsnew-relichtml"><a name="new-relicpluginsnew-relichtml" class="fa fa-link" href="#"></a><a href="plugins/new-relic.html">New Relic</a></h2>
@@ -519,6 +511,27 @@ will be able to modify the input data, and by doing them after, you will be able
 to change the result value.</p>
 <ul>
 <li>Source - <a href="https://github.com/apisearch-io/search-server/tree/master/Plugin/Callbacks">Github</a></li>
+<li>Current versions - <a href="https://github.com/apisearch-io/search-server/releases">0.1.*</a></li>
+</ul>
+<h2 id="static-tokenspluginsstatic-tokenshtml"><a name="static-tokenspluginsstatic-tokenshtml" class="fa fa-link" href="#"></a><a href="plugins/static-tokens.html">Static Tokens</a></h2>
+<p>Store your tokens as static values, and make their access something completely
+local. Avoid any external access.</p>
+<ul>
+<li>Source - <a href="https://github.com/apisearch-io/search-server/tree/master/Plugin/StaticTokens">Github</a></li>
+<li>Current versions - <a href="https://github.com/apisearch-io/search-server/releases">0.1.*</a></li>
+</ul>
+<h2 id="most-relevant-wordspluginsmost-relevant-wordshtml"><a name="most-relevant-wordspluginsmost-relevant-wordshtml" class="fa fa-link" href="#"></a><a href="plugins/most-relevant-words.html">Most Relevant Words</a></h2>
+<p>Simplify some of your searchable metadata fields by applying some filters.
+Reduce the size of the fields by only keeping the most valuable words.</p>
+<ul>
+<li>Source - <a href="https://github.com/apisearch-io/search-server/tree/master/Plugin/MostRelevantWords">Github</a></li>
+<li>Current versions - <a href="https://github.com/apisearch-io/search-server/releases">0.1.*</a></li>
+</ul>
+<h2 id="elkpluginselkhtml"><a name="elkpluginselkhtml" class="fa fa-link" href="#"></a><a href="plugins/elk.html">ELK</a></h2>
+<p>Send your domain events to a Redis queue, in order to be consumed by an ELK
+framework.</p>
+<ul>
+<li>Source - <a href="https://github.com/apisearch-io/search-server/tree/master/Plugin/ELK">Github</a></li>
 <li>Current versions - <a href="https://github.com/apisearch-io/search-server/releases">0.1.*</a></li>
 </ul>
 <h2 id="enable-a-plugin"><a name="enable-a-plugin" class="fa fa-link" href="#"></a>Enable a plugin</h2>

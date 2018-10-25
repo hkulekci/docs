@@ -228,22 +228,6 @@
                                             Interaction API
                                         </a>
                                     </li>
-                                    <li class="c-sidebar__navItem--sub-1 nav-item">
-                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/api-reference/events.html"
-                                        >
-                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Events API
-                                        </a>
-                                    </li>
-                                    <li class="c-sidebar__navItem--sub-1 nav-item">
-                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/api-reference/events.html"
-                                        >
-                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Logs API
-                                        </a>
-                                    </li>
                             </ul>
                         <li class="c-sidebar__navItem nav-item">
                             <a class="c-sidebar__navLink c-sidebar__navLink--title nav-link"
@@ -289,14 +273,6 @@
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/api-client/event.html"
-                                        >
-                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Event
-                                        </a>
-                                    </li>
-                                    <li class="c-sidebar__navItem--sub-1 nav-item">
-                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
                                            href="/api-client/config.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -324,10 +300,18 @@
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
                                         <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/plugins/metadata-fields.html"
+                                           href="/plugins/elk.html"
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Metadata Fields Plugin
+                                            ELK Plugin
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/most-relevant-words.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Most Relevant Words Plugin
                                         </a>
                                     </li>
                                     <li class="c-sidebar__navItem--sub-1 nav-item">
@@ -344,6 +328,22 @@
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                                             New Relic Plugin
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/metadata-fields.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Metadata Fields Plugin
+                                        </a>
+                                    </li>
+                                    <li class="c-sidebar__navItem--sub-1 nav-item">
+                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
+                                           href="/plugins/static-tokens.html"
+                                        >
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            Static Tokens Plugin
                                         </a>
                                     </li>
                             </ul>
@@ -371,14 +371,6 @@
                                         >
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                                             Autocomplete UI
-                                        </a>
-                                    </li>
-                                    <li class="c-sidebar__navItem--sub-1 nav-item">
-                                        <a class="c-sidebar__navLink c-sidebar__navLink--subtitle nav-link"
-                                           href="/ui/events-ui.html"
-                                        >
-                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            Events UI
                                         </a>
                                     </li>
                             </ul>
@@ -1448,24 +1440,6 @@ top right of the website.</p>
 <li><a href="/api-client/result.html">Api Client - Result</a></li>
 <li><a href="/api-client/result.html#reading-suggestions">Api Client - Reading Suggestions</a></li>
 </ul>
-<h2 id="events"><a name="events" class="fa fa-link" href="#"></a>Events</h2>
-<p>Events Result reference</p>
-<pre><code>{
-  <span class="hljs-attr">"query"</span>: !Query,
-  <span class="hljs-attr">"total_hits"</span>: ?int (default <span class="hljs-number">0</span>),
-  <span class="hljs-attr">"events"</span>: ?Event[],
-  <span class="hljs-attr">"aggregations"</span>: ?ResultAggregations
-}
-</code></pre>
-<h2 id="logs"><a name="logs" class="fa fa-link" href="#"></a>Logs</h2>
-<p>Logs Result reference</p>
-<pre><code>{
-  <span class="hljs-attr">"query"</span>: !Query,
-  <span class="hljs-attr">"total_hits"</span>: ?int (default <span class="hljs-number">0</span>),
-  <span class="hljs-attr">"logs"</span>: ?Log[],
-  <span class="hljs-attr">"aggregations"</span>: ?ResultAggregations
-}
-</code></pre>
 
                     <!-- /Content -->
 
@@ -1656,20 +1630,6 @@ top right of the website.</p>
                            href="#result"
                         >
                             Result
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#events"
-                        >
-                            Events
-                        </a>
-                    </li>
-                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
-                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
-                           href="#logs"
-                        >
-                            Logs
                         </a>
                     </li>
 
