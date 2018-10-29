@@ -573,6 +573,35 @@ $query = Query::createByUUIDs([
 </code></pre>
 <p>The order is not important here, and the result format will be exactly the same
 than any other type of queries.</p>
+<h2 id="fields-selected"><a name="fields-selected" class="fa fa-link" href="#"></a>Fields selected</h2>
+<p>Sometimes you don’t want to select all Item fields. You could consider this when
+you need as much fastness as possible, for example in real time search, or when
+you want to reduce as much as possible the response payload, for example, for
+CDNs.</p>
+<pre><code class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Query</span>\<span class="hljs-title">Query</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Apisearch</span>\<span class="hljs-title">Model</span>\<span class="hljs-title">ItemUUID</span>;
+
+$query = Query::createMatchAll()
+    -&gt;setFields([
+        <span class="hljs-string">'metadata.*'</span>,
+        <span class="hljs-string">'indexed_metadata.title'</span>
+    ]);
+</code></pre>
+<pre><code class="language-typescript"><span class="hljs-keyword">import</span> {Query, ItemUUID} <span class="hljs-keyword">from</span> <span class="hljs-string">"apisearch"</span>;
+
+<span class="hljs-keyword">let</span> query = Query
+    .createMatchAll()
+    .setFields([
+        <span class="hljs-string">'metadata.*'</span>,
+        <span class="hljs-string">'indexed_metadata.title'</span>
+    ]);
+</code></pre>
+<p>You can use wildcards to select a group of fields, or an array of fields.</p>
+<blockquote>
+<p>Take in account that if you select some fields instead of the entire Item, you
+may have problems when using this Item result as a domain object in your
+project, so use this feature only in read-only environments.</p>
+</blockquote>
 <h2 id="filters"><a name="filters" class="fa fa-link" href="#"></a>Filters</h2>
 <p>Once a new Query is created you can start by filtering your results. This
 library provides a developer friendly way for defining filters by exposing you a
@@ -1425,6 +1454,21 @@ a filter field) as array, and the fuzziness as the value.</p>
         <span class="hljs-string">'serchable_metadata.body'</span>: <span class="hljs-string">'AUTO'</span>
     });
 </code></pre>
+<h2 id="min-score"><a name="min-score" class="fa fa-link" href="#"></a>Min Score</h2>
+<p>You may have the experience of having tons of results, being your long tail
+completely useless. That happens because items are sorted by _score (if you
+define other sorting), and even if the result has a score of 1, will still be
+a result.</p>
+<p>You can define a minimum score, so all items resulting from a query with a score
+slower than the one selected will be considered as rubbish. Useful for deleting
+this long tail.</p>
+<pre><code class="language-php">Query::createMatchAll()
+    -&gt;setMinScore(<span class="hljs-number">10.0</span>);
+</code></pre>
+<pre><code class="language-javascript">Query
+    .createFromArray()
+    .setMinScore(<span class="hljs-number">10.0</span>);
+</code></pre>
 <h2 id="relevance-strategy"><a name="relevance-strategy" class="fa fa-link" href="#"></a>Relevance Strategy</h2>
 <p>By default, your results are sorted by score from highest to lowest. This score
 is dynamically created per each matched documents in your index. But you may
@@ -1610,6 +1654,13 @@ Query::createMatchAll()
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">
                         <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#fields-selected"
+                        >
+                            Fields selected
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
                            href="#filters"
                         >
                             Filters
@@ -1718,6 +1769,13 @@ Query::createMatchAll()
                            href="#fuzziness"
                         >
                             Fuzziness
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#min-score"
+                        >
+                            Min Score
                         </a>
                     </li>
                     <li class="c-toc__navItem c-toc__navItem--2 nav-item">

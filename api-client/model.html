@@ -523,8 +523,9 @@ values. By default, an empty array is used.</li>
 <li><code>suggest</code> - An array of strings where each item can propose suggestions for
 searching time. Strings wont be decomposed neither. By default, an empty array
 is used.</li>
-<li><code>Coordinate</code> - An Item can be geolocated in space, so an instance of Coordinate
-can be injected here. This value is not required.</li>
+<li><code>coordinate</code> - An Item can be geo located in space, so an instance of
+Coordinate can be injected here. This value is not required.</li>
+<li><code>score</code> - The score for an item inside a Result</li>
 </ul>
 <p>Let’s see an example of an item.</p>
 <pre><code class="language-yml"><span class="hljs-attr">id:</span> <span class="hljs-number">4303</span><span class="hljs-string">ui203</span>
@@ -935,6 +936,14 @@ $locationRange = <span class="hljs-keyword">new</span> Polygon([
 specific polygon can be defined by any user. Useful as well when composing
 maps, for example, defining country areas as polygons.</p>
 </blockquote>
+<h2 id="item-score"><a name="item-score" class="fa fa-link" href="#"></a>Item score</h2>
+<p>When an Item is retrieved with a Query Result, you can find the score assigned
+to the item in this specific query. This value could change across different
+queries.</p>
+<pre><code class="language-php">$item-&gt;getScore();
+</code></pre>
+<pre><code class="language-typescript">item.getScore();
+</code></pre>
 
                     <!-- /Content -->
 
@@ -1027,6 +1036,13 @@ maps, for example, defining country areas as polygons.</p>
                            href="#a-finite-set-of-coordinates-polygon"
                         >
                             A finite set of coordinates (polygon)
+                        </a>
+                    </li>
+                    <li class="c-toc__navItem c-toc__navItem--2 nav-item">
+                        <a class="c-toc__navLink c-toc__navLink--title nav-link"
+                           href="#item-score"
+                        >
+                            Item score
                         </a>
                     </li>
 
