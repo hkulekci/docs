@@ -517,6 +517,8 @@ default values are created.</p>
     "config": {
         "language": "ca",
         "store_searchable_metadata": false,
+        "shards": 5,
+        "replicas": 2,
         "synonyms": [{
             "words": [
                 "house",
@@ -658,6 +660,8 @@ default values are created.</p>
     "config": {
         "language": "ca",
         "store_searchable_metadata": false,
+        "shards": 5,
+        "replicas": 2,
         "synonyms": [{
             "words": [
                 "house",
@@ -676,9 +680,24 @@ default values are created.</p>
 '</span>
 </code></pre>
 <p>This config value is optional, so by not providing this object, it should work
-by creating a new index with default configuration.</p>
+by configuring the index with default configuration.</p>
 <pre><code class="language-bash">curl -XPUT -H <span class="hljs-string">"Content-Type: application/json"</span> <span class="hljs-string">"http://localhost:8100/v1/index?app_id={{ your_app_id }}&amp;index={{ your_index }}&amp;token={{ your_token }}"</span>  -d<span class="hljs-string">''</span>
 </code></pre>
+<p>This endpoint can work as well as a simple index sanitation. Internally, the
+index is recreated from the scratch with no downtime. That means that the old
+index configuration is maintained, and at the same time, a new index with the
+desired configuration is created. After the creation and the reindex of all
+existing elements, the new one is used and the old one removed. These can be
+some usages of this endpoint.</p>
+<ul>
+<li>Sanitation of the index. Can be called with the same configuration once a
+week, for example</li>
+<li>To change shards and replicas</li>
+<li>To reindex without searchable metadata. Note that the other way would result
+empty values (can’t index an array that is not actually indexed)</li>
+<li>To add or delete synonyms</li>
+<li>To change the language of the index</li>
+</ul>
 <h2 id="add-token"><a name="add-token" class="fa fa-link" href="#"></a>Add Token</h2>
 <p>By using this endpoint you will be able to create a new App token. If the token
 exists, so it’s been created previously with a certain configuration, this new

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 50);
+/******/ 	return __webpack_require__(__webpack_require__.s = 48);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -285,6 +285,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return h; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createElement", function() { return h; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cloneElement", function() { return cloneElement; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createRef", function() { return createRef; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Component", function() { return Component; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "rerender", function() { return rerender; });
@@ -351,6 +352,12 @@ function extend(obj, props) {
   }return obj;
 }
 
+function applyRef(ref, value) {
+  if (ref != null) {
+    if (typeof ref == 'function') ref(value);else ref.current = value;
+  }
+}
+
 var defer = typeof Promise == 'function' ? Promise.resolve().then.bind(Promise.resolve()) : setTimeout;
 
 function cloneElement(vnode, props) {
@@ -368,10 +375,8 @@ function enqueueRender(component) {
 }
 
 function rerender() {
-	var p,
-	    list = items;
-	items = [];
-	while (p = list.pop()) {
+	var p;
+	while (p = items.pop()) {
 		if (p._dirty) renderComponent(p);
 	}
 }
@@ -421,8 +426,8 @@ function setAccessor(node, name, old, value, isSvg) {
 	if (name === 'className') name = 'class';
 
 	if (name === 'key') {} else if (name === 'ref') {
-		if (old) old(null);
-		if (value) value(node);
+		applyRef(old, null);
+		applyRef(value, node);
 	} else if (name === 'class' && !isSvg) {
 		node.className = value || '';
 	} else if (name === 'style') {
@@ -480,7 +485,7 @@ var hydrating = false;
 
 function flushMounts() {
 	var c;
-	while (c = mounts.pop()) {
+	while (c = mounts.shift()) {
 		if (options.afterMount) options.afterMount(c);
 		if (c.componentDidMount) c.componentDidMount();
 	}
@@ -661,7 +666,7 @@ function recollectNodeTree(node, unmountOnly) {
 	if (component) {
 		unmountComponent(component);
 	} else {
-		if (node['__preactattr_'] != null && node['__preactattr_'].ref) node['__preactattr_'].ref(null);
+		if (node['__preactattr_'] != null) applyRef(node['__preactattr_'].ref, null);
 
 		if (unmountOnly === false || node['__preactattr_'] == null) {
 			removeNode(node);
@@ -761,7 +766,7 @@ function setComponentProps(component, props, renderMode, context, mountAll) {
 		}
 	}
 
-	if (component.__ref) component.__ref(component);
+	applyRef(component.__ref, component);
 }
 
 function renderComponent(component, renderMode, mountAll, isChild) {
@@ -881,7 +886,7 @@ function renderComponent(component, renderMode, mountAll, isChild) {
 	}
 
 	if (!isUpdate || mountAll) {
-		mounts.unshift(component);
+		mounts.push(component);
 	} else if (!skip) {
 
 		if (component.componentDidUpdate) {
@@ -948,7 +953,7 @@ function unmountComponent(component) {
 	if (inner) {
 		unmountComponent(inner);
 	} else if (base) {
-		if (base['__preactattr_'] && base['__preactattr_'].ref) base['__preactattr_'].ref(null);
+		if (base['__preactattr_'] != null) applyRef(base['__preactattr_'].ref, null);
 
 		component.nextBase = base;
 
@@ -958,7 +963,7 @@ function unmountComponent(component) {
 		removeChildren(base);
 	}
 
-	if (component.__ref) component.__ref(null);
+	applyRef(component.__ref, null);
 }
 
 function Component(props, context) {
@@ -991,10 +996,15 @@ function render(vnode, parent, merge) {
   return diff(merge, vnode, {}, false, parent, false);
 }
 
+function createRef() {
+	return {};
+}
+
 var preact = {
 	h: h,
 	createElement: h,
 	cloneElement: cloneElement,
+	createRef: createRef,
 	Component: Component,
 	render: render,
 	rerender: rerender,
@@ -1014,7 +1024,7 @@ var preact = {
 
 
 var bind = __webpack_require__(24);
-var isBuffer = __webpack_require__(25);
+var isBuffer = __webpack_require__(56);
 
 /*global toString:true*/
 
@@ -1559,71 +1569,6 @@ exports["default"] = new Container;
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-exports.__esModule = true;
-var preact_1 = __webpack_require__(1);
-var Hogan = __webpack_require__(97);
-/**
- * Template
- */
-var Template = /** @class */ (function (_super) {
-    __extends(Template, _super);
-    function Template() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        /**
-         * Render template
-         *
-         * @param template
-         * @param result
-         *
-         * @return {any}
-         */
-        _this.renderTemplate = function (template, result) {
-            /**
-             * Compile template using hogan.js
-             */
-            var compiledTemplate = Hogan.compile(template);
-            var output = compiledTemplate.render(result);
-            return {
-                __html: output
-            };
-        };
-        return _this;
-    }
-    /**
-     * Render
-     *
-     * @return {any}
-     */
-    Template.prototype.render = function () {
-        var props = this.props;
-        var template = props.template;
-        var data = props.data;
-        var className = props.className;
-        return (template)
-            ? preact_1.h("div", { className: className, dangerouslySetInnerHTML: this.renderTemplate(template, data) })
-            : null;
-    };
-    return Template;
-}(preact_1.Component));
-exports["default"] = Template;
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 exports.__esModule = true;
 /**
  * filter constants
@@ -1774,21 +1719,74 @@ var Filter = /** @class */ (function () {
         }
         return Filter.create(array.field, array.values, array.application_type, array.filter_type, array.filter_terms);
     };
-    /**
-     * Get path by field.
-     *
-     * @param field
-     *
-     * @returns {string}
-     */
-    Filter.getFilterPathByField = function (field) {
-        return (["id", "type"].indexOf(field) > -1)
-            ? "uuid." + field
-            : "indexed_metadata." + field;
-    };
     return Filter;
 }());
 exports.Filter = Filter;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
+var preact_1 = __webpack_require__(1);
+var Hogan = __webpack_require__(96);
+/**
+ * Template
+ */
+var Template = /** @class */ (function (_super) {
+    __extends(Template, _super);
+    function Template() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        /**
+         * Render template
+         *
+         * @param template
+         * @param result
+         *
+         * @return {any}
+         */
+        _this.renderTemplate = function (template, result) {
+            /**
+             * Compile template using hogan.js
+             */
+            var compiledTemplate = Hogan.compile(template);
+            var output = compiledTemplate.render(result);
+            return {
+                __html: output
+            };
+        };
+        return _this;
+    }
+    /**
+     * Render
+     *
+     * @return {any}
+     */
+    Template.prototype.render = function () {
+        var props = this.props;
+        var template = props.template;
+        var data = props.data;
+        var className = props.className;
+        return (template)
+            ? preact_1.h("div", { className: className, dangerouslySetInnerHTML: this.renderTemplate(template, data) })
+            : null;
+    };
+    return Template;
+}(preact_1.Component));
+exports["default"] = Template;
 
 
 /***/ }),
@@ -1798,1568 +1796,10 @@ exports.Filter = Filter;
 "use strict";
 
 exports.__esModule = true;
-/**
- * Widget
- */
-var Widget = /** @class */ (function () {
-    function Widget() {
-    }
-    return Widget;
-}());
-exports["default"] = Widget;
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-exports.__esModule = true;
-var InvalidFormatError_1 = __webpack_require__(3);
-/**
- * ItemUUID class
- */
-var ItemUUID = /** @class */ (function () {
-    /**
-     * Constructor
-     *
-     * @param id
-     * @param type
-     */
-    function ItemUUID(id, type) {
-        this.id = id;
-        this.type = type;
-    }
-    /**
-     * Create composed UUID
-     *
-     * @param composedUUID
-     *
-     * @returns {ItemUUID}
-     */
-    ItemUUID.createByComposedUUID = function (composedUUID) {
-        var parts = composedUUID.split("~");
-        if (2 != parts.length) {
-            throw InvalidFormatError_1.InvalidFormatError.composedItemUUIDNotValid();
-        }
-        return new ItemUUID(parts[0], parts[1]);
-    };
-    /**
-     * Return id
-     *
-     * @returns {string}
-     */
-    ItemUUID.prototype.getId = function () {
-        return this.id;
-    };
-    /**
-     * Get type
-     *
-     * @returns {string}
-     */
-    ItemUUID.prototype.getType = function () {
-        return this.type;
-    };
-    /**
-     * To array
-     *
-     * @returns {{id: *, type: *}}
-     */
-    ItemUUID.prototype.toArray = function () {
-        return {
-            id: this.id,
-            type: this.type
-        };
-    };
-    /**
-     * Create from array
-     *
-     * @param array {{id:string, type:string}}
-     *
-     * @return {ItemUUID}
-     */
-    ItemUUID.createFromArray = function (array) {
-        array = JSON.parse(JSON.stringify(array));
-        return new ItemUUID(array.id, array.type);
-    };
-    /**
-     * Compose unique id
-     *
-     * @returns {string}
-     */
-    ItemUUID.prototype.composedUUID = function () {
-        return this.id + "~" + this.type;
-    };
-    return ItemUUID;
-}());
-exports.ItemUUID = ItemUUID;
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Module dependenices
- */
-
-var isObject = __webpack_require__(101);
-var clone = __webpack_require__(104);
-var typeOf = __webpack_require__(49);
-var forOwn = __webpack_require__(106);
-
-/**
- * Recursively clone native types.
- */
-
-function cloneDeep(val, instanceClone) {
-  switch (typeOf(val)) {
-    case 'object':
-      return cloneObjectDeep(val, instanceClone);
-    case 'array':
-      return cloneArrayDeep(val, instanceClone);
-    default: {
-      return clone(val);
-    }
-  }
-}
-
-function cloneObjectDeep(obj, instanceClone) {
-  if (isObject(obj) || (instanceClone === true && typeOf(obj) === 'object')) {
-    var res = {};
-    forOwn(obj, function(val, key) {
-      this[key] = cloneDeep(val, instanceClone);
-    }, res);
-    return res;
-  }
-  if (typeof instanceClone === 'function') {
-    return instanceClone(obj);
-  }
-  return obj;
-}
-
-function cloneArrayDeep(arr, instanceClone) {
-  var res = [];
-  for (var i = 0; i < arr.length; i++) {
-    res[i] = cloneDeep(arr[i], instanceClone);
-  }
-  return res;
-}
-
-/**
- * Expose `cloneDeep`
- */
-
-module.exports = cloneDeep;
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-exports.__esModule = true;
-var tslib_1 = __webpack_require__(0);
-var Apisearch_1 = __webpack_require__(54);
-exports["default"] = Apisearch_1["default"];
-tslib_1.__exportStar(__webpack_require__(77), exports);
-tslib_1.__exportStar(__webpack_require__(78), exports);
-tslib_1.__exportStar(__webpack_require__(46), exports);
-tslib_1.__exportStar(__webpack_require__(37), exports);
-tslib_1.__exportStar(__webpack_require__(4), exports);
-tslib_1.__exportStar(__webpack_require__(79), exports);
-tslib_1.__exportStar(__webpack_require__(80), exports);
-tslib_1.__exportStar(__webpack_require__(3), exports);
-tslib_1.__exportStar(__webpack_require__(38), exports);
-tslib_1.__exportStar(__webpack_require__(39), exports);
-tslib_1.__exportStar(__webpack_require__(40), exports);
-tslib_1.__exportStar(__webpack_require__(81), exports);
-tslib_1.__exportStar(__webpack_require__(82), exports);
-tslib_1.__exportStar(__webpack_require__(23), exports);
-tslib_1.__exportStar(__webpack_require__(30), exports);
-tslib_1.__exportStar(__webpack_require__(83), exports);
-tslib_1.__exportStar(__webpack_require__(31), exports);
-tslib_1.__exportStar(__webpack_require__(33), exports);
-tslib_1.__exportStar(__webpack_require__(32), exports);
-tslib_1.__exportStar(__webpack_require__(84), exports);
-tslib_1.__exportStar(__webpack_require__(14), exports);
-tslib_1.__exportStar(__webpack_require__(16), exports);
-tslib_1.__exportStar(__webpack_require__(10), exports);
-tslib_1.__exportStar(__webpack_require__(43), exports);
-tslib_1.__exportStar(__webpack_require__(34), exports);
-tslib_1.__exportStar(__webpack_require__(18), exports);
-tslib_1.__exportStar(__webpack_require__(8), exports);
-tslib_1.__exportStar(__webpack_require__(13), exports);
-tslib_1.__exportStar(__webpack_require__(85), exports);
-tslib_1.__exportStar(__webpack_require__(35), exports);
-tslib_1.__exportStar(__webpack_require__(19), exports);
-tslib_1.__exportStar(__webpack_require__(36), exports);
-tslib_1.__exportStar(__webpack_require__(44), exports);
-tslib_1.__exportStar(__webpack_require__(41), exports);
-tslib_1.__exportStar(__webpack_require__(21), exports);
-tslib_1.__exportStar(__webpack_require__(42), exports);
-tslib_1.__exportStar(__webpack_require__(20), exports);
-tslib_1.__exportStar(__webpack_require__(45), exports);
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-exports.__esModule = true;
-var tslib_1 = __webpack_require__(0);
-var Coordinate_1 = __webpack_require__(14);
-var ItemUUID_1 = __webpack_require__(10);
-var User_1 = __webpack_require__(34);
-var Aggregation_1 = __webpack_require__(18);
-var Filter_1 = __webpack_require__(8);
-var Filter_2 = __webpack_require__(8);
-var Aggregation_2 = __webpack_require__(18);
-var InvalidFormatError_1 = __webpack_require__(3);
-var Filter_3 = __webpack_require__(8);
-var ScoreStrategy_1 = __webpack_require__(35);
-var SortBy_1 = __webpack_require__(19);
-/**
- * Query constants
- */
-exports.QUERY_DEFAULT_FROM = 0;
-exports.QUERY_DEFAULT_PAGE = 1;
-exports.QUERY_DEFAULT_SIZE = 10;
-exports.QUERY_INFINITE_SIZE = 1000;
-exports.NO_MIN_SCORE = 0.0;
-/**
- * Query class
- */
-var Query = /** @class */ (function () {
-    /**
-     * Constructor
-     *
-     * @param queryText
-     */
-    function Query(queryText) {
-        this.fields = [];
-        this.universeFilters = {};
-        this.filters = {};
-        this.itemsPromoted = [];
-        this.aggregations = {};
-        this.filterFields = [];
-        this.minScore = exports.NO_MIN_SCORE;
-        this.sortByInstance = SortBy_1.SortBy.create();
-        this.filters._query = Filter_1.Filter.create("", [queryText], 0, Filter_3.FILTER_TYPE_QUERY);
-    }
-    /**
-     * Created located
-     *
-     * @param coordinate
-     * @param queryText
-     * @param page
-     * @param size
-     *
-     * @returns {Query}
-     */
-    Query.createLocated = function (coordinate, queryText, page, size) {
-        if (page === void 0) { page = exports.QUERY_DEFAULT_PAGE; }
-        if (size === void 0) { size = exports.QUERY_DEFAULT_SIZE; }
-        var query = Query.create(queryText, page, size);
-        query.coordinate = coordinate;
-        return query;
-    };
-    /**
-     * Create
-     *
-     * @param queryText
-     * @param page
-     * @param size
-     *
-     * @returns {Query}
-     */
-    Query.create = function (queryText, page, size) {
-        if (page === void 0) { page = exports.QUERY_DEFAULT_PAGE; }
-        if (size === void 0) { size = exports.QUERY_DEFAULT_SIZE; }
-        page = Math.max(1, page);
-        var query = new Query(queryText);
-        query.from = (page - 1) * size;
-        query.size = size;
-        query.page = page;
-        return query;
-    };
-    /**
-     * Create match all
-     *
-     * @return {Query}
-     */
-    Query.createMatchAll = function () {
-        return Query.create("", exports.QUERY_DEFAULT_PAGE, exports.QUERY_DEFAULT_SIZE);
-    };
-    /**
-     * Create by UUID
-     *
-     * @param uuid
-     *
-     * @return {Query}
-     */
-    Query.createByUUID = function (uuid) {
-        return Query.createByUUIDs(uuid);
-    };
-    /**
-     * Create by UUIDs
-     *
-     * @param uuids
-     *
-     * @return {Query}
-     */
-    Query.createByUUIDs = function () {
-        var uuids = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            uuids[_i] = arguments[_i];
-        }
-        var ids = [];
-        for (var i in uuids) {
-            ids.push(uuids[i].composedUUID());
-        }
-        var query = Query.create("", exports.QUERY_DEFAULT_PAGE, ids.length)
-            .disableAggregations()
-            .disableSuggestions();
-        query.filters._id = Filter_1.Filter.create("_id", ids, Filter_2.FILTER_AT_LEAST_ONE, Filter_2.FILTER_TYPE_FIELD);
-        return query;
-    };
-    /**
-     * set fields
-     *
-     * @param fields
-     *
-     * @return {Query}
-     */
-    Query.prototype.setFields = function (fields) {
-        this.fields = fields;
-        return this;
-    };
-    /**
-     * get fields
-     *
-     * @return {string[]}
-     */
-    Query.prototype.getFields = function () {
-        return this.fields;
-    };
-    /**
-     * Filter universe by types
-     *
-     * @param values
-     *
-     * @return {Query}
-     */
-    Query.prototype.filterUniverseByTypes = function (values) {
-        var _a;
-        var fieldPath = Filter_1.Filter.getFilterPathByField("type");
-        if (values.length > 0) {
-            this.universeFilters = tslib_1.__assign({}, this.universeFilters, (_a = {}, _a["type"] = Filter_1.Filter.create(fieldPath, values, Filter_2.FILTER_AT_LEAST_ONE, Filter_2.FILTER_TYPE_FIELD), _a));
-        }
-        else {
-            delete this.universeFilters.type;
-        }
-        return this;
-    };
-    /**
-     * Filter by types
-     *
-     * @param values
-     * @param aggregate
-     * @param aggregationSort
-     *
-     * @return {Query}
-     */
-    Query.prototype.filterByTypes = function (values, aggregate, aggregationSort) {
-        if (aggregate === void 0) { aggregate = true; }
-        if (aggregationSort === void 0) { aggregationSort = Aggregation_2.AGGREGATION_SORT_BY_COUNT_DESC; }
-        var _a, _b;
-        var fieldPath = Filter_1.Filter.getFilterPathByField("type");
-        if (values.length > 0) {
-            this.filters = tslib_1.__assign({}, this.filters, (_a = {}, _a["type"] = Filter_1.Filter.create(fieldPath, values, Filter_2.FILTER_AT_LEAST_ONE, Filter_2.FILTER_TYPE_FIELD), _a));
-        }
-        else {
-            delete this.filters.type;
-        }
-        if (aggregate) {
-            this.aggregations = tslib_1.__assign({}, this.aggregations, (_b = {}, _b["type"] = Aggregation_1.Aggregation.create("type", fieldPath, Filter_2.FILTER_AT_LEAST_ONE, Filter_2.FILTER_TYPE_FIELD, [], aggregationSort), _b));
-        }
-        return this;
-    };
-    /**
-     * Filter universe by ids
-     *
-     * @param values
-     *
-     * @return {Query}
-     */
-    Query.prototype.filterUniverseByIds = function (values) {
-        var _a;
-        var fieldPath = Filter_1.Filter.getFilterPathByField("id");
-        if (values.length > 0) {
-            this.universeFilters = tslib_1.__assign({}, this.universeFilters, (_a = {}, _a["id"] = Filter_1.Filter.create(fieldPath, values, Filter_2.FILTER_AT_LEAST_ONE, Filter_2.FILTER_TYPE_FIELD), _a));
-        }
-        else {
-            delete this.universeFilters.id;
-        }
-        return this;
-    };
-    /**
-     * Filter by ids
-     *
-     * @param values
-     *
-     * @return {Query}
-     */
-    Query.prototype.filterByIds = function (values) {
-        var _a;
-        var fieldPath = Filter_1.Filter.getFilterPathByField("id");
-        if (values.length > 0) {
-            this.filters = tslib_1.__assign({}, this.filters, (_a = {}, _a["id"] = Filter_1.Filter.create(fieldPath, values, Filter_2.FILTER_AT_LEAST_ONE, Filter_2.FILTER_TYPE_FIELD), _a));
-        }
-        else {
-            delete this.filters.id;
-        }
-        return this;
-    };
-    /**
-     * Filter universe by
-     *
-     * @param field
-     * @param values
-     * @param applicationType
-     *
-     * @return {Query}
-     */
-    Query.prototype.filterUniverseBy = function (field, values, applicationType) {
-        if (applicationType === void 0) { applicationType = Filter_2.FILTER_AT_LEAST_ONE; }
-        var _a;
-        var fieldPath = Filter_1.Filter.getFilterPathByField(field);
-        if (values.length > 0) {
-            this.universeFilters = tslib_1.__assign({}, this.universeFilters, (_a = {}, _a[field] = Filter_1.Filter.create(fieldPath, values, applicationType, Filter_2.FILTER_TYPE_FIELD), _a));
-        }
-        else {
-            delete this.universeFilters[field];
-        }
-        return this;
-    };
-    /**
-     * Filter by
-     *
-     * @param filterName
-     * @param field
-     * @param values
-     * @param applicationType
-     * @param aggregate
-     * @param aggregationSort
-     *
-     * @return {Query}
-     */
-    Query.prototype.filterBy = function (filterName, field, values, applicationType, aggregate, aggregationSort) {
-        if (applicationType === void 0) { applicationType = Filter_2.FILTER_AT_LEAST_ONE; }
-        if (aggregate === void 0) { aggregate = true; }
-        if (aggregationSort === void 0) { aggregationSort = Aggregation_2.AGGREGATION_SORT_BY_COUNT_DESC; }
-        var _a;
-        var fieldPath = Filter_1.Filter.getFilterPathByField(field);
-        if (values.length > 0) {
-            this.filters = tslib_1.__assign({}, this.filters, (_a = {}, _a[filterName] = Filter_1.Filter.create(fieldPath, values, applicationType, Filter_2.FILTER_TYPE_FIELD), _a));
-        }
-        else {
-            delete this.filters[filterName];
-        }
-        if (aggregate) {
-            this.aggregateBy(filterName, field, applicationType, aggregationSort);
-        }
-        return this;
-    };
-    /**
-     * Filter universe by range
-     *
-     * @param field
-     * @param values
-     * @param applicationType
-     * @param rangeType
-     *
-     * @return {Query}
-     */
-    Query.prototype.filterUniverseByRange = function (field, values, applicationType, rangeType) {
-        if (applicationType === void 0) { applicationType = Filter_2.FILTER_AT_LEAST_ONE; }
-        if (rangeType === void 0) { rangeType = Filter_2.FILTER_TYPE_RANGE; }
-        var _a;
-        var fieldPath = Filter_1.Filter.getFilterPathByField(field);
-        if (values.length > 0) {
-            this.universeFilters = tslib_1.__assign({}, this.universeFilters, (_a = {}, _a[field] = Filter_1.Filter.create(fieldPath, values, applicationType, rangeType), _a));
-        }
-        else {
-            delete this.universeFilters[field];
-        }
-        return this;
-    };
-    /**
-     * Filter universe by date range
-     *
-     * @param field
-     * @param values
-     * @param applicationType
-     *
-     * @return {Query}
-     */
-    Query.prototype.filterUniverseByDateRange = function (field, values, applicationType) {
-        if (applicationType === void 0) { applicationType = Filter_2.FILTER_AT_LEAST_ONE; }
-        return this.filterUniverseByRange(field, values, applicationType, Filter_2.FILTER_TYPE_DATE_RANGE);
-    };
-    /**
-     * Filter by range
-     *
-     * @param filterName
-     * @param field
-     * @param options
-     * @param values
-     * @param applicationType
-     * @param rangeType
-     * @param aggregate
-     * @param aggregationSort
-     *
-     * @return {Query}
-     */
-    Query.prototype.filterByRange = function (filterName, field, options, values, applicationType, rangeType, aggregate, aggregationSort) {
-        if (applicationType === void 0) { applicationType = Filter_2.FILTER_AT_LEAST_ONE; }
-        if (rangeType === void 0) { rangeType = Filter_2.FILTER_TYPE_RANGE; }
-        if (aggregate === void 0) { aggregate = true; }
-        if (aggregationSort === void 0) { aggregationSort = Aggregation_2.AGGREGATION_SORT_BY_COUNT_DESC; }
-        var _a;
-        var fieldPath = Filter_1.Filter.getFilterPathByField(field);
-        if (values.length !== 0) {
-            this.filters = tslib_1.__assign({}, this.filters, (_a = {}, _a[filterName] = Filter_1.Filter.create(fieldPath, values, applicationType, rangeType), _a));
-        }
-        else {
-            delete this.filters[filterName];
-        }
-        if (aggregate) {
-            this.aggregateByRange(filterName, fieldPath, options, applicationType, rangeType, aggregationSort);
-        }
-        return this;
-    };
-    /**
-     * Filter by date range
-     *
-     * @param filterName
-     * @param field
-     * @param options
-     * @param values
-     * @param applicationType
-     * @param aggregate
-     * @param aggregationSort
-     *
-     * @return {Query}
-     */
-    Query.prototype.filterByDateRange = function (filterName, field, options, values, applicationType, aggregate, aggregationSort) {
-        if (applicationType === void 0) { applicationType = Filter_2.FILTER_AT_LEAST_ONE; }
-        if (aggregate === void 0) { aggregate = true; }
-        if (aggregationSort === void 0) { aggregationSort = Aggregation_2.AGGREGATION_SORT_BY_COUNT_DESC; }
-        return this.filterByRange(filterName, field, options, values, applicationType, Filter_2.FILTER_TYPE_DATE_RANGE, aggregate, aggregationSort);
-    };
-    /**
-     * Filter universe by location
-     *
-     * @param locationRange
-     *
-     * @return {Query}
-     */
-    Query.prototype.filterUniverseByLocation = function (locationRange) {
-        var _a;
-        this.universeFilters = tslib_1.__assign({}, this.universeFilters, (_a = {}, _a["coordinate"] = Filter_1.Filter.create("coordinate", locationRange.toArray(), Filter_2.FILTER_AT_LEAST_ONE, Filter_2.FILTER_TYPE_GEO), _a));
-        return this;
-    };
-    /**
-     * Set filter fields
-     *
-     * @param filterFields
-     *
-     * @return {Query}
-     */
-    Query.prototype.setFilterFields = function (filterFields) {
-        this.filterFields = filterFields;
-        return this;
-    };
-    /**
-     * Get filter fields
-     *
-     * @return {string[]}
-     */
-    Query.prototype.getFilterFields = function () {
-        return this.filterFields;
-    };
-    /**
-     * Sort by
-     *
-     * @param sortBy
-     *
-     * @return {Query}
-     */
-    Query.prototype.sortBy = function (sortBy) {
-        if (sortBy.isSortedByGeoDistance()) {
-            if (!(this.coordinate instanceof Coordinate_1.Coordinate)) {
-                throw InvalidFormatError_1.InvalidFormatError.querySortedByDistanceWithoutCoordinate();
-            }
-            sortBy.setCoordinate(this.coordinate);
-        }
-        this.sortByInstance = sortBy;
-        return this;
-    };
-    /**
-     * Aggregate by
-     *
-     * @param filterName
-     * @param field
-     * @param applicationType
-     * @param aggregationSort
-     * @param limit
-     *
-     * @return {Query}
-     */
-    Query.prototype.aggregateBy = function (filterName, field, applicationType, aggregationSort, limit) {
-        if (aggregationSort === void 0) { aggregationSort = Aggregation_2.AGGREGATION_SORT_BY_COUNT_DESC; }
-        if (limit === void 0) { limit = Aggregation_2.AGGREGATION_NO_LIMIT; }
-        var _a;
-        this.aggregations = tslib_1.__assign({}, this.aggregations, (_a = {}, _a[filterName] = Aggregation_1.Aggregation.create(filterName, Filter_1.Filter.getFilterPathByField(field), applicationType, Filter_2.FILTER_TYPE_FIELD, [], aggregationSort, limit), _a));
-        return this;
-    };
-    /**
-     * Aggregate by range
-     *
-     * @param filterName
-     * @param field
-     * @param options
-     * @param applicationType
-     * @param rangeType
-     * @param aggregationSort
-     * @param limit
-     *
-     * @return {Query}
-     */
-    Query.prototype.aggregateByRange = function (filterName, field, options, applicationType, rangeType, aggregationSort, limit) {
-        if (rangeType === void 0) { rangeType = Filter_2.FILTER_TYPE_RANGE; }
-        if (aggregationSort === void 0) { aggregationSort = Aggregation_2.AGGREGATION_SORT_BY_COUNT_DESC; }
-        if (limit === void 0) { limit = Aggregation_2.AGGREGATION_NO_LIMIT; }
-        var _a;
-        if (options.length === 0) {
-            return this;
-        }
-        this.aggregations = tslib_1.__assign({}, this.aggregations, (_a = {}, _a[filterName] = Aggregation_1.Aggregation.create(filterName, Filter_1.Filter.getFilterPathByField(field), applicationType, rangeType, options, aggregationSort, limit), _a));
-        return this;
-    };
-    /**
-     * Aggregate by date range
-     *
-     * @param filterName
-     * @param field
-     * @param options
-     * @param applicationType
-     * @param aggregationSort
-     * @param limit
-     *
-     * @return {Query}
-     */
-    Query.prototype.aggregateByDateRange = function (filterName, field, options, applicationType, aggregationSort, limit) {
-        if (aggregationSort === void 0) { aggregationSort = Aggregation_2.AGGREGATION_SORT_BY_COUNT_DESC; }
-        if (limit === void 0) { limit = Aggregation_2.AGGREGATION_NO_LIMIT; }
-        return this.aggregateByRange(filterName, field, options, applicationType, Filter_2.FILTER_TYPE_DATE_RANGE, aggregationSort, limit);
-    };
-    /**
-     * Get aggregations
-     *
-     * @return {{}}
-     */
-    Query.prototype.getAggregations = function () {
-        return this.aggregations;
-    };
-    /**
-     * Get aggregation by name
-     *
-     * @param aggregationName
-     *
-     * @return {Aggregation|null}
-     */
-    Query.prototype.getAggregation = function (aggregationName) {
-        return this.aggregations[aggregationName] instanceof Aggregation_1.Aggregation
-            ? this.aggregations[aggregationName]
-            : null;
-    };
-    /**
-     * Get query text
-     *
-     * @return {string}
-     */
-    Query.prototype.getQueryText = function () {
-        var filter = this.filters._query;
-        return filter instanceof Filter_1.Filter
-            ? filter.getValues()[0]
-            : "";
-    };
-    /**
-     * Get universe filters
-     *
-     * @return {{}}
-     */
-    Query.prototype.getUniverseFilters = function () {
-        return this.universeFilters;
-    };
-    /**
-     * Get universe filter by name
-     *
-     * @param filterName
-     *
-     * @return {Filter|null}
-     */
-    Query.prototype.getUniverseFilter = function (filterName) {
-        return this.universeFilters[filterName] instanceof Filter_1.Filter
-            ? this.universeFilters[filterName]
-            : null;
-    };
-    /**
-     * Get filters
-     *
-     * @return {{}}
-     */
-    Query.prototype.getFilters = function () {
-        return this.filters;
-    };
-    /**
-     * Get filter by name
-     *
-     * @param filterName
-     *
-     * @return {Filter|null}
-     */
-    Query.prototype.getFilter = function (filterName) {
-        return this.filters[filterName] instanceof Filter_1.Filter
-            ? this.filters[filterName]
-            : null;
-    };
-    /**
-     * Get filter by field
-     *
-     * @param fieldName
-     *
-     * @return {Filter|null}
-     */
-    Query.prototype.getFilterByField = function (fieldName) {
-        var fieldPath = Filter_1.Filter.getFilterPathByField(fieldName);
-        for (var i in this.filters) {
-            if (this.filters[i].getField() == fieldPath) {
-                return this.filters[i];
-            }
-        }
-        return null;
-    };
-    /**
-     * Get sort by
-     *
-     * @return {SortBy}
-     */
-    Query.prototype.getSortBy = function () {
-        return this.sortByInstance;
-    };
-    /**
-     * Get from
-     *
-     * @return {number}
-     */
-    Query.prototype.getFrom = function () {
-        return this.from;
-    };
-    /**
-     * Get size
-     *
-     * @return {number}
-     */
-    Query.prototype.getSize = function () {
-        return this.size;
-    };
-    /**
-     * Get page
-     *
-     * @return {number}
-     */
-    Query.prototype.getPage = function () {
-        return this.page;
-    };
-    /**
-     * Enable results
-     *
-     * @return {Query}
-     */
-    Query.prototype.enableResults = function () {
-        this.resultsEnabled = true;
-        return this;
-    };
-    /**
-     * Disable results
-     *
-     * @return {Query}
-     */
-    Query.prototype.disableResults = function () {
-        this.resultsEnabled = false;
-        return this;
-    };
-    /**
-     * Are results enabled
-     *
-     * @return {boolean}
-     */
-    Query.prototype.areResultsEnabled = function () {
-        return this.resultsEnabled;
-    };
-    /**
-     * Enable aggregations
-     *
-     * @return {Query}
-     */
-    Query.prototype.enableAggregations = function () {
-        this.aggregationsEnabled = true;
-        return this;
-    };
-    /**
-     * Disable aggregations
-     *
-     * @return {Query}
-     */
-    Query.prototype.disableAggregations = function () {
-        this.aggregationsEnabled = false;
-        return this;
-    };
-    /**
-     * Are aggregations enabled
-     *
-     * @return {boolean}
-     */
-    Query.prototype.areAggregationsEnabled = function () {
-        return this.aggregationsEnabled;
-    };
-    /**
-     * Enable suggestions
-     *
-     * @return {Query}
-     */
-    Query.prototype.enableSuggestions = function () {
-        this.suggestionsEnabled = true;
-        return this;
-    };
-    /**
-     * Disable suggestions
-     *
-     * @return {Query}
-     */
-    Query.prototype.disableSuggestions = function () {
-        this.suggestionsEnabled = false;
-        return this;
-    };
-    /**
-     * Are suggestions enabled
-     *
-     * @return {boolean}
-     */
-    Query.prototype.areSuggestionsEnabled = function () {
-        return this.suggestionsEnabled;
-    };
-    /**
-     * Enable highlights
-     *
-     * @return {Query}
-     */
-    Query.prototype.enableHighlights = function () {
-        this.highlightsEnabled = true;
-        return this;
-    };
-    /**
-     * Disable highlights
-     *
-     * @return {Query}
-     */
-    Query.prototype.disableHighlights = function () {
-        this.highlightsEnabled = false;
-        return this;
-    };
-    /**
-     * Are highlights enabled
-     *
-     * @return {boolean}
-     */
-    Query.prototype.areHighlightsEnabled = function () {
-        return this.highlightsEnabled;
-    };
-    /**
-     * Promote uuid
-     *
-     * @param itemUUID
-     *
-     * @return {Query}
-     */
-    Query.prototype.promoteUUID = function (itemUUID) {
-        this
-            .itemsPromoted
-            .push(itemUUID);
-        return this;
-    };
-    /**
-     * Promote UUIDs
-     *
-     * @param uuids
-     *
-     * @return {Query}
-     */
-    Query.prototype.promoteUUIDs = function () {
-        var uuids = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            uuids[_i] = arguments[_i];
-        }
-        this.itemsPromoted = uuids;
-        return this;
-    };
-    /**
-     * Get promoted UUIDs
-     *
-     * @return {ItemUUID[]}
-     */
-    Query.prototype.getItemsPromoted = function () {
-        return this.itemsPromoted;
-    };
-    /**
-     * Exclude id
-     *
-     * @param itemUUID
-     *
-     * @return {Query}
-     */
-    Query.prototype.excludeUUID = function (itemUUID) {
-        this.excludeUUIDs(itemUUID);
-        return this;
-    };
-    /**
-     * Exclude UUIDs
-     *
-     * @param uuids
-     *
-     * @return {Query}
-     */
-    Query.prototype.excludeUUIDs = function () {
-        var uuids = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            uuids[_i] = arguments[_i];
-        }
-        var _a;
-        this.filters = tslib_1.__assign({}, this.filters, (_a = {}, _a["excluded_ids"] = Filter_1.Filter.create("_id", uuids.map(function (uuid) { return uuid.composedUUID(); }), Filter_2.FILTER_EXCLUDE, Filter_2.FILTER_TYPE_FIELD), _a));
-        return this;
-    };
-    /**
-     * Get score strategy
-     *
-     * @return {ScoreStrategy}
-     */
-    Query.prototype.getScoreStrategy = function () {
-        return this.scoreStrategy;
-    };
-    /**
-     * Set score strategy
-     *
-     * @param scoreStrategy
-     */
-    Query.prototype.setScoreStrategy = function (scoreStrategy) {
-        this.scoreStrategy = scoreStrategy;
-        return this;
-    };
-    /**
-     * Get fuzziness
-     *
-     * @return any
-     */
-    Query.prototype.getFuzziness = function () {
-        return this.fuzziness;
-    };
-    /**
-     * Set fuzziness
-     *
-     * @param fuzziness
-     *
-     * @return {Query}
-     */
-    Query.prototype.setFuzziness = function (fuzziness) {
-        this.fuzziness = fuzziness;
-        return this;
-    };
-    /**
-     * Set auto fuzziness
-     *
-     * @return {Query}
-     */
-    Query.prototype.setAutoFuzziness = function () {
-        this.fuzziness = 'AUTO';
-        return this;
-    };
-    /**
-     * Get min score
-     *
-     * @return any
-     */
-    Query.prototype.getMinScore = function () {
-        return this.minScore;
-    };
-    /**
-     * Set min score
-     *
-     * @param minScore
-     *
-     * @return {Query}
-     */
-    Query.prototype.setMinScore = function (minScore) {
-        this.minScore = minScore;
-        return this;
-    };
-    /**
-     * By user
-     *
-     * @param user
-     *
-     * @return {Query}
-     */
-    Query.prototype.byUser = function (user) {
-        this.user = user;
-        return this;
-    };
-    /**
-     * By anyone
-     *
-     * @return {null}
-     */
-    Query.prototype.anonymously = function () {
-        this.user = null;
-        return null;
-    };
-    /**
-     * Get user
-     *
-     * @return {User}
-     */
-    Query.prototype.getUser = function () {
-        return this.user;
-    };
-    /**
-     * To array
-     *
-     * @return {any}
-     */
-    Query.prototype.toArray = function () {
-        var array = {};
-        if (this.getQueryText() !== "") {
-            array.q = this.getQueryText();
-        }
-        if (this.coordinate instanceof Coordinate_1.Coordinate) {
-            array.coordinate = this.coordinate.toArray();
-        }
-        /**
-         * Fields
-         */
-        if (this.fields instanceof Array &&
-            this.fields.length > 0) {
-            array.fields = this.fields;
-        }
-        /**
-         * Universe Filters
-         */
-        if (Object.keys(this.universeFilters).length) {
-            array.universe_filters = {};
-            for (var i in this.universeFilters) {
-                var universeFilter = this.universeFilters[i];
-                array.universe_filters[i] = universeFilter.toArray();
-            }
-        }
-        /**
-         * Filters
-         */
-        if (this.filters instanceof Object &&
-            Object.keys(this.filters).length) {
-            array.filters = {};
-            for (var i in this.filters) {
-                var filter = this.filters[i];
-                if (filter.getFilterType() !== Filter_3.FILTER_TYPE_QUERY) {
-                    array.filters[i] = filter.toArray();
-                }
-            }
-        }
-        /**
-         * Aggregations
-         */
-        if (this.aggregations instanceof Object &&
-            Object.keys(this.aggregations).length) {
-            array.aggregations = {};
-            for (var i in this.aggregations) {
-                var aggregation = this.aggregations[i];
-                array.aggregations[i] = aggregation.toArray();
-            }
-        }
-        /**
-         * Sort
-         */
-        var sort = this.sortByInstance.toArray();
-        if (Object.keys(sort).length) {
-            array.sort = sort;
-        }
-        /**
-         * Page
-         */
-        var page = this.page;
-        if (page !== exports.QUERY_DEFAULT_PAGE) {
-            array.page = page;
-        }
-        /**
-         * Size
-         */
-        var size = this.size;
-        if (size !== exports.QUERY_DEFAULT_SIZE) {
-            array.size = size;
-        }
-        /**
-         * Booleans
-         */
-        if (this.resultsEnabled === false) {
-            array.results_enabled = false;
-        }
-        if (this.suggestionsEnabled === true) {
-            array.suggestions_enabled = true;
-        }
-        if (this.highlightsEnabled === true) {
-            array.highlights_enabled = true;
-        }
-        if (this.aggregationsEnabled === false) {
-            array.aggregations_enabled = false;
-        }
-        /**
-         * Filter fields
-         */
-        if (this.filterFields instanceof Array &&
-            this.filterFields.length > 0) {
-            array.filter_fields = this.filterFields;
-        }
-        /**
-         * Score strategy
-         */
-        if (this.scoreStrategy instanceof ScoreStrategy_1.ScoreStrategy) {
-            var scoreStrategyAsArray = this.scoreStrategy.toArray();
-            if (Object.keys(scoreStrategyAsArray).length > 0) {
-                array.score_strategy = scoreStrategyAsArray;
-            }
-        }
-        if (this.fuzziness !== null) {
-            array.fuzziness = this.fuzziness;
-        }
-        /**
-         * Min score
-         */
-        var minScore = this.minScore;
-        if (minScore !== exports.NO_MIN_SCORE) {
-            array.min_score = minScore;
-        }
-        /**
-         * User
-         */
-        if (this.user instanceof User_1.User) {
-            var userAsArray = this.user.toArray();
-            if (Object.keys(userAsArray).length > 0) {
-                array.user = userAsArray;
-            }
-        }
-        /**
-         * items promoted
-         */
-        if (this.itemsPromoted.length > 0) {
-            array.items_promoted = [];
-            for (var i in this.itemsPromoted) {
-                array
-                    .items_promoted
-                    .push(this.itemsPromoted[i].toArray());
-            }
-        }
-        return array;
-    };
-    /**
-     * Create from array
-     *
-     * @param array
-     *
-     * @returns {Query}
-     */
-    Query.createFromArray = function (array) {
-        var query = array.coordinate instanceof Object
-            ? Query.createLocated(Coordinate_1.Coordinate.createFromArray(array.coordinate), array.q ? array.q : "", array.page ? array.page : exports.QUERY_DEFAULT_PAGE, array.size ? array.size : exports.QUERY_DEFAULT_SIZE)
-            : Query.create(array.q ? array.q : "", array.page ? array.page : exports.QUERY_DEFAULT_PAGE, array.size ? array.size : exports.QUERY_DEFAULT_SIZE);
-        /**
-         * Fields
-         */
-        query.fields = array.fields instanceof Array
-            ? array.fields
-            : [];
-        /**
-         * Aggregations
-         */
-        var aggregationsAsArray = typeof array.aggregations === typeof {}
-            ? array.aggregations
-            : {};
-        for (var i in aggregationsAsArray) {
-            query.aggregations[i] = Aggregation_1.Aggregation.createFromArray(aggregationsAsArray[i]);
-        }
-        /**
-         * Sort
-         */
-        var sortAsArray = typeof array.sort === typeof {}
-            ? array.sort
-            : {};
-        if (Object.keys(sortAsArray).length > 0) {
-            query.sortByInstance = SortBy_1.SortBy.createFromArray(sortAsArray);
-        }
-        /**
-         * Filters
-         */
-        var filtersAsArray = typeof array.filters === typeof {}
-            ? array.filters
-            : {};
-        for (var i in filtersAsArray) {
-            query.filters[i] = Filter_1.Filter.createFromArray(filtersAsArray[i]);
-        }
-        /**
-         * Universe Filters
-         */
-        var universeFiltersAsArray = typeof array.universe_filters === typeof {}
-            ? array.universe_filters
-            : {};
-        for (var i in universeFiltersAsArray) {
-            query.universeFilters[i] = Filter_1.Filter.createFromArray(universeFiltersAsArray[i]);
-        }
-        /**
-         * Booleans
-         */
-        query.resultsEnabled = typeof array.results_enabled === "boolean"
-            ? array.results_enabled
-            : true;
-        query.suggestionsEnabled = typeof array.suggestions_enabled === "boolean"
-            ? array.suggestions_enabled
-            : false;
-        query.aggregationsEnabled = typeof array.aggregations_enabled === "boolean"
-            ? array.aggregations_enabled
-            : true;
-        query.highlightsEnabled = typeof array.highlights_enabled === "boolean"
-            ? array.highlights_enabled
-            : false;
-        query.fuzziness = array.fuzziness;
-        query.minScore = array.min_score ? array.min_score : exports.NO_MIN_SCORE;
-        /**
-         * Items promoted
-         */
-        var itemsPromotedAsArray = typeof array.items_promoted === typeof {}
-            ? array.items_promoted
-            : {};
-        for (var i in itemsPromotedAsArray) {
-            query
-                .itemsPromoted
-                .push(ItemUUID_1.ItemUUID.createFromArray(itemsPromotedAsArray[i]));
-        }
-        /**
-         * Filter fields
-         */
-        query.filterFields = array.filter_fields instanceof Array
-            ? array.filter_fields
-            : [];
-        query.scoreStrategy = array.score_strategy instanceof Object
-            ? ScoreStrategy_1.ScoreStrategy.createFromArray(array.score_stategy)
-            : null;
-        query.user = array.user instanceof Object
-            ? User_1.User.createFromArray(array.user)
-            : null;
-        return query;
-    };
-    return Query;
-}());
-exports.Query = Query;
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-exports.__esModule = true;
-var InvalidFormatError_1 = __webpack_require__(3);
-/**
- * Coordinate Type cast
- * @param coordinate
- */
-var Coordinate = /** @class */ (function () {
-    /**
-     * Constructor
-     *
-     * @param {number} lat
-     * @param {number} lon
-     */
-    function Coordinate(lat, lon) {
-        this.lat = lat;
-        this.lon = lon;
-    }
-    /**
-     * Get latitude
-     *
-     * @return float
-     */
-    Coordinate.prototype.getLatitude = function () {
-        return this.lat;
-    };
-    /**
-     * Get longitude
-     *
-     * @return float
-     */
-    Coordinate.prototype.getLongitude = function () {
-        return this.lon;
-    };
-    /**
-     * To array
-     *
-     * @return {{lat: number, lon: number}}
-     */
-    Coordinate.prototype.toArray = function () {
-        return {
-            lat: this.lat,
-            lon: this.lon
-        };
-    };
-    /**
-     * Create from array
-     *
-     * @param array
-     *
-     * @return Coordinate
-     *
-     * @throws InvalidFormatError
-     */
-    Coordinate.createFromArray = function (array) {
-        if (typeof array.lat == "undefined" ||
-            typeof array.lon == "undefined") {
-            throw InvalidFormatError_1.InvalidFormatError.coordinateFormatNotValid();
-        }
-        return new Coordinate(array.lat, array.lon);
-    };
-    return Coordinate;
-}());
-exports.Coordinate = Coordinate;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-exports.__esModule = true;
 var tslib_1 = __webpack_require__(0);
 var InvalidFormatError_1 = __webpack_require__(3);
-var Coordinate_1 = __webpack_require__(14);
-var ItemUUID_1 = __webpack_require__(10);
+var Coordinate_1 = __webpack_require__(15);
+var ItemUUID_1 = __webpack_require__(11);
 /**
  * Item class
  */
@@ -3728,9 +2168,1580 @@ var Item = /** @class */ (function () {
     Item.prototype.composeUUID = function () {
         return this.uuid.composedUUID();
     };
+    /**
+     * Get path by field.
+     *
+     * @param field
+     *
+     * @returns {string}
+     */
+    Item.getPathByField = function (field) {
+        return (["id", "type"].indexOf(field) > -1)
+            ? "uuid." + field
+            : "indexed_metadata." + field;
+    };
     return Item;
 }());
 exports.Item = Item;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.__esModule = true;
+/**
+ * Widget
+ */
+var Widget = /** @class */ (function () {
+    function Widget() {
+    }
+    return Widget;
+}());
+exports["default"] = Widget;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.__esModule = true;
+var InvalidFormatError_1 = __webpack_require__(3);
+/**
+ * ItemUUID class
+ */
+var ItemUUID = /** @class */ (function () {
+    /**
+     * Constructor
+     *
+     * @param id
+     * @param type
+     */
+    function ItemUUID(id, type) {
+        this.id = id;
+        this.type = type;
+    }
+    /**
+     * Create composed UUID
+     *
+     * @param composedUUID
+     *
+     * @returns {ItemUUID}
+     */
+    ItemUUID.createByComposedUUID = function (composedUUID) {
+        var parts = composedUUID.split("~");
+        if (2 != parts.length) {
+            throw InvalidFormatError_1.InvalidFormatError.composedItemUUIDNotValid();
+        }
+        return new ItemUUID(parts[0], parts[1]);
+    };
+    /**
+     * Return id
+     *
+     * @returns {string}
+     */
+    ItemUUID.prototype.getId = function () {
+        return this.id;
+    };
+    /**
+     * Get type
+     *
+     * @returns {string}
+     */
+    ItemUUID.prototype.getType = function () {
+        return this.type;
+    };
+    /**
+     * To array
+     *
+     * @returns {{id: *, type: *}}
+     */
+    ItemUUID.prototype.toArray = function () {
+        return {
+            id: this.id,
+            type: this.type
+        };
+    };
+    /**
+     * Create from array
+     *
+     * @param array {{id:string, type:string}}
+     *
+     * @return {ItemUUID}
+     */
+    ItemUUID.createFromArray = function (array) {
+        array = JSON.parse(JSON.stringify(array));
+        return new ItemUUID(array.id, array.type);
+    };
+    /**
+     * Compose unique id
+     *
+     * @returns {string}
+     */
+    ItemUUID.prototype.composedUUID = function () {
+        return this.id + "~" + this.type;
+    };
+    return ItemUUID;
+}());
+exports.ItemUUID = ItemUUID;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Module dependenices
+ */
+
+const clone = __webpack_require__(100);
+const typeOf = __webpack_require__(47);
+const isPlainObject = __webpack_require__(106);
+
+function cloneDeep(val, instanceClone) {
+  switch (typeOf(val)) {
+    case 'object':
+      return cloneObjectDeep(val, instanceClone);
+    case 'array':
+      return cloneArrayDeep(val, instanceClone);
+    default: {
+      return clone(val);
+    }
+  }
+}
+
+function cloneObjectDeep(val, instanceClone) {
+  if (typeof instanceClone === 'function') {
+    return instanceClone(val);
+  }
+  if (instanceClone || isPlainObject(val)) {
+    const res = new val.constructor();
+    for (let key in val) {
+      res[key] = cloneDeep(val[key], instanceClone);
+    }
+    return res;
+  }
+  return val;
+}
+
+function cloneArrayDeep(val, instanceClone) {
+  const res = new val.constructor(val.length);
+  for (let i = 0; i < val.length; i++) {
+    res[i] = cloneDeep(val[i], instanceClone);
+  }
+  return res;
+}
+
+/**
+ * Expose `cloneDeep`
+ */
+
+module.exports = cloneDeep;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.__esModule = true;
+var tslib_1 = __webpack_require__(0);
+var Apisearch_1 = __webpack_require__(52);
+exports["default"] = Apisearch_1["default"];
+tslib_1.__exportStar(__webpack_require__(76), exports);
+tslib_1.__exportStar(__webpack_require__(77), exports);
+tslib_1.__exportStar(__webpack_require__(46), exports);
+tslib_1.__exportStar(__webpack_require__(37), exports);
+tslib_1.__exportStar(__webpack_require__(4), exports);
+tslib_1.__exportStar(__webpack_require__(78), exports);
+tslib_1.__exportStar(__webpack_require__(79), exports);
+tslib_1.__exportStar(__webpack_require__(3), exports);
+tslib_1.__exportStar(__webpack_require__(38), exports);
+tslib_1.__exportStar(__webpack_require__(39), exports);
+tslib_1.__exportStar(__webpack_require__(40), exports);
+tslib_1.__exportStar(__webpack_require__(80), exports);
+tslib_1.__exportStar(__webpack_require__(81), exports);
+tslib_1.__exportStar(__webpack_require__(23), exports);
+tslib_1.__exportStar(__webpack_require__(29), exports);
+tslib_1.__exportStar(__webpack_require__(82), exports);
+tslib_1.__exportStar(__webpack_require__(30), exports);
+tslib_1.__exportStar(__webpack_require__(32), exports);
+tslib_1.__exportStar(__webpack_require__(31), exports);
+tslib_1.__exportStar(__webpack_require__(83), exports);
+tslib_1.__exportStar(__webpack_require__(15), exports);
+tslib_1.__exportStar(__webpack_require__(9), exports);
+tslib_1.__exportStar(__webpack_require__(11), exports);
+tslib_1.__exportStar(__webpack_require__(43), exports);
+tslib_1.__exportStar(__webpack_require__(33), exports);
+tslib_1.__exportStar(__webpack_require__(18), exports);
+tslib_1.__exportStar(__webpack_require__(7), exports);
+tslib_1.__exportStar(__webpack_require__(14), exports);
+tslib_1.__exportStar(__webpack_require__(84), exports);
+tslib_1.__exportStar(__webpack_require__(34), exports);
+tslib_1.__exportStar(__webpack_require__(35), exports);
+tslib_1.__exportStar(__webpack_require__(19), exports);
+tslib_1.__exportStar(__webpack_require__(36), exports);
+tslib_1.__exportStar(__webpack_require__(44), exports);
+tslib_1.__exportStar(__webpack_require__(41), exports);
+tslib_1.__exportStar(__webpack_require__(21), exports);
+tslib_1.__exportStar(__webpack_require__(42), exports);
+tslib_1.__exportStar(__webpack_require__(20), exports);
+tslib_1.__exportStar(__webpack_require__(45), exports);
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.__esModule = true;
+var tslib_1 = __webpack_require__(0);
+var Coordinate_1 = __webpack_require__(15);
+var ItemUUID_1 = __webpack_require__(11);
+var Item_1 = __webpack_require__(9);
+var User_1 = __webpack_require__(33);
+var Aggregation_1 = __webpack_require__(18);
+var Filter_1 = __webpack_require__(7);
+var Filter_2 = __webpack_require__(7);
+var Aggregation_2 = __webpack_require__(18);
+var InvalidFormatError_1 = __webpack_require__(3);
+var Filter_3 = __webpack_require__(7);
+var ScoreStrategies_1 = __webpack_require__(34);
+var SortBy_1 = __webpack_require__(19);
+/**
+ * Query constants
+ */
+exports.QUERY_DEFAULT_FROM = 0;
+exports.QUERY_DEFAULT_PAGE = 1;
+exports.QUERY_DEFAULT_SIZE = 10;
+exports.QUERY_INFINITE_SIZE = 1000;
+exports.NO_MIN_SCORE = 0.0;
+/**
+ * Query class
+ */
+var Query = /** @class */ (function () {
+    /**
+     * Constructor
+     *
+     * @param queryText
+     */
+    function Query(queryText) {
+        this.fields = [];
+        this.universeFilters = {};
+        this.filters = {};
+        this.itemsPromoted = [];
+        this.aggregations = {};
+        this.resultsEnabled = true;
+        this.aggregationsEnabled = true;
+        this.suggestionsEnabled = false;
+        this.highlightsEnabled = false;
+        this.filterFields = [];
+        this.minScore = exports.NO_MIN_SCORE;
+        this.sortByInstance = SortBy_1.SortBy.create();
+        this.filters._query = Filter_1.Filter.create("", [queryText], 0, Filter_3.FILTER_TYPE_QUERY);
+    }
+    /**
+     * Created located
+     *
+     * @param coordinate
+     * @param queryText
+     * @param page
+     * @param size
+     *
+     * @returns {Query}
+     */
+    Query.createLocated = function (coordinate, queryText, page, size) {
+        if (page === void 0) { page = exports.QUERY_DEFAULT_PAGE; }
+        if (size === void 0) { size = exports.QUERY_DEFAULT_SIZE; }
+        var query = Query.create(queryText, page, size);
+        query.coordinate = coordinate;
+        return query;
+    };
+    /**
+     * Create
+     *
+     * @param queryText
+     * @param page
+     * @param size
+     *
+     * @returns {Query}
+     */
+    Query.create = function (queryText, page, size) {
+        if (page === void 0) { page = exports.QUERY_DEFAULT_PAGE; }
+        if (size === void 0) { size = exports.QUERY_DEFAULT_SIZE; }
+        page = Math.max(1, page);
+        var query = new Query(queryText);
+        query.from = (page - 1) * size;
+        query.size = size;
+        query.page = page;
+        return query;
+    };
+    /**
+     * Create match all
+     *
+     * @return {Query}
+     */
+    Query.createMatchAll = function () {
+        return Query.create("", exports.QUERY_DEFAULT_PAGE, exports.QUERY_DEFAULT_SIZE);
+    };
+    /**
+     * Create by UUID
+     *
+     * @param uuid
+     *
+     * @return {Query}
+     */
+    Query.createByUUID = function (uuid) {
+        return Query.createByUUIDs(uuid);
+    };
+    /**
+     * Create by UUIDs
+     *
+     * @param uuids
+     *
+     * @return {Query}
+     */
+    Query.createByUUIDs = function () {
+        var uuids = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            uuids[_i] = arguments[_i];
+        }
+        var ids = [];
+        for (var i in uuids) {
+            ids.push(uuids[i].composedUUID());
+        }
+        var query = Query.create("", exports.QUERY_DEFAULT_PAGE, ids.length)
+            .disableAggregations()
+            .disableSuggestions();
+        query.filters._id = Filter_1.Filter.create("_id", ids, Filter_2.FILTER_AT_LEAST_ONE, Filter_2.FILTER_TYPE_FIELD);
+        return query;
+    };
+    /**
+     * set fields
+     *
+     * @param fields
+     *
+     * @return {Query}
+     */
+    Query.prototype.setFields = function (fields) {
+        this.fields = fields;
+        return this;
+    };
+    /**
+     * get fields
+     *
+     * @return {string[]}
+     */
+    Query.prototype.getFields = function () {
+        return this.fields;
+    };
+    /**
+     * Filter universe by types
+     *
+     * @param values
+     *
+     * @return {Query}
+     */
+    Query.prototype.filterUniverseByTypes = function (values) {
+        var _a;
+        var fieldPath = Item_1.Item.getPathByField("type");
+        if (values.length > 0) {
+            this.universeFilters = tslib_1.__assign({}, this.universeFilters, (_a = {}, _a["type"] = Filter_1.Filter.create(fieldPath, values, Filter_2.FILTER_AT_LEAST_ONE, Filter_2.FILTER_TYPE_FIELD), _a));
+        }
+        else {
+            delete this.universeFilters.type;
+        }
+        return this;
+    };
+    /**
+     * Filter by types
+     *
+     * @param values
+     * @param aggregate
+     * @param aggregationSort
+     *
+     * @return {Query}
+     */
+    Query.prototype.filterByTypes = function (values, aggregate, aggregationSort) {
+        if (aggregate === void 0) { aggregate = true; }
+        if (aggregationSort === void 0) { aggregationSort = Aggregation_2.AGGREGATION_SORT_BY_COUNT_DESC; }
+        var _a, _b;
+        var fieldPath = Item_1.Item.getPathByField("type");
+        if (values.length > 0) {
+            this.filters = tslib_1.__assign({}, this.filters, (_a = {}, _a["type"] = Filter_1.Filter.create(fieldPath, values, Filter_2.FILTER_AT_LEAST_ONE, Filter_2.FILTER_TYPE_FIELD), _a));
+        }
+        else {
+            delete this.filters.type;
+        }
+        if (aggregate) {
+            this.aggregations = tslib_1.__assign({}, this.aggregations, (_b = {}, _b["type"] = Aggregation_1.Aggregation.create("type", fieldPath, Filter_2.FILTER_AT_LEAST_ONE, Filter_2.FILTER_TYPE_FIELD, [], aggregationSort), _b));
+        }
+        return this;
+    };
+    /**
+     * Filter universe by ids
+     *
+     * @param values
+     *
+     * @return {Query}
+     */
+    Query.prototype.filterUniverseByIds = function (values) {
+        var _a;
+        var fieldPath = Item_1.Item.getPathByField("id");
+        if (values.length > 0) {
+            this.universeFilters = tslib_1.__assign({}, this.universeFilters, (_a = {}, _a["id"] = Filter_1.Filter.create(fieldPath, values, Filter_2.FILTER_AT_LEAST_ONE, Filter_2.FILTER_TYPE_FIELD), _a));
+        }
+        else {
+            delete this.universeFilters.id;
+        }
+        return this;
+    };
+    /**
+     * Filter by ids
+     *
+     * @param values
+     *
+     * @return {Query}
+     */
+    Query.prototype.filterByIds = function (values) {
+        var _a;
+        var fieldPath = Item_1.Item.getPathByField("id");
+        if (values.length > 0) {
+            this.filters = tslib_1.__assign({}, this.filters, (_a = {}, _a["id"] = Filter_1.Filter.create(fieldPath, values, Filter_2.FILTER_AT_LEAST_ONE, Filter_2.FILTER_TYPE_FIELD), _a));
+        }
+        else {
+            delete this.filters.id;
+        }
+        return this;
+    };
+    /**
+     * Filter universe by
+     *
+     * @param field
+     * @param values
+     * @param applicationType
+     *
+     * @return {Query}
+     */
+    Query.prototype.filterUniverseBy = function (field, values, applicationType) {
+        if (applicationType === void 0) { applicationType = Filter_2.FILTER_AT_LEAST_ONE; }
+        var _a;
+        var fieldPath = Item_1.Item.getPathByField(field);
+        if (values.length > 0) {
+            this.universeFilters = tslib_1.__assign({}, this.universeFilters, (_a = {}, _a[field] = Filter_1.Filter.create(fieldPath, values, applicationType, Filter_2.FILTER_TYPE_FIELD), _a));
+        }
+        else {
+            delete this.universeFilters[field];
+        }
+        return this;
+    };
+    /**
+     * Filter by
+     *
+     * @param filterName
+     * @param field
+     * @param values
+     * @param applicationType
+     * @param aggregate
+     * @param aggregationSort
+     *
+     * @return {Query}
+     */
+    Query.prototype.filterBy = function (filterName, field, values, applicationType, aggregate, aggregationSort) {
+        if (applicationType === void 0) { applicationType = Filter_2.FILTER_AT_LEAST_ONE; }
+        if (aggregate === void 0) { aggregate = true; }
+        if (aggregationSort === void 0) { aggregationSort = Aggregation_2.AGGREGATION_SORT_BY_COUNT_DESC; }
+        var _a;
+        var fieldPath = Item_1.Item.getPathByField(field);
+        if (values.length > 0) {
+            this.filters = tslib_1.__assign({}, this.filters, (_a = {}, _a[filterName] = Filter_1.Filter.create(fieldPath, values, applicationType, Filter_2.FILTER_TYPE_FIELD), _a));
+        }
+        else {
+            delete this.filters[filterName];
+        }
+        if (aggregate) {
+            this.aggregateBy(filterName, field, applicationType, aggregationSort);
+        }
+        return this;
+    };
+    /**
+     * Filter universe by range
+     *
+     * @param field
+     * @param values
+     * @param applicationType
+     * @param rangeType
+     *
+     * @return {Query}
+     */
+    Query.prototype.filterUniverseByRange = function (field, values, applicationType, rangeType) {
+        if (applicationType === void 0) { applicationType = Filter_2.FILTER_AT_LEAST_ONE; }
+        if (rangeType === void 0) { rangeType = Filter_2.FILTER_TYPE_RANGE; }
+        var _a;
+        var fieldPath = Item_1.Item.getPathByField(field);
+        if (values.length > 0) {
+            this.universeFilters = tslib_1.__assign({}, this.universeFilters, (_a = {}, _a[field] = Filter_1.Filter.create(fieldPath, values, applicationType, rangeType), _a));
+        }
+        else {
+            delete this.universeFilters[field];
+        }
+        return this;
+    };
+    /**
+     * Filter universe by date range
+     *
+     * @param field
+     * @param values
+     * @param applicationType
+     *
+     * @return {Query}
+     */
+    Query.prototype.filterUniverseByDateRange = function (field, values, applicationType) {
+        if (applicationType === void 0) { applicationType = Filter_2.FILTER_AT_LEAST_ONE; }
+        return this.filterUniverseByRange(field, values, applicationType, Filter_2.FILTER_TYPE_DATE_RANGE);
+    };
+    /**
+     * Filter by range
+     *
+     * @param filterName
+     * @param field
+     * @param options
+     * @param values
+     * @param applicationType
+     * @param rangeType
+     * @param aggregate
+     * @param aggregationSort
+     *
+     * @return {Query}
+     */
+    Query.prototype.filterByRange = function (filterName, field, options, values, applicationType, rangeType, aggregate, aggregationSort) {
+        if (applicationType === void 0) { applicationType = Filter_2.FILTER_AT_LEAST_ONE; }
+        if (rangeType === void 0) { rangeType = Filter_2.FILTER_TYPE_RANGE; }
+        if (aggregate === void 0) { aggregate = true; }
+        if (aggregationSort === void 0) { aggregationSort = Aggregation_2.AGGREGATION_SORT_BY_COUNT_DESC; }
+        var _a;
+        var fieldPath = Item_1.Item.getPathByField(field);
+        if (values.length !== 0) {
+            this.filters = tslib_1.__assign({}, this.filters, (_a = {}, _a[filterName] = Filter_1.Filter.create(fieldPath, values, applicationType, rangeType), _a));
+        }
+        else {
+            delete this.filters[filterName];
+        }
+        if (aggregate) {
+            this.aggregateByRange(filterName, fieldPath, options, applicationType, rangeType, aggregationSort);
+        }
+        return this;
+    };
+    /**
+     * Filter by date range
+     *
+     * @param filterName
+     * @param field
+     * @param options
+     * @param values
+     * @param applicationType
+     * @param aggregate
+     * @param aggregationSort
+     *
+     * @return {Query}
+     */
+    Query.prototype.filterByDateRange = function (filterName, field, options, values, applicationType, aggregate, aggregationSort) {
+        if (applicationType === void 0) { applicationType = Filter_2.FILTER_AT_LEAST_ONE; }
+        if (aggregate === void 0) { aggregate = true; }
+        if (aggregationSort === void 0) { aggregationSort = Aggregation_2.AGGREGATION_SORT_BY_COUNT_DESC; }
+        return this.filterByRange(filterName, field, options, values, applicationType, Filter_2.FILTER_TYPE_DATE_RANGE, aggregate, aggregationSort);
+    };
+    /**
+     * Filter universe by location
+     *
+     * @param locationRange
+     *
+     * @return {Query}
+     */
+    Query.prototype.filterUniverseByLocation = function (locationRange) {
+        var _a;
+        this.universeFilters = tslib_1.__assign({}, this.universeFilters, (_a = {}, _a["coordinate"] = Filter_1.Filter.create("coordinate", locationRange.toArray(), Filter_2.FILTER_AT_LEAST_ONE, Filter_2.FILTER_TYPE_GEO), _a));
+        return this;
+    };
+    /**
+     * Set filter fields
+     *
+     * @param filterFields
+     *
+     * @return {Query}
+     */
+    Query.prototype.setFilterFields = function (filterFields) {
+        this.filterFields = filterFields;
+        return this;
+    };
+    /**
+     * Get filter fields
+     *
+     * @return {string[]}
+     */
+    Query.prototype.getFilterFields = function () {
+        return this.filterFields;
+    };
+    /**
+     * Sort by
+     *
+     * @param sortBy
+     *
+     * @return {Query}
+     */
+    Query.prototype.sortBy = function (sortBy) {
+        if (sortBy.isSortedByGeoDistance()) {
+            if (!(this.coordinate instanceof Coordinate_1.Coordinate)) {
+                throw InvalidFormatError_1.InvalidFormatError.querySortedByDistanceWithoutCoordinate();
+            }
+            sortBy.setCoordinate(this.coordinate);
+        }
+        this.sortByInstance = sortBy;
+        return this;
+    };
+    /**
+     * Aggregate by
+     *
+     * @param filterName
+     * @param field
+     * @param applicationType
+     * @param aggregationSort
+     * @param limit
+     *
+     * @return {Query}
+     */
+    Query.prototype.aggregateBy = function (filterName, field, applicationType, aggregationSort, limit) {
+        if (aggregationSort === void 0) { aggregationSort = Aggregation_2.AGGREGATION_SORT_BY_COUNT_DESC; }
+        if (limit === void 0) { limit = Aggregation_2.AGGREGATION_NO_LIMIT; }
+        var _a;
+        this.aggregations = tslib_1.__assign({}, this.aggregations, (_a = {}, _a[filterName] = Aggregation_1.Aggregation.create(filterName, Item_1.Item.getPathByField(field), applicationType, Filter_2.FILTER_TYPE_FIELD, [], aggregationSort, limit), _a));
+        return this;
+    };
+    /**
+     * Aggregate by range
+     *
+     * @param filterName
+     * @param field
+     * @param options
+     * @param applicationType
+     * @param rangeType
+     * @param aggregationSort
+     * @param limit
+     *
+     * @return {Query}
+     */
+    Query.prototype.aggregateByRange = function (filterName, field, options, applicationType, rangeType, aggregationSort, limit) {
+        if (rangeType === void 0) { rangeType = Filter_2.FILTER_TYPE_RANGE; }
+        if (aggregationSort === void 0) { aggregationSort = Aggregation_2.AGGREGATION_SORT_BY_COUNT_DESC; }
+        if (limit === void 0) { limit = Aggregation_2.AGGREGATION_NO_LIMIT; }
+        var _a;
+        if (options.length === 0) {
+            return this;
+        }
+        this.aggregations = tslib_1.__assign({}, this.aggregations, (_a = {}, _a[filterName] = Aggregation_1.Aggregation.create(filterName, Item_1.Item.getPathByField(field), applicationType, rangeType, options, aggregationSort, limit), _a));
+        return this;
+    };
+    /**
+     * Aggregate by date range
+     *
+     * @param filterName
+     * @param field
+     * @param options
+     * @param applicationType
+     * @param aggregationSort
+     * @param limit
+     *
+     * @return {Query}
+     */
+    Query.prototype.aggregateByDateRange = function (filterName, field, options, applicationType, aggregationSort, limit) {
+        if (aggregationSort === void 0) { aggregationSort = Aggregation_2.AGGREGATION_SORT_BY_COUNT_DESC; }
+        if (limit === void 0) { limit = Aggregation_2.AGGREGATION_NO_LIMIT; }
+        return this.aggregateByRange(filterName, field, options, applicationType, Filter_2.FILTER_TYPE_DATE_RANGE, aggregationSort, limit);
+    };
+    /**
+     * Get aggregations
+     *
+     * @return {{}}
+     */
+    Query.prototype.getAggregations = function () {
+        return this.aggregations;
+    };
+    /**
+     * Get aggregation by name
+     *
+     * @param aggregationName
+     *
+     * @return {Aggregation|null}
+     */
+    Query.prototype.getAggregation = function (aggregationName) {
+        return this.aggregations[aggregationName] instanceof Aggregation_1.Aggregation
+            ? this.aggregations[aggregationName]
+            : null;
+    };
+    /**
+     * Get query text
+     *
+     * @return {string}
+     */
+    Query.prototype.getQueryText = function () {
+        var filter = this.filters._query;
+        return filter instanceof Filter_1.Filter
+            ? filter.getValues()[0]
+            : "";
+    };
+    /**
+     * Get universe filters
+     *
+     * @return {{}}
+     */
+    Query.prototype.getUniverseFilters = function () {
+        return this.universeFilters;
+    };
+    /**
+     * Get universe filter by name
+     *
+     * @param filterName
+     *
+     * @return {Filter|null}
+     */
+    Query.prototype.getUniverseFilter = function (filterName) {
+        return this.universeFilters[filterName] instanceof Filter_1.Filter
+            ? this.universeFilters[filterName]
+            : null;
+    };
+    /**
+     * Get filters
+     *
+     * @return {{}}
+     */
+    Query.prototype.getFilters = function () {
+        return this.filters;
+    };
+    /**
+     * Get filter by name
+     *
+     * @param filterName
+     *
+     * @return {Filter|null}
+     */
+    Query.prototype.getFilter = function (filterName) {
+        return this.filters[filterName] instanceof Filter_1.Filter
+            ? this.filters[filterName]
+            : null;
+    };
+    /**
+     * Get filter by field
+     *
+     * @param fieldName
+     *
+     * @return {Filter|null}
+     */
+    Query.prototype.getFilterByField = function (fieldName) {
+        var fieldPath = Item_1.Item.getPathByField(fieldName);
+        for (var i in this.filters) {
+            if (this.filters[i].getField() == fieldPath) {
+                return this.filters[i];
+            }
+        }
+        return null;
+    };
+    /**
+     * Get sort by
+     *
+     * @return {SortBy}
+     */
+    Query.prototype.getSortBy = function () {
+        return this.sortByInstance;
+    };
+    /**
+     * Get from
+     *
+     * @return {number}
+     */
+    Query.prototype.getFrom = function () {
+        return this.from;
+    };
+    /**
+     * Get size
+     *
+     * @return {number}
+     */
+    Query.prototype.getSize = function () {
+        return this.size;
+    };
+    /**
+     * Get page
+     *
+     * @return {number}
+     */
+    Query.prototype.getPage = function () {
+        return this.page;
+    };
+    /**
+     * Enable results
+     *
+     * @return {Query}
+     */
+    Query.prototype.enableResults = function () {
+        this.resultsEnabled = true;
+        return this;
+    };
+    /**
+     * Disable results
+     *
+     * @return {Query}
+     */
+    Query.prototype.disableResults = function () {
+        this.resultsEnabled = false;
+        return this;
+    };
+    /**
+     * Are results enabled
+     *
+     * @return {boolean}
+     */
+    Query.prototype.areResultsEnabled = function () {
+        return this.resultsEnabled;
+    };
+    /**
+     * Enable aggregations
+     *
+     * @return {Query}
+     */
+    Query.prototype.enableAggregations = function () {
+        this.aggregationsEnabled = true;
+        return this;
+    };
+    /**
+     * Disable aggregations
+     *
+     * @return {Query}
+     */
+    Query.prototype.disableAggregations = function () {
+        this.aggregationsEnabled = false;
+        return this;
+    };
+    /**
+     * Are aggregations enabled
+     *
+     * @return {boolean}
+     */
+    Query.prototype.areAggregationsEnabled = function () {
+        return this.aggregationsEnabled;
+    };
+    /**
+     * Enable suggestions
+     *
+     * @return {Query}
+     */
+    Query.prototype.enableSuggestions = function () {
+        this.suggestionsEnabled = true;
+        return this;
+    };
+    /**
+     * Disable suggestions
+     *
+     * @return {Query}
+     */
+    Query.prototype.disableSuggestions = function () {
+        this.suggestionsEnabled = false;
+        return this;
+    };
+    /**
+     * Are suggestions enabled
+     *
+     * @return {boolean}
+     */
+    Query.prototype.areSuggestionsEnabled = function () {
+        return this.suggestionsEnabled;
+    };
+    /**
+     * Enable highlights
+     *
+     * @return {Query}
+     */
+    Query.prototype.enableHighlights = function () {
+        this.highlightsEnabled = true;
+        return this;
+    };
+    /**
+     * Disable highlights
+     *
+     * @return {Query}
+     */
+    Query.prototype.disableHighlights = function () {
+        this.highlightsEnabled = false;
+        return this;
+    };
+    /**
+     * Are highlights enabled
+     *
+     * @return {boolean}
+     */
+    Query.prototype.areHighlightsEnabled = function () {
+        return this.highlightsEnabled;
+    };
+    /**
+     * Promote uuid
+     *
+     * @param itemUUID
+     *
+     * @return {Query}
+     */
+    Query.prototype.promoteUUID = function (itemUUID) {
+        this
+            .itemsPromoted
+            .push(itemUUID);
+        return this;
+    };
+    /**
+     * Promote UUIDs
+     *
+     * @param uuids
+     *
+     * @return {Query}
+     */
+    Query.prototype.promoteUUIDs = function () {
+        var uuids = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            uuids[_i] = arguments[_i];
+        }
+        this.itemsPromoted = uuids;
+        return this;
+    };
+    /**
+     * Get promoted UUIDs
+     *
+     * @return {ItemUUID[]}
+     */
+    Query.prototype.getItemsPromoted = function () {
+        return this.itemsPromoted;
+    };
+    /**
+     * Exclude id
+     *
+     * @param itemUUID
+     *
+     * @return {Query}
+     */
+    Query.prototype.excludeUUID = function (itemUUID) {
+        this.excludeUUIDs(itemUUID);
+        return this;
+    };
+    /**
+     * Exclude UUIDs
+     *
+     * @param uuids
+     *
+     * @return {Query}
+     */
+    Query.prototype.excludeUUIDs = function () {
+        var uuids = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            uuids[_i] = arguments[_i];
+        }
+        var _a;
+        this.filters = tslib_1.__assign({}, this.filters, (_a = {}, _a["excluded_ids"] = Filter_1.Filter.create("_id", uuids.map(function (uuid) { return uuid.composedUUID(); }), Filter_2.FILTER_EXCLUDE, Filter_2.FILTER_TYPE_FIELD), _a));
+        return this;
+    };
+    /**
+     * Get score strategies
+     *
+     * @return {ScoreStrategies}
+     */
+    Query.prototype.getScoreStrategies = function () {
+        return this.scoreStrategies;
+    };
+    /**
+     * Set score strategies
+     *
+     * @param scoreStrategies
+     */
+    Query.prototype.setScoreStrategies = function (scoreStrategies) {
+        this.scoreStrategies = scoreStrategies;
+        return this;
+    };
+    /**
+     * Get fuzziness
+     *
+     * @return any
+     */
+    Query.prototype.getFuzziness = function () {
+        return this.fuzziness;
+    };
+    /**
+     * Set fuzziness
+     *
+     * @param fuzziness
+     *
+     * @return {Query}
+     */
+    Query.prototype.setFuzziness = function (fuzziness) {
+        this.fuzziness = fuzziness;
+        return this;
+    };
+    /**
+     * Set auto fuzziness
+     *
+     * @return {Query}
+     */
+    Query.prototype.setAutoFuzziness = function () {
+        this.fuzziness = 'AUTO';
+        return this;
+    };
+    /**
+     * Get min score
+     *
+     * @return any
+     */
+    Query.prototype.getMinScore = function () {
+        return this.minScore;
+    };
+    /**
+     * Set min score
+     *
+     * @param minScore
+     *
+     * @return {Query}
+     */
+    Query.prototype.setMinScore = function (minScore) {
+        this.minScore = minScore;
+        return this;
+    };
+    /**
+     * By user
+     *
+     * @param user
+     *
+     * @return {Query}
+     */
+    Query.prototype.byUser = function (user) {
+        this.user = user;
+        return this;
+    };
+    /**
+     * By anyone
+     *
+     * @return {null}
+     */
+    Query.prototype.anonymously = function () {
+        this.user = null;
+        return null;
+    };
+    /**
+     * Get user
+     *
+     * @return {User}
+     */
+    Query.prototype.getUser = function () {
+        return this.user;
+    };
+    /**
+     * To array
+     *
+     * @return {any}
+     */
+    Query.prototype.toArray = function () {
+        var array = {};
+        if (this.getQueryText() !== "") {
+            array.q = this.getQueryText();
+        }
+        if (this.coordinate instanceof Coordinate_1.Coordinate) {
+            array.coordinate = this.coordinate.toArray();
+        }
+        /**
+         * Fields
+         */
+        if (this.fields instanceof Array &&
+            this.fields.length > 0) {
+            array.fields = this.fields;
+        }
+        /**
+         * Universe Filters
+         */
+        if (Object.keys(this.universeFilters).length) {
+            array.universe_filters = {};
+            for (var i in this.universeFilters) {
+                var universeFilter = this.universeFilters[i];
+                array.universe_filters[i] = universeFilter.toArray();
+            }
+        }
+        /**
+         * Filters
+         */
+        if (this.filters instanceof Object &&
+            Object.keys(this.filters).length) {
+            array.filters = {};
+            for (var i in this.filters) {
+                var filter = this.filters[i];
+                if (filter.getFilterType() !== Filter_3.FILTER_TYPE_QUERY) {
+                    array.filters[i] = filter.toArray();
+                }
+            }
+        }
+        /**
+         * Aggregations
+         */
+        if (this.aggregations instanceof Object &&
+            Object.keys(this.aggregations).length) {
+            array.aggregations = {};
+            for (var i in this.aggregations) {
+                var aggregation = this.aggregations[i];
+                array.aggregations[i] = aggregation.toArray();
+            }
+        }
+        /**
+         * Sort
+         */
+        var sort = this.sortByInstance.toArray();
+        if (Object.keys(sort).length) {
+            array.sort = sort;
+        }
+        /**
+         * Page
+         */
+        var page = this.page;
+        if (page !== exports.QUERY_DEFAULT_PAGE) {
+            array.page = page;
+        }
+        /**
+         * Size
+         */
+        var size = this.size;
+        if (size !== exports.QUERY_DEFAULT_SIZE) {
+            array.size = size;
+        }
+        /**
+         * Booleans
+         */
+        if (this.resultsEnabled === false) {
+            array.results_enabled = false;
+        }
+        if (this.suggestionsEnabled === true) {
+            array.suggestions_enabled = true;
+        }
+        if (this.highlightsEnabled === true) {
+            array.highlights_enabled = true;
+        }
+        if (this.aggregationsEnabled === false) {
+            array.aggregations_enabled = false;
+        }
+        /**
+         * Filter fields
+         */
+        if (this.filterFields instanceof Array &&
+            this.filterFields.length > 0) {
+            array.filter_fields = this.filterFields;
+        }
+        /**
+         * Score strategies
+         */
+        if (this.scoreStrategies instanceof ScoreStrategies_1.ScoreStrategies) {
+            var scoreStrategiesAsArray = this.scoreStrategies.toArray();
+            if (Object.keys(scoreStrategiesAsArray).length > 0) {
+                array.score_strategies = scoreStrategiesAsArray;
+            }
+        }
+        if (this.fuzziness !== null) {
+            array.fuzziness = this.fuzziness;
+        }
+        /**
+         * Min score
+         */
+        var minScore = this.minScore;
+        if (minScore !== exports.NO_MIN_SCORE) {
+            array.min_score = minScore;
+        }
+        /**
+         * User
+         */
+        if (this.user instanceof User_1.User) {
+            var userAsArray = this.user.toArray();
+            if (Object.keys(userAsArray).length > 0) {
+                array.user = userAsArray;
+            }
+        }
+        /**
+         * items promoted
+         */
+        if (this.itemsPromoted.length > 0) {
+            array.items_promoted = [];
+            for (var i in this.itemsPromoted) {
+                array
+                    .items_promoted
+                    .push(this.itemsPromoted[i].toArray());
+            }
+        }
+        return array;
+    };
+    /**
+     * Create from array
+     *
+     * @param array
+     *
+     * @returns {Query}
+     */
+    Query.createFromArray = function (array) {
+        var query = array.coordinate instanceof Object
+            ? Query.createLocated(Coordinate_1.Coordinate.createFromArray(array.coordinate), array.q ? array.q : "", array.page ? array.page : exports.QUERY_DEFAULT_PAGE, array.size ? array.size : exports.QUERY_DEFAULT_SIZE)
+            : Query.create(array.q ? array.q : "", array.page ? array.page : exports.QUERY_DEFAULT_PAGE, array.size ? array.size : exports.QUERY_DEFAULT_SIZE);
+        /**
+         * Fields
+         */
+        query.fields = array.fields instanceof Array
+            ? array.fields
+            : [];
+        /**
+         * Aggregations
+         */
+        var aggregationsAsArray = typeof array.aggregations === typeof {}
+            ? array.aggregations
+            : {};
+        for (var i in aggregationsAsArray) {
+            query.aggregations[i] = Aggregation_1.Aggregation.createFromArray(aggregationsAsArray[i]);
+        }
+        /**
+         * Sort
+         */
+        var sortAsArray = typeof array.sort === typeof {}
+            ? array.sort
+            : {};
+        if (Object.keys(sortAsArray).length > 0) {
+            query.sortByInstance = SortBy_1.SortBy.createFromArray(sortAsArray);
+        }
+        /**
+         * Filters
+         */
+        var filtersAsArray = typeof array.filters === typeof {}
+            ? array.filters
+            : {};
+        for (var i in filtersAsArray) {
+            query.filters[i] = Filter_1.Filter.createFromArray(filtersAsArray[i]);
+        }
+        /**
+         * Universe Filters
+         */
+        var universeFiltersAsArray = typeof array.universe_filters === typeof {}
+            ? array.universe_filters
+            : {};
+        for (var i in universeFiltersAsArray) {
+            query.universeFilters[i] = Filter_1.Filter.createFromArray(universeFiltersAsArray[i]);
+        }
+        /**
+         * Booleans
+         */
+        query.resultsEnabled = typeof array.results_enabled === "boolean"
+            ? array.results_enabled
+            : true;
+        query.suggestionsEnabled = typeof array.suggestions_enabled === "boolean"
+            ? array.suggestions_enabled
+            : false;
+        query.aggregationsEnabled = typeof array.aggregations_enabled === "boolean"
+            ? array.aggregations_enabled
+            : true;
+        query.highlightsEnabled = typeof array.highlights_enabled === "boolean"
+            ? array.highlights_enabled
+            : false;
+        query.fuzziness = array.fuzziness;
+        query.minScore = array.min_score ? array.min_score : exports.NO_MIN_SCORE;
+        /**
+         * Items promoted
+         */
+        var itemsPromotedAsArray = typeof array.items_promoted === typeof {}
+            ? array.items_promoted
+            : {};
+        for (var i in itemsPromotedAsArray) {
+            query
+                .itemsPromoted
+                .push(ItemUUID_1.ItemUUID.createFromArray(itemsPromotedAsArray[i]));
+        }
+        /**
+         * Filter fields
+         */
+        query.filterFields = array.filter_fields instanceof Array
+            ? array.filter_fields
+            : [];
+        query.scoreStrategies = array.score_strategies instanceof Object
+            ? ScoreStrategies_1.ScoreStrategies.createFromArray(array.score_strategies)
+            : null;
+        query.user = array.user instanceof Object
+            ? User_1.User.createFromArray(array.user)
+            : null;
+        return query;
+    };
+    return Query;
+}());
+exports.Query = Query;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.__esModule = true;
+var InvalidFormatError_1 = __webpack_require__(3);
+/**
+ * Coordinate Type cast
+ * @param coordinate
+ */
+var Coordinate = /** @class */ (function () {
+    /**
+     * Constructor
+     *
+     * @param {number} lat
+     * @param {number} lon
+     */
+    function Coordinate(lat, lon) {
+        this.lat = lat;
+        this.lon = lon;
+    }
+    /**
+     * Get latitude
+     *
+     * @return float
+     */
+    Coordinate.prototype.getLatitude = function () {
+        return this.lat;
+    };
+    /**
+     * Get longitude
+     *
+     * @return float
+     */
+    Coordinate.prototype.getLongitude = function () {
+        return this.lon;
+    };
+    /**
+     * To array
+     *
+     * @return {{lat: number, lon: number}}
+     */
+    Coordinate.prototype.toArray = function () {
+        return {
+            lat: this.lat,
+            lon: this.lon
+        };
+    };
+    /**
+     * Create from array
+     *
+     * @param array
+     *
+     * @return Coordinate
+     *
+     * @throws InvalidFormatError
+     */
+    Coordinate.createFromArray = function (array) {
+        if (typeof array.lat == "undefined" ||
+            typeof array.lon == "undefined") {
+            throw InvalidFormatError_1.InvalidFormatError.coordinateFormatNotValid();
+        }
+        return new Coordinate(array.lat, array.lon);
+    };
+    return Coordinate;
+}());
+exports.Coordinate = Coordinate;
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
 
 
 /***/ }),
@@ -3741,7 +3752,7 @@ exports.Item = Item;
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(2);
-var normalizeHeaderName = __webpack_require__(59);
+var normalizeHeaderName = __webpack_require__(58);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -3757,10 +3768,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(26);
+    adapter = __webpack_require__(25);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(26);
+    adapter = __webpack_require__(25);
   }
   return adapter;
 }
@@ -3803,6 +3814,10 @@ var defaults = {
     return data;
   }],
 
+  /**
+   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+   * timeout is not created.
+   */
   timeout: 0,
 
   xsrfCookieName: 'XSRF-TOKEN',
@@ -3831,7 +3846,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)))
 
 /***/ }),
 /* 18 */
@@ -3840,7 +3855,7 @@ module.exports = defaults;
 "use strict";
 
 exports.__esModule = true;
-var Filter_1 = __webpack_require__(8);
+var Filter_1 = __webpack_require__(7);
 /**
  * Aggregation constants
  */
@@ -4019,6 +4034,7 @@ exports.Aggregation = Aggregation;
 "use strict";
 
 exports.__esModule = true;
+var Item_1 = __webpack_require__(9);
 /**
  export * Sort by constants
  */
@@ -4074,8 +4090,8 @@ exports.SORT_BY_LOCATION_MI_ASC = {
         unit: "mi"
     }
 };
-var Coordinate_1 = __webpack_require__(14);
-var Filter_1 = __webpack_require__(8);
+var Coordinate_1 = __webpack_require__(15);
+var Filter_1 = __webpack_require__(7);
 /**
  * ScoreStrategy
  */
@@ -4185,7 +4201,7 @@ var SortBy = /** @class */ (function () {
      */
     SortBy.prototype.byNestedFieldAndFilter = function (field, order, filter, mode) {
         if (mode === void 0) { mode = exports.SORT_BY_MODE_AVG; }
-        var fieldPath = Filter_1.Filter.getFilterPathByField(filter.getField());
+        var fieldPath = Item_1.Item.getPathByField(filter.getField());
         var filterAsArray = filter.toArray();
         filterAsArray.field = fieldPath;
         filter = Filter_1.Filter.createFromArray(filterAsArray);
@@ -4331,8 +4347,8 @@ exports.SortBy = SortBy;
 "use strict";
 
 exports.__esModule = true;
-var Item_1 = __webpack_require__(16);
-var Query_1 = __webpack_require__(13);
+var Item_1 = __webpack_require__(9);
+var Query_1 = __webpack_require__(14);
 var ResultAggregations_1 = __webpack_require__(21);
 /**
  * Result class
@@ -4682,13 +4698,13 @@ exports.ResultAggregations = ResultAggregations;
 "use strict";
 
 exports.__esModule = true;
-var apisearch_1 = __webpack_require__(12);
-var ApisearchActions_1 = __webpack_require__(86);
-var Bootstrap_1 = __webpack_require__(87);
+var apisearch_1 = __webpack_require__(13);
+var ApisearchActions_1 = __webpack_require__(85);
+var Bootstrap_1 = __webpack_require__(86);
 var Constants_1 = __webpack_require__(5);
 var Container_1 = __webpack_require__(6);
-var Environment_1 = __webpack_require__(93);
-var Widgets_1 = __webpack_require__(94);
+var Environment_1 = __webpack_require__(92);
+var Widgets_1 = __webpack_require__(93);
 /**
  * ApisearchUI class
  */
@@ -4836,9 +4852,9 @@ exports["default"] = ApisearchUI;
 
 exports.__esModule = true;
 var tslib_1 = __webpack_require__(0);
-var axios_1 = __webpack_require__(56);
-var Client_1 = __webpack_require__(30);
-var Response_1 = __webpack_require__(31);
+var axios_1 = __webpack_require__(54);
+var Client_1 = __webpack_require__(29);
+var Response_1 = __webpack_require__(30);
 /**
  * AxiosClient
  */
@@ -4914,6 +4930,9 @@ var AxiosClient = /** @class */ (function (_super) {
                             var response = new Response_1.Response(axiosResponse.status, axiosResponse.data);
                             return resolve(response);
                         })["catch"](function (error) {
+                            if (error.response === undefined) {
+                                return;
+                            }
                             var response = new Response_1.Response(error.response.status, error.response.data);
                             return reject(response);
                         });
@@ -4966,45 +4985,18 @@ module.exports = function bind(fn, thisArg) {
 
 /***/ }),
 /* 25 */
-/***/ (function(module, exports) {
-
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
- * @license  MIT
- */
-
-// The _isBuffer check is for Safari 5-7 support, because it's missing
-// Object.prototype.constructor. Remove this eventually
-module.exports = function (obj) {
-  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
-}
-
-function isBuffer (obj) {
-  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
-
-// For Node v0.10 support. Remove this eventually.
-function isSlowBuffer (obj) {
-  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
-}
-
-
-/***/ }),
-/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(2);
-var settle = __webpack_require__(60);
-var buildURL = __webpack_require__(62);
-var parseHeaders = __webpack_require__(63);
-var isURLSameOrigin = __webpack_require__(64);
-var createError = __webpack_require__(27);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(65);
+var settle = __webpack_require__(59);
+var buildURL = __webpack_require__(61);
+var parseHeaders = __webpack_require__(62);
+var isURLSameOrigin = __webpack_require__(63);
+var createError = __webpack_require__(26);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(64);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -5101,7 +5093,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(66);
+      var cookies = __webpack_require__(65);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -5177,16 +5169,16 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)))
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var enhanceError = __webpack_require__(61);
+var enhanceError = __webpack_require__(60);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -5205,7 +5197,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5217,7 +5209,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5243,7 +5235,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5283,7 +5275,7 @@ exports.Client = Client;
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5325,13 +5317,13 @@ exports.Response = Response;
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
-var Retry_1 = __webpack_require__(33);
+var Retry_1 = __webpack_require__(32);
 /**
  * Http class
  */
@@ -5384,7 +5376,7 @@ exports.RetryMap = RetryMap;
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5459,7 +5451,7 @@ exports.Retry = Retry;
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5535,41 +5527,196 @@ exports.User = User;
 
 
 /***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.__esModule = true;
+var ScoreStrategy_1 = __webpack_require__(35);
+/**
+ * ScoreStrategies constants
+ */
+exports.MULTIPLY = 'multiply';
+exports.SUM = 'sum';
+exports.AVG = 'avg';
+exports.MAX = 'max';
+exports.MIN = 'min';
+/**
+ * ScoreStrategies
+ */
+var ScoreStrategies = /** @class */ (function () {
+    function ScoreStrategies() {
+        this.scoreStrategies = [];
+    }
+    /**
+     * Create empty
+     *
+     * @param scoreMode
+     *
+     * @return {ScoreStrategies}
+     */
+    ScoreStrategies.createEmpty = function (scoreMode) {
+        if (scoreMode === void 0) { scoreMode = exports.SUM; }
+        var scoreStrategies = new ScoreStrategies;
+        scoreStrategies.scoreMode = scoreMode;
+        return scoreStrategies;
+    };
+    /**
+     * Add score strategy
+     *
+     * @param scoreStrategy
+     *
+     * @return {ScoreStrategies}
+     */
+    ScoreStrategies.prototype.addScoreStrategy = function (scoreStrategy) {
+        this.scoreStrategies.push(scoreStrategy);
+        return this;
+    };
+    /**
+     * Get score strategies
+     *
+     * @return {ScoreStrategy[]}
+     */
+    ScoreStrategies.prototype.getScoreStrategies = function () {
+        return this.scoreStrategies;
+    };
+    /**
+     * Get score mode
+     *
+     * @return {string}
+     */
+    ScoreStrategies.prototype.getScoreMode = function () {
+        return this.scoreMode;
+    };
+    /**
+     * To array
+     *
+     * @return {{
+     *      score_mode: string,
+     *      score_strategies: any
+     * }}
+     */
+    ScoreStrategies.prototype.toArray = function () {
+        var scoreStrategiesAsArray = [];
+        for (var i in this.scoreStrategies) {
+            scoreStrategiesAsArray.push(this.scoreStrategies[i].toArray());
+        }
+        return {
+            score_mode: this.scoreMode,
+            score_strategies: scoreStrategiesAsArray
+        };
+    };
+    /**
+     * Create from array
+     *
+     * @param array
+     *
+     * @return {ScoreStrategies}
+     */
+    ScoreStrategies.createFromArray = function (array) {
+        array = JSON.parse(JSON.stringify(array));
+        var scoreStrategies = (typeof array.score_mode != "undefined")
+            ? ScoreStrategies.createEmpty(array.score_mode)
+            : ScoreStrategies.createEmpty();
+        scoreStrategies.scoreStrategies = [];
+        for (var i in array.score_strategies) {
+            scoreStrategies
+                .scoreStrategies
+                .push(ScoreStrategy_1.ScoreStrategy.createFromArray(array.score_strategies[i]));
+        }
+        return scoreStrategies;
+    };
+    return ScoreStrategies;
+}());
+exports.ScoreStrategies = ScoreStrategies;
+
+
+/***/ }),
 /* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
+var Item_1 = __webpack_require__(9);
+var Filter_1 = __webpack_require__(7);
 /**
- * Aggregation constants
+ * ScoreStrategy constants
  */
-exports.SCORE_STRATEGY_DEFAULT = 0;
-exports.SCORE_STRATEGY_BOOSTING_RELEVANCE_FIELD = 1;
-exports.SCORE_STRATEGY_BOOSTING_CUSTOM_FUNCTION = 2;
+exports.DEFAULT_TYPE = 'default';
+exports.DEFAULT_WEIGHT = 1.0;
+exports.BOOSTING_FIELD_VALUE = 'field_value';
+exports.CUSTOM_FUNCTION = 'custom_function';
+exports.DECAY = 'decay';
+exports.DECAY_LINEAR = 'linear';
+exports.DECAY_EXP = 'exp';
+exports.DECAY_GAUSS = 'gauss';
+exports.MODIFIER_NONE = 'none';
+exports.MODIFIER_SQRT = 'sqrt';
+exports.MODIFIER_LOG = 'log';
+exports.MODIFIER_LN = 'ln';
+exports.MODIFIER_SQUARE = 'square';
+exports.SCORE_MODE_NONE = 'none';
+exports.SCORE_MODE_SUM = 'sum';
+exports.SCORE_MODE_AVG = 'avg';
+exports.SCORE_MODE_MAX = 'max';
+exports.SCORE_MODE_MIN = 'min';
+exports.DEFAULT_MISSING = 1.0;
+exports.DEFAULT_FACTOR = 1.0;
 /**
  * ScoreStrategy
  */
 var ScoreStrategy = /** @class */ (function () {
     function ScoreStrategy() {
-        this.type = exports.SCORE_STRATEGY_DEFAULT;
-        this.innerFunction = null;
+        this.type = exports.DEFAULT_TYPE;
+        this.filter = null;
+        this.weight = exports.DEFAULT_WEIGHT;
+        this.scoreMode = exports.SCORE_MODE_AVG;
+        this.configuration = {};
     }
     /**
      * Get type
      *
-     * @returns {number}
+     * @returns {string}
      */
     ScoreStrategy.prototype.getType = function () {
         return this.type;
     };
     /**
-     * Get function
+     * Get configuration value
      *
      * @returns {string}
      */
-    ScoreStrategy.prototype.getFunction = function () {
-        return this.innerFunction;
+    ScoreStrategy.prototype.getConfigurationValue = function (element) {
+        if (typeof this.configuration[element] == "undefined") {
+            return null;
+        }
+        return this.configuration[element];
+    };
+    /**
+     * Get weight.
+     *
+     * @return {number}
+     */
+    ScoreStrategy.prototype.getWeight = function () {
+        return this.weight;
+    };
+    /**
+     * Get score mode.
+     *
+     * @return {string}
+     */
+    ScoreStrategy.prototype.getScoreMode = function () {
+        return this.scoreMode;
+    };
+    /**
+     * Get filter.
+     *
+     * @return {Filter}
+     */
+    ScoreStrategy.prototype.getFilter = function () {
+        return this.filter;
     };
     /**
      * Create default
@@ -5580,36 +5727,125 @@ var ScoreStrategy = /** @class */ (function () {
         return new ScoreStrategy();
     };
     /**
-     * Create relevance boosting
+     * Create field boosting
+     *
+     * @param field
+     * @param factor
+     * @param missing
+     * @param modifier
+     * @param weight
+     * @param filter
+     * @param scoreMode
      *
      * @return {ScoreStrategy}
      */
-    ScoreStrategy.createRelevanceBoosting = function () {
+    ScoreStrategy.createFieldBoosting = function (field, factor, missing, modifier, weight, filter, scoreMode) {
+        if (factor === void 0) { factor = exports.DEFAULT_FACTOR; }
+        if (missing === void 0) { missing = exports.DEFAULT_MISSING; }
+        if (modifier === void 0) { modifier = exports.MODIFIER_NONE; }
+        if (weight === void 0) { weight = exports.DEFAULT_WEIGHT; }
+        if (filter === void 0) { filter = null; }
+        if (scoreMode === void 0) { scoreMode = exports.SCORE_MODE_AVG; }
         var scoreStrategy = ScoreStrategy.createDefault();
-        scoreStrategy.type = exports.SCORE_STRATEGY_BOOSTING_RELEVANCE_FIELD;
+        scoreStrategy.type = exports.BOOSTING_FIELD_VALUE;
+        scoreStrategy.configuration['field'] = field;
+        scoreStrategy.configuration['factor'] = factor;
+        scoreStrategy.configuration['missing'] = missing;
+        scoreStrategy.configuration['modifier'] = modifier;
+        scoreStrategy.weight = weight;
+        scoreStrategy.filter = ScoreStrategy.fixFilterFieldPath(filter);
+        scoreStrategy.scoreMode = scoreMode;
         return scoreStrategy;
     };
     /**
-     * Create relevance boosting
+     * Create custom function
      *
-     * @param innerFunction
+     * @param func
+     * @param weight
+     * @param filter
+     * @param scoreMode
      *
      * @return {ScoreStrategy}
      */
-    ScoreStrategy.createCustomFunction = function (innerFunction) {
+    ScoreStrategy.createCustomFunction = function (func, weight, filter, scoreMode) {
+        if (weight === void 0) { weight = exports.DEFAULT_WEIGHT; }
+        if (filter === void 0) { filter = null; }
+        if (scoreMode === void 0) { scoreMode = exports.SCORE_MODE_AVG; }
         var scoreStrategy = ScoreStrategy.createDefault();
-        scoreStrategy.type = exports.SCORE_STRATEGY_BOOSTING_CUSTOM_FUNCTION;
-        scoreStrategy.innerFunction = innerFunction;
+        scoreStrategy.type = exports.CUSTOM_FUNCTION;
+        scoreStrategy.configuration['function'] = func;
+        scoreStrategy.weight = weight;
+        scoreStrategy.filter = ScoreStrategy.fixFilterFieldPath(filter);
+        scoreStrategy.scoreMode = scoreMode;
         return scoreStrategy;
     };
     /**
+     * Create decay function
      *
-     * @return {{type: number, function: string}}
+     * @param type
+     * @param field
+     * @param origin
+     * @param scale
+     * @param offset
+     * @param decay
+     * @param weight
+     * @param filter
+     * @param scoreMode
+     *
+     * @return {ScoreStrategy}
+     */
+    ScoreStrategy.createDecayFunction = function (type, field, origin, scale, offset, decay, weight, filter, scoreMode) {
+        if (weight === void 0) { weight = exports.DEFAULT_WEIGHT; }
+        if (filter === void 0) { filter = null; }
+        if (scoreMode === void 0) { scoreMode = exports.SCORE_MODE_AVG; }
+        var scoreStrategy = ScoreStrategy.createDefault();
+        scoreStrategy.type = exports.DECAY;
+        scoreStrategy.configuration['type'] = type;
+        scoreStrategy.configuration['field'] = field;
+        scoreStrategy.configuration['origin'] = origin;
+        scoreStrategy.configuration['scale'] = scale;
+        scoreStrategy.configuration['offset'] = offset;
+        scoreStrategy.configuration['decay'] = decay;
+        scoreStrategy.weight = weight;
+        scoreStrategy.filter = ScoreStrategy.fixFilterFieldPath(filter);
+        scoreStrategy.scoreMode = scoreMode;
+        return scoreStrategy;
+    };
+    /**
+     * Fix filter path.
+     *
+     * @param filter
+     *
+     * @return {Filter}
+     */
+    ScoreStrategy.fixFilterFieldPath = function (filter) {
+        if (filter == null) {
+            return filter;
+        }
+        var filterAsArray = filter.toArray();
+        filterAsArray['field'] = Item_1.Item.getPathByField(filterAsArray['field']);
+        return Filter_1.Filter.createFromArray(filterAsArray);
+    };
+    /**
+     * To array
+     *
+     * @return {{
+     *      type: string,
+     *      configuration: any,
+     *      weight: number,
+     *      score_mode: string,
+     *      filter: any
+     * }}
      */
     ScoreStrategy.prototype.toArray = function () {
         return {
             type: this.type,
-            "function": this.innerFunction
+            configuration: this.configuration,
+            weight: this.weight,
+            score_mode: this.scoreMode,
+            filter: this.filter instanceof Filter_1.Filter
+                ? this.filter.toArray()
+                : null
         };
     };
     /**
@@ -5622,14 +5858,21 @@ var ScoreStrategy = /** @class */ (function () {
     ScoreStrategy.createFromArray = function (array) {
         array = JSON.parse(JSON.stringify(array));
         var scoreStrategy = ScoreStrategy.createDefault();
-        if (typeof array.type == "undefined") {
-            array.type = exports.SCORE_STRATEGY_DEFAULT;
+        if (typeof array.type != "undefined") {
+            scoreStrategy.type = array.type;
         }
-        if (typeof array["function"] == "undefined") {
-            array.innerFunction = null;
+        if (typeof array.configuration != "undefined") {
+            scoreStrategy.configuration = array.configuration;
         }
-        scoreStrategy.type = array.type;
-        scoreStrategy.innerFunction = array["function"];
+        if (typeof array.weight != "undefined") {
+            scoreStrategy.weight = array.weight;
+        }
+        if (typeof array.score_mode != "undefined") {
+            scoreStrategy.scoreMode = array.score_mode;
+        }
+        if (typeof array.filter === 'object' && array.filter !== null) {
+            scoreStrategy.filter = Filter_1.Filter.createFromArray(array.filter);
+        }
         return scoreStrategy;
     };
     return ScoreStrategy;
@@ -5650,11 +5893,11 @@ var InvalidFormatError_1 = __webpack_require__(3);
 var InvalidTokenError_1 = __webpack_require__(38);
 var ResourceExistsError_1 = __webpack_require__(39);
 var ResourceNotAvailableError_1 = __webpack_require__(40);
-var Item_1 = __webpack_require__(16);
-var ItemUUID_1 = __webpack_require__(10);
+var Item_1 = __webpack_require__(9);
+var ItemUUID_1 = __webpack_require__(11);
 var Result_1 = __webpack_require__(20);
 var Repository_1 = __webpack_require__(44);
-var Index_1 = __webpack_require__(74);
+var Index_1 = __webpack_require__(73);
 /**
  * Aggregation class
  */
@@ -6232,7 +6475,7 @@ exports.ResourceNotAvailableError = ResourceNotAvailableError;
 
 exports.__esModule = true;
 var tslib_1 = __webpack_require__(0);
-var Filter_1 = __webpack_require__(8);
+var Filter_1 = __webpack_require__(7);
 var Counter_1 = __webpack_require__(42);
 /**
  * ResultAggregation class
@@ -6811,8 +7054,8 @@ exports.Repository = Repository;
 "use strict";
 
 exports.__esModule = true;
-var Item_1 = __webpack_require__(16);
-var ItemUUID_1 = __webpack_require__(10);
+var Item_1 = __webpack_require__(9);
+var ItemUUID_1 = __webpack_require__(11);
 /**
  * Transformer
  */
@@ -7016,22 +7259,137 @@ exports.Synonym = Synonym;
 
 /***/ }),
 /* 47 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-/*!
- * is-extendable <https://github.com/jonschlinkert/is-extendable>
- *
- * Copyright (c) 2015, Jon Schlinkert.
- * Licensed under the MIT License.
+var toString = Object.prototype.toString;
+
+module.exports = function kindOf(val) {
+  if (val === void 0) return 'undefined';
+  if (val === null) return 'null';
+
+  var type = typeof val;
+  if (type === 'boolean') return 'boolean';
+  if (type === 'string') return 'string';
+  if (type === 'number') return 'number';
+  if (type === 'symbol') return 'symbol';
+  if (type === 'function') {
+    return isGeneratorFn(val) ? 'generatorfunction' : 'function';
+  }
+
+  if (isArray(val)) return 'array';
+  if (isBuffer(val)) return 'buffer';
+  if (isArguments(val)) return 'arguments';
+  if (isDate(val)) return 'date';
+  if (isError(val)) return 'error';
+  if (isRegexp(val)) return 'regexp';
+
+  switch (ctorName(val)) {
+    case 'Symbol': return 'symbol';
+    case 'Promise': return 'promise';
+
+    // Set, Map, WeakSet, WeakMap
+    case 'WeakMap': return 'weakmap';
+    case 'WeakSet': return 'weakset';
+    case 'Map': return 'map';
+    case 'Set': return 'set';
+
+    // 8-bit typed arrays
+    case 'Int8Array': return 'int8array';
+    case 'Uint8Array': return 'uint8array';
+    case 'Uint8ClampedArray': return 'uint8clampedarray';
+
+    // 16-bit typed arrays
+    case 'Int16Array': return 'int16array';
+    case 'Uint16Array': return 'uint16array';
+
+    // 32-bit typed arrays
+    case 'Int32Array': return 'int32array';
+    case 'Uint32Array': return 'uint32array';
+    case 'Float32Array': return 'float32array';
+    case 'Float64Array': return 'float64array';
+  }
+
+  if (isGeneratorObj(val)) {
+    return 'generator';
+  }
+
+  // Non-plain objects
+  type = toString.call(val);
+  switch (type) {
+    case '[object Object]': return 'object';
+    // iterators
+    case '[object Map Iterator]': return 'mapiterator';
+    case '[object Set Iterator]': return 'setiterator';
+    case '[object String Iterator]': return 'stringiterator';
+    case '[object Array Iterator]': return 'arrayiterator';
+  }
+
+  // other
+  return type.slice(8, -1).toLowerCase().replace(/\s/g, '');
+};
+
+function ctorName(val) {
+  return val.constructor ? val.constructor.name : null;
+}
+
+function isArray(val) {
+  if (Array.isArray) return Array.isArray(val);
+  return val instanceof Array;
+}
+
+function isError(val) {
+  return val instanceof Error || (typeof val.message === 'string' && val.constructor && typeof val.constructor.stackTraceLimit === 'number');
+}
+
+function isDate(val) {
+  if (val instanceof Date) return true;
+  return typeof val.toDateString === 'function'
+    && typeof val.getDate === 'function'
+    && typeof val.setDate === 'function';
+}
+
+function isRegexp(val) {
+  if (val instanceof RegExp) return true;
+  return typeof val.flags === 'string'
+    && typeof val.ignoreCase === 'boolean'
+    && typeof val.multiline === 'boolean'
+    && typeof val.global === 'boolean';
+}
+
+function isGeneratorFn(name, val) {
+  return ctorName(name) === 'GeneratorFunction';
+}
+
+function isGeneratorObj(val) {
+  return typeof val.throw === 'function'
+    && typeof val.return === 'function'
+    && typeof val.next === 'function';
+}
+
+function isArguments(val) {
+  try {
+    if (typeof val.length === 'number' && typeof val.callee === 'function') {
+      return true;
+    }
+  } catch (err) {
+    if (err.message.indexOf('callee') !== -1) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * If you need to support Safari 5-7 (8-10 yr-old browser),
+ * take a look at https://github.com/feross/is-buffer
  */
 
-
-
-module.exports = function isExtendable(val) {
-  return typeof val !== 'undefined' && val !== null
-    && (typeof val === 'object' || typeof val === 'function');
-};
+function isBuffer(val) {
+  if (val.constructor && typeof val.constructor.isBuffer === 'function') {
+    return val.constructor.isBuffer(val);
+  }
+  return false;
+}
 
 
 /***/ }),
@@ -7039,160 +7397,15 @@ module.exports = function isExtendable(val) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/*!
- * for-in <https://github.com/jonschlinkert/for-in>
- *
- * Copyright (c) 2014-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
 
 
+__webpack_require__(49);
 
-module.exports = function forIn(obj, fn, thisArg) {
-  for (var key in obj) {
-    if (fn.call(thisArg, obj[key], key, obj) === false) {
-      break;
-    }
-  }
-};
-
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isBuffer = __webpack_require__(25);
-var toString = Object.prototype.toString;
-
-/**
- * Get the native `typeof` a value.
- *
- * @param  {*} `val`
- * @return {*} Native javascript type
- */
-
-module.exports = function kindOf(val) {
-  // primitivies
-  if (typeof val === 'undefined') {
-    return 'undefined';
-  }
-  if (val === null) {
-    return 'null';
-  }
-  if (val === true || val === false || val instanceof Boolean) {
-    return 'boolean';
-  }
-  if (typeof val === 'string' || val instanceof String) {
-    return 'string';
-  }
-  if (typeof val === 'number' || val instanceof Number) {
-    return 'number';
-  }
-
-  // functions
-  if (typeof val === 'function' || val instanceof Function) {
-    return 'function';
-  }
-
-  // array
-  if (typeof Array.isArray !== 'undefined' && Array.isArray(val)) {
-    return 'array';
-  }
-
-  // check for instances of RegExp and Date before calling `toString`
-  if (val instanceof RegExp) {
-    return 'regexp';
-  }
-  if (val instanceof Date) {
-    return 'date';
-  }
-
-  // other objects
-  var type = toString.call(val);
-
-  if (type === '[object RegExp]') {
-    return 'regexp';
-  }
-  if (type === '[object Date]') {
-    return 'date';
-  }
-  if (type === '[object Arguments]') {
-    return 'arguments';
-  }
-  if (type === '[object Error]') {
-    return 'error';
-  }
-
-  // buffer
-  if (isBuffer(val)) {
-    return 'buffer';
-  }
-
-  // es6: Map, WeakMap, Set, WeakSet
-  if (type === '[object Set]') {
-    return 'set';
-  }
-  if (type === '[object WeakSet]') {
-    return 'weakset';
-  }
-  if (type === '[object Map]') {
-    return 'map';
-  }
-  if (type === '[object WeakMap]') {
-    return 'weakmap';
-  }
-  if (type === '[object Symbol]') {
-    return 'symbol';
-  }
-
-  // typed arrays
-  if (type === '[object Int8Array]') {
-    return 'int8array';
-  }
-  if (type === '[object Uint8Array]') {
-    return 'uint8array';
-  }
-  if (type === '[object Uint8ClampedArray]') {
-    return 'uint8clampedarray';
-  }
-  if (type === '[object Int16Array]') {
-    return 'int16array';
-  }
-  if (type === '[object Uint16Array]') {
-    return 'uint16array';
-  }
-  if (type === '[object Int32Array]') {
-    return 'int32array';
-  }
-  if (type === '[object Uint32Array]') {
-    return 'uint32array';
-  }
-  if (type === '[object Float32Array]') {
-    return 'float32array';
-  }
-  if (type === '[object Float64Array]') {
-    return 'float64array';
-  }
-
-  // must be a plain object
-  return 'object';
-};
-
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-__webpack_require__(51);
-
-var _search = __webpack_require__(52);
+var _search = __webpack_require__(50);
 
 var _search2 = _interopRequireDefault(_search);
 
-var _index = __webpack_require__(132);
+var _index = __webpack_require__(133);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -7209,13 +7422,13 @@ _search2.default.init();
 _index2.default.mount();
 
 /***/ }),
-/* 51 */
+/* 49 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 52 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7225,15 +7438,15 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _apisearchUi = __webpack_require__(53);
+var _apisearchUi = __webpack_require__(51);
 
 var _apisearchUi2 = _interopRequireDefault(_apisearchUi);
 
-var _templates = __webpack_require__(130);
+var _templates = __webpack_require__(131);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var apisearchConfig = __webpack_require__(131);
+var apisearchConfig = __webpack_require__(132);
 
 var ui = _apisearchUi2.default.create({
     app_id: apisearchConfig.app_id,
@@ -7286,7 +7499,7 @@ ui.attach('render', function () {
 exports.default = ui;
 
 /***/ }),
-/* 53 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7297,19 +7510,19 @@ exports["default"] = ApisearchUI_1["default"];
 
 
 /***/ }),
-/* 54 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
 var tslib_1 = __webpack_require__(0);
-var NoCache_1 = __webpack_require__(55);
+var NoCache_1 = __webpack_require__(53);
 var AxiosClient_1 = __webpack_require__(23);
-var RetryMap_1 = __webpack_require__(32);
-var Query_1 = __webpack_require__(13);
-var Query_2 = __webpack_require__(13);
-var Query_3 = __webpack_require__(13);
+var RetryMap_1 = __webpack_require__(31);
+var Query_1 = __webpack_require__(14);
+var Query_2 = __webpack_require__(14);
+var Query_3 = __webpack_require__(14);
 var SortBy_1 = __webpack_require__(19);
 var HttpRepository_1 = __webpack_require__(36);
 var Result_1 = __webpack_require__(20);
@@ -7444,7 +7657,7 @@ exports["default"] = Apisearch;
 
 
 /***/ }),
-/* 55 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7497,13 +7710,13 @@ exports.NoCache = NoCache;
 
 
 /***/ }),
-/* 56 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(57);
+module.exports = __webpack_require__(55);
 
 /***/ }),
-/* 57 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7511,7 +7724,7 @@ module.exports = __webpack_require__(57);
 
 var utils = __webpack_require__(2);
 var bind = __webpack_require__(24);
-var Axios = __webpack_require__(58);
+var Axios = __webpack_require__(57);
 var defaults = __webpack_require__(17);
 
 /**
@@ -7545,15 +7758,15 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(29);
-axios.CancelToken = __webpack_require__(72);
-axios.isCancel = __webpack_require__(28);
+axios.Cancel = __webpack_require__(28);
+axios.CancelToken = __webpack_require__(71);
+axios.isCancel = __webpack_require__(27);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(73);
+axios.spread = __webpack_require__(72);
 
 module.exports = axios;
 
@@ -7562,7 +7775,34 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 58 */
+/* 56 */
+/***/ (function(module, exports) {
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+// The _isBuffer check is for Safari 5-7 support, because it's missing
+// Object.prototype.constructor. Remove this eventually
+module.exports = function (obj) {
+  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
+}
+
+function isBuffer (obj) {
+  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+// For Node v0.10 support. Remove this eventually.
+function isSlowBuffer (obj) {
+  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
+}
+
+
+/***/ }),
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7570,8 +7810,8 @@ module.exports.default = axios;
 
 var defaults = __webpack_require__(17);
 var utils = __webpack_require__(2);
-var InterceptorManager = __webpack_require__(67);
-var dispatchRequest = __webpack_require__(68);
+var InterceptorManager = __webpack_require__(66);
+var dispatchRequest = __webpack_require__(67);
 
 /**
  * Create a new instance of Axios
@@ -7600,7 +7840,7 @@ Axios.prototype.request = function request(config) {
     }, arguments[1]);
   }
 
-  config = utils.merge(defaults, this.defaults, { method: 'get' }, config);
+  config = utils.merge(defaults, {method: 'get'}, this.defaults, config);
   config.method = config.method.toLowerCase();
 
   // Hook up interceptors middleware
@@ -7648,7 +7888,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7667,13 +7907,13 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var createError = __webpack_require__(27);
+var createError = __webpack_require__(26);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -7700,7 +7940,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7728,7 +7968,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7775,9 +8015,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
       if (utils.isArray(val)) {
         key = key + '[]';
-      }
-
-      if (!utils.isArray(val)) {
+      } else {
         val = [val];
       }
 
@@ -7803,7 +8041,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7863,7 +8101,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7938,7 +8176,7 @@ module.exports = (
 
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7981,7 +8219,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8041,7 +8279,7 @@ module.exports = (
 
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8100,18 +8338,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(2);
-var transformData = __webpack_require__(69);
-var isCancel = __webpack_require__(28);
+var transformData = __webpack_require__(68);
+var isCancel = __webpack_require__(27);
 var defaults = __webpack_require__(17);
-var isAbsoluteURL = __webpack_require__(70);
-var combineURLs = __webpack_require__(71);
+var isAbsoluteURL = __webpack_require__(69);
+var combineURLs = __webpack_require__(70);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -8193,7 +8431,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8220,7 +8458,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8241,7 +8479,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8262,13 +8500,13 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Cancel = __webpack_require__(29);
+var Cancel = __webpack_require__(28);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -8326,7 +8564,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8360,15 +8598,15 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
 var InvalidFormatError_1 = __webpack_require__(3);
-var IndexUUID_1 = __webpack_require__(75);
-var AppUUID_1 = __webpack_require__(76);
+var IndexUUID_1 = __webpack_require__(74);
+var AppUUID_1 = __webpack_require__(75);
 /**
  * Index class
  */
@@ -8466,7 +8704,7 @@ exports.Index = Index;
 
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8541,7 +8779,7 @@ exports.IndexUUID = IndexUUID;
 
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8616,7 +8854,7 @@ exports.AppUUID = AppUUID;
 
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8680,7 +8918,7 @@ exports.InMemoryCache = InMemoryCache;
 
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8765,7 +9003,7 @@ exports.Config = Config;
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8795,7 +9033,7 @@ exports.EventError = EventError;
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8849,7 +9087,7 @@ exports.ForbiddenError = ForbiddenError;
 
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8887,14 +9125,14 @@ exports.UnsupportedContentTypeError = UnsupportedContentTypeError;
 
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
 var tslib_1 = __webpack_require__(0);
-var Coordinate_1 = __webpack_require__(14);
+var Coordinate_1 = __webpack_require__(15);
 /**
  * Abstract Location Range class
  */
@@ -9097,7 +9335,7 @@ exports.Square = Square;
 
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9115,7 +9353,7 @@ exports.HttpClient = HttpClient;
 
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9245,7 +9483,7 @@ exports.Changes = Changes;
 
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9324,7 +9562,7 @@ exports.Range = Range;
 
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9357,17 +9595,17 @@ exports.initialDataFetchAction = initialDataFetchAction;
 
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
-var flux_1 = __webpack_require__(88);
-var apisearch_1 = __webpack_require__(12);
+var flux_1 = __webpack_require__(87);
+var apisearch_1 = __webpack_require__(13);
 var ApisearchUI_1 = __webpack_require__(22);
 var Container_1 = __webpack_require__(6);
-var Store_1 = __webpack_require__(91);
+var Store_1 = __webpack_require__(90);
 var Constants_1 = __webpack_require__(5);
 /**
  * Bootstrap application
@@ -9410,7 +9648,7 @@ exports.bootstrap = bootstrap;
 
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9422,11 +9660,11 @@ exports.bootstrap = bootstrap;
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-module.exports.Dispatcher = __webpack_require__(89);
+module.exports.Dispatcher = __webpack_require__(88);
 
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9449,7 +9687,7 @@ exports.__esModule = true;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var invariant = __webpack_require__(90);
+var invariant = __webpack_require__(89);
 
 var _prefix = 'ID_';
 
@@ -9661,10 +9899,10 @@ var Dispatcher = (function () {
 })();
 
 module.exports = Dispatcher;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)))
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9721,10 +9959,10 @@ function invariant(condition, format, a, b, c, d, e, f) {
 }
 
 module.exports = invariant;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)))
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9740,8 +9978,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var apisearch_1 = __webpack_require__(12);
-var events_1 = __webpack_require__(92);
+var apisearch_1 = __webpack_require__(13);
+var events_1 = __webpack_require__(91);
 /**
  * Flux pattern store class
  */
@@ -9832,7 +10070,7 @@ exports["default"] = Store;
 
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -10140,7 +10378,7 @@ function isUndefined(arg) {
 
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10153,19 +10391,19 @@ exports.createEnvironmentId = function () { return "env_" + Math.ceil(Math.rando
 
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
-var ClearFilters_1 = __webpack_require__(95);
-var Information_1 = __webpack_require__(107);
-var MultipleFilter_1 = __webpack_require__(109);
-var Pagination_1 = __webpack_require__(115);
-var Result_1 = __webpack_require__(120);
-var SearchInput_1 = __webpack_require__(124);
-var SortBy_1 = __webpack_require__(127);
+var ClearFilters_1 = __webpack_require__(94);
+var Information_1 = __webpack_require__(108);
+var MultipleFilter_1 = __webpack_require__(110);
+var Pagination_1 = __webpack_require__(116);
+var Result_1 = __webpack_require__(121);
+var SearchInput_1 = __webpack_require__(125);
+var SortBy_1 = __webpack_require__(128);
 /**
  * Widget factories
  */
@@ -10181,7 +10419,7 @@ exports["default"] = {
 
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10206,8 +10444,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var ClearFiltersComponent_1 = __webpack_require__(96);
-var Widget_1 = __webpack_require__(9);
+var ClearFiltersComponent_1 = __webpack_require__(95);
+var Widget_1 = __webpack_require__(10);
 /**
  * Clear Filters
  */
@@ -10250,7 +10488,7 @@ exports["default"] = (function (settings) { return new ClearFilters(settings); }
 
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10267,8 +10505,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var Template_1 = __webpack_require__(7);
-var ClearFiltersActions_1 = __webpack_require__(100);
+var Template_1 = __webpack_require__(8);
+var ClearFiltersActions_1 = __webpack_require__(99);
 /**
  * Result Information Component
  */
@@ -10333,7 +10571,7 @@ exports["default"] = ClearFiltersComponent;
 
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -10353,14 +10591,14 @@ exports["default"] = ClearFiltersComponent;
 
 // This file is for use with Node.js. See dist/ for browser files.
 
-var Hogan = __webpack_require__(98);
-Hogan.Template = __webpack_require__(99).Template;
+var Hogan = __webpack_require__(97);
+Hogan.Template = __webpack_require__(98).Template;
 Hogan.template = Hogan.Template;
 module.exports = Hogan;
 
 
 /***/ }),
-/* 98 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -10789,7 +11027,7 @@ module.exports = Hogan;
 
 
 /***/ }),
-/* 99 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -11136,13 +11374,13 @@ var Hogan = {};
 
 
 /***/ }),
-/* 100 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
-var cloneDeep = __webpack_require__(11);
+var cloneDeep = __webpack_require__(12);
 var Constants_1 = __webpack_require__(5);
 var Container_1 = __webpack_require__(6);
 /**
@@ -11175,7 +11413,2180 @@ exports.clearFiltersAction = clearFiltersAction;
 
 
 /***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Buffer) {/*!
+ * shallow-clone <https://github.com/jonschlinkert/shallow-clone>
+ *
+ * Copyright (c) 2015-2018, Jon Schlinkert.
+ * Released under the MIT License.
+ */
+
+
+
+const valueOf = Symbol.prototype.valueOf;
+const typeOf = __webpack_require__(47);
+
+function clone(val, deep) {
+  switch (typeOf(val)) {
+    case 'array':
+      return val.slice();
+    case 'object':
+      return Object.assign({}, val);
+    case 'date':
+      return new val.constructor(+val);
+    case 'map':
+      return new Map(val);
+    case 'set':
+      return new Set(val);
+    case 'buffer':
+      return cloneBuffer(val);
+    case 'symbol':
+      return cloneSymbol(val);
+    case 'arraybuffer':
+      return cloneArrayBuffer(val);
+    case 'float32array':
+    case 'float64array':
+    case 'int16array':
+    case 'int32array':
+    case 'int8array':
+    case 'uint16array':
+    case 'uint32array':
+    case 'uint8clampedarray':
+    case 'uint8array':
+      return cloneTypedArray(val);
+    case 'regexp':
+      return cloneRegExp(val);
+    case 'error':
+      return Object.create(val);
+    default: {
+      return val;
+    }
+  }
+}
+
+function cloneRegExp(val) {
+  const re = new val.constructor(val.source, /\w+$/.exec(val));
+  re.lastIndex = val.lastIndex;
+  return re;
+}
+
+function cloneArrayBuffer(val) {
+  const res = new val.constructor(val.byteLength);
+  new Uint8Array(res).set(new Uint8Array(val));
+  return res;
+}
+
+function cloneTypedArray(val, deep) {
+  return new val.constructor(val.buffer, val.byteOffset, val.length);
+}
+
+function cloneBuffer(val) {
+  const len = val.length;
+  const buf = Buffer.allocUnsafe ? Buffer.allocUnsafe(len) : new Buffer(len);
+  val.copy(buf);
+  return buf;
+}
+
+function cloneSymbol(val) {
+  return valueOf ? Object(valueOf.call(val)) : {};
+}
+
+/**
+ * Expose `clone`
+ */
+
+module.exports = clone;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(101).Buffer))
+
+/***/ }),
 /* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @license  MIT
+ */
+/* eslint-disable no-proto */
+
+
+
+var base64 = __webpack_require__(103)
+var ieee754 = __webpack_require__(104)
+var isArray = __webpack_require__(105)
+
+exports.Buffer = Buffer
+exports.SlowBuffer = SlowBuffer
+exports.INSPECT_MAX_BYTES = 50
+
+/**
+ * If `Buffer.TYPED_ARRAY_SUPPORT`:
+ *   === true    Use Uint8Array implementation (fastest)
+ *   === false   Use Object implementation (most compatible, even IE6)
+ *
+ * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
+ * Opera 11.6+, iOS 4.2+.
+ *
+ * Due to various browser bugs, sometimes the Object implementation will be used even
+ * when the browser supports typed arrays.
+ *
+ * Note:
+ *
+ *   - Firefox 4-29 lacks support for adding new properties to `Uint8Array` instances,
+ *     See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.
+ *
+ *   - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.
+ *
+ *   - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of
+ *     incorrect length in some situations.
+
+ * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they
+ * get the Object implementation, which is slower but behaves correctly.
+ */
+Buffer.TYPED_ARRAY_SUPPORT = global.TYPED_ARRAY_SUPPORT !== undefined
+  ? global.TYPED_ARRAY_SUPPORT
+  : typedArraySupport()
+
+/*
+ * Export kMaxLength after typed array support is determined.
+ */
+exports.kMaxLength = kMaxLength()
+
+function typedArraySupport () {
+  try {
+    var arr = new Uint8Array(1)
+    arr.__proto__ = {__proto__: Uint8Array.prototype, foo: function () { return 42 }}
+    return arr.foo() === 42 && // typed array instances can be augmented
+        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
+        arr.subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
+  } catch (e) {
+    return false
+  }
+}
+
+function kMaxLength () {
+  return Buffer.TYPED_ARRAY_SUPPORT
+    ? 0x7fffffff
+    : 0x3fffffff
+}
+
+function createBuffer (that, length) {
+  if (kMaxLength() < length) {
+    throw new RangeError('Invalid typed array length')
+  }
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    // Return an augmented `Uint8Array` instance, for best performance
+    that = new Uint8Array(length)
+    that.__proto__ = Buffer.prototype
+  } else {
+    // Fallback: Return an object instance of the Buffer class
+    if (that === null) {
+      that = new Buffer(length)
+    }
+    that.length = length
+  }
+
+  return that
+}
+
+/**
+ * The Buffer constructor returns instances of `Uint8Array` that have their
+ * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of
+ * `Uint8Array`, so the returned instances will have all the node `Buffer` methods
+ * and the `Uint8Array` methods. Square bracket notation works as expected -- it
+ * returns a single octet.
+ *
+ * The `Uint8Array` prototype remains unmodified.
+ */
+
+function Buffer (arg, encodingOrOffset, length) {
+  if (!Buffer.TYPED_ARRAY_SUPPORT && !(this instanceof Buffer)) {
+    return new Buffer(arg, encodingOrOffset, length)
+  }
+
+  // Common case.
+  if (typeof arg === 'number') {
+    if (typeof encodingOrOffset === 'string') {
+      throw new Error(
+        'If encoding is specified then the first argument must be a string'
+      )
+    }
+    return allocUnsafe(this, arg)
+  }
+  return from(this, arg, encodingOrOffset, length)
+}
+
+Buffer.poolSize = 8192 // not used by this implementation
+
+// TODO: Legacy, not needed anymore. Remove in next major version.
+Buffer._augment = function (arr) {
+  arr.__proto__ = Buffer.prototype
+  return arr
+}
+
+function from (that, value, encodingOrOffset, length) {
+  if (typeof value === 'number') {
+    throw new TypeError('"value" argument must not be a number')
+  }
+
+  if (typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer) {
+    return fromArrayBuffer(that, value, encodingOrOffset, length)
+  }
+
+  if (typeof value === 'string') {
+    return fromString(that, value, encodingOrOffset)
+  }
+
+  return fromObject(that, value)
+}
+
+/**
+ * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError
+ * if value is a number.
+ * Buffer.from(str[, encoding])
+ * Buffer.from(array)
+ * Buffer.from(buffer)
+ * Buffer.from(arrayBuffer[, byteOffset[, length]])
+ **/
+Buffer.from = function (value, encodingOrOffset, length) {
+  return from(null, value, encodingOrOffset, length)
+}
+
+if (Buffer.TYPED_ARRAY_SUPPORT) {
+  Buffer.prototype.__proto__ = Uint8Array.prototype
+  Buffer.__proto__ = Uint8Array
+  if (typeof Symbol !== 'undefined' && Symbol.species &&
+      Buffer[Symbol.species] === Buffer) {
+    // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
+    Object.defineProperty(Buffer, Symbol.species, {
+      value: null,
+      configurable: true
+    })
+  }
+}
+
+function assertSize (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('"size" argument must be a number')
+  } else if (size < 0) {
+    throw new RangeError('"size" argument must not be negative')
+  }
+}
+
+function alloc (that, size, fill, encoding) {
+  assertSize(size)
+  if (size <= 0) {
+    return createBuffer(that, size)
+  }
+  if (fill !== undefined) {
+    // Only pay attention to encoding if it's a string. This
+    // prevents accidentally sending in a number that would
+    // be interpretted as a start offset.
+    return typeof encoding === 'string'
+      ? createBuffer(that, size).fill(fill, encoding)
+      : createBuffer(that, size).fill(fill)
+  }
+  return createBuffer(that, size)
+}
+
+/**
+ * Creates a new filled Buffer instance.
+ * alloc(size[, fill[, encoding]])
+ **/
+Buffer.alloc = function (size, fill, encoding) {
+  return alloc(null, size, fill, encoding)
+}
+
+function allocUnsafe (that, size) {
+  assertSize(size)
+  that = createBuffer(that, size < 0 ? 0 : checked(size) | 0)
+  if (!Buffer.TYPED_ARRAY_SUPPORT) {
+    for (var i = 0; i < size; ++i) {
+      that[i] = 0
+    }
+  }
+  return that
+}
+
+/**
+ * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
+ * */
+Buffer.allocUnsafe = function (size) {
+  return allocUnsafe(null, size)
+}
+/**
+ * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
+ */
+Buffer.allocUnsafeSlow = function (size) {
+  return allocUnsafe(null, size)
+}
+
+function fromString (that, string, encoding) {
+  if (typeof encoding !== 'string' || encoding === '') {
+    encoding = 'utf8'
+  }
+
+  if (!Buffer.isEncoding(encoding)) {
+    throw new TypeError('"encoding" must be a valid string encoding')
+  }
+
+  var length = byteLength(string, encoding) | 0
+  that = createBuffer(that, length)
+
+  var actual = that.write(string, encoding)
+
+  if (actual !== length) {
+    // Writing a hex string, for example, that contains invalid characters will
+    // cause everything after the first invalid character to be ignored. (e.g.
+    // 'abxxcd' will be treated as 'ab')
+    that = that.slice(0, actual)
+  }
+
+  return that
+}
+
+function fromArrayLike (that, array) {
+  var length = array.length < 0 ? 0 : checked(array.length) | 0
+  that = createBuffer(that, length)
+  for (var i = 0; i < length; i += 1) {
+    that[i] = array[i] & 255
+  }
+  return that
+}
+
+function fromArrayBuffer (that, array, byteOffset, length) {
+  array.byteLength // this throws if `array` is not a valid ArrayBuffer
+
+  if (byteOffset < 0 || array.byteLength < byteOffset) {
+    throw new RangeError('\'offset\' is out of bounds')
+  }
+
+  if (array.byteLength < byteOffset + (length || 0)) {
+    throw new RangeError('\'length\' is out of bounds')
+  }
+
+  if (byteOffset === undefined && length === undefined) {
+    array = new Uint8Array(array)
+  } else if (length === undefined) {
+    array = new Uint8Array(array, byteOffset)
+  } else {
+    array = new Uint8Array(array, byteOffset, length)
+  }
+
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    // Return an augmented `Uint8Array` instance, for best performance
+    that = array
+    that.__proto__ = Buffer.prototype
+  } else {
+    // Fallback: Return an object instance of the Buffer class
+    that = fromArrayLike(that, array)
+  }
+  return that
+}
+
+function fromObject (that, obj) {
+  if (Buffer.isBuffer(obj)) {
+    var len = checked(obj.length) | 0
+    that = createBuffer(that, len)
+
+    if (that.length === 0) {
+      return that
+    }
+
+    obj.copy(that, 0, 0, len)
+    return that
+  }
+
+  if (obj) {
+    if ((typeof ArrayBuffer !== 'undefined' &&
+        obj.buffer instanceof ArrayBuffer) || 'length' in obj) {
+      if (typeof obj.length !== 'number' || isnan(obj.length)) {
+        return createBuffer(that, 0)
+      }
+      return fromArrayLike(that, obj)
+    }
+
+    if (obj.type === 'Buffer' && isArray(obj.data)) {
+      return fromArrayLike(that, obj.data)
+    }
+  }
+
+  throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')
+}
+
+function checked (length) {
+  // Note: cannot use `length < kMaxLength()` here because that fails when
+  // length is NaN (which is otherwise coerced to zero.)
+  if (length >= kMaxLength()) {
+    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
+                         'size: 0x' + kMaxLength().toString(16) + ' bytes')
+  }
+  return length | 0
+}
+
+function SlowBuffer (length) {
+  if (+length != length) { // eslint-disable-line eqeqeq
+    length = 0
+  }
+  return Buffer.alloc(+length)
+}
+
+Buffer.isBuffer = function isBuffer (b) {
+  return !!(b != null && b._isBuffer)
+}
+
+Buffer.compare = function compare (a, b) {
+  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
+    throw new TypeError('Arguments must be Buffers')
+  }
+
+  if (a === b) return 0
+
+  var x = a.length
+  var y = b.length
+
+  for (var i = 0, len = Math.min(x, y); i < len; ++i) {
+    if (a[i] !== b[i]) {
+      x = a[i]
+      y = b[i]
+      break
+    }
+  }
+
+  if (x < y) return -1
+  if (y < x) return 1
+  return 0
+}
+
+Buffer.isEncoding = function isEncoding (encoding) {
+  switch (String(encoding).toLowerCase()) {
+    case 'hex':
+    case 'utf8':
+    case 'utf-8':
+    case 'ascii':
+    case 'latin1':
+    case 'binary':
+    case 'base64':
+    case 'ucs2':
+    case 'ucs-2':
+    case 'utf16le':
+    case 'utf-16le':
+      return true
+    default:
+      return false
+  }
+}
+
+Buffer.concat = function concat (list, length) {
+  if (!isArray(list)) {
+    throw new TypeError('"list" argument must be an Array of Buffers')
+  }
+
+  if (list.length === 0) {
+    return Buffer.alloc(0)
+  }
+
+  var i
+  if (length === undefined) {
+    length = 0
+    for (i = 0; i < list.length; ++i) {
+      length += list[i].length
+    }
+  }
+
+  var buffer = Buffer.allocUnsafe(length)
+  var pos = 0
+  for (i = 0; i < list.length; ++i) {
+    var buf = list[i]
+    if (!Buffer.isBuffer(buf)) {
+      throw new TypeError('"list" argument must be an Array of Buffers')
+    }
+    buf.copy(buffer, pos)
+    pos += buf.length
+  }
+  return buffer
+}
+
+function byteLength (string, encoding) {
+  if (Buffer.isBuffer(string)) {
+    return string.length
+  }
+  if (typeof ArrayBuffer !== 'undefined' && typeof ArrayBuffer.isView === 'function' &&
+      (ArrayBuffer.isView(string) || string instanceof ArrayBuffer)) {
+    return string.byteLength
+  }
+  if (typeof string !== 'string') {
+    string = '' + string
+  }
+
+  var len = string.length
+  if (len === 0) return 0
+
+  // Use a for loop to avoid recursion
+  var loweredCase = false
+  for (;;) {
+    switch (encoding) {
+      case 'ascii':
+      case 'latin1':
+      case 'binary':
+        return len
+      case 'utf8':
+      case 'utf-8':
+      case undefined:
+        return utf8ToBytes(string).length
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return len * 2
+      case 'hex':
+        return len >>> 1
+      case 'base64':
+        return base64ToBytes(string).length
+      default:
+        if (loweredCase) return utf8ToBytes(string).length // assume utf8
+        encoding = ('' + encoding).toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+Buffer.byteLength = byteLength
+
+function slowToString (encoding, start, end) {
+  var loweredCase = false
+
+  // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
+  // property of a typed array.
+
+  // This behaves neither like String nor Uint8Array in that we set start/end
+  // to their upper/lower bounds if the value passed is out of range.
+  // undefined is handled specially as per ECMA-262 6th Edition,
+  // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.
+  if (start === undefined || start < 0) {
+    start = 0
+  }
+  // Return early if start > this.length. Done here to prevent potential uint32
+  // coercion fail below.
+  if (start > this.length) {
+    return ''
+  }
+
+  if (end === undefined || end > this.length) {
+    end = this.length
+  }
+
+  if (end <= 0) {
+    return ''
+  }
+
+  // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
+  end >>>= 0
+  start >>>= 0
+
+  if (end <= start) {
+    return ''
+  }
+
+  if (!encoding) encoding = 'utf8'
+
+  while (true) {
+    switch (encoding) {
+      case 'hex':
+        return hexSlice(this, start, end)
+
+      case 'utf8':
+      case 'utf-8':
+        return utf8Slice(this, start, end)
+
+      case 'ascii':
+        return asciiSlice(this, start, end)
+
+      case 'latin1':
+      case 'binary':
+        return latin1Slice(this, start, end)
+
+      case 'base64':
+        return base64Slice(this, start, end)
+
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return utf16leSlice(this, start, end)
+
+      default:
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+        encoding = (encoding + '').toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+
+// The property is used by `Buffer.isBuffer` and `is-buffer` (in Safari 5-7) to detect
+// Buffer instances.
+Buffer.prototype._isBuffer = true
+
+function swap (b, n, m) {
+  var i = b[n]
+  b[n] = b[m]
+  b[m] = i
+}
+
+Buffer.prototype.swap16 = function swap16 () {
+  var len = this.length
+  if (len % 2 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 16-bits')
+  }
+  for (var i = 0; i < len; i += 2) {
+    swap(this, i, i + 1)
+  }
+  return this
+}
+
+Buffer.prototype.swap32 = function swap32 () {
+  var len = this.length
+  if (len % 4 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 32-bits')
+  }
+  for (var i = 0; i < len; i += 4) {
+    swap(this, i, i + 3)
+    swap(this, i + 1, i + 2)
+  }
+  return this
+}
+
+Buffer.prototype.swap64 = function swap64 () {
+  var len = this.length
+  if (len % 8 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 64-bits')
+  }
+  for (var i = 0; i < len; i += 8) {
+    swap(this, i, i + 7)
+    swap(this, i + 1, i + 6)
+    swap(this, i + 2, i + 5)
+    swap(this, i + 3, i + 4)
+  }
+  return this
+}
+
+Buffer.prototype.toString = function toString () {
+  var length = this.length | 0
+  if (length === 0) return ''
+  if (arguments.length === 0) return utf8Slice(this, 0, length)
+  return slowToString.apply(this, arguments)
+}
+
+Buffer.prototype.equals = function equals (b) {
+  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+  if (this === b) return true
+  return Buffer.compare(this, b) === 0
+}
+
+Buffer.prototype.inspect = function inspect () {
+  var str = ''
+  var max = exports.INSPECT_MAX_BYTES
+  if (this.length > 0) {
+    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
+    if (this.length > max) str += ' ... '
+  }
+  return '<Buffer ' + str + '>'
+}
+
+Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
+  if (!Buffer.isBuffer(target)) {
+    throw new TypeError('Argument must be a Buffer')
+  }
+
+  if (start === undefined) {
+    start = 0
+  }
+  if (end === undefined) {
+    end = target ? target.length : 0
+  }
+  if (thisStart === undefined) {
+    thisStart = 0
+  }
+  if (thisEnd === undefined) {
+    thisEnd = this.length
+  }
+
+  if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
+    throw new RangeError('out of range index')
+  }
+
+  if (thisStart >= thisEnd && start >= end) {
+    return 0
+  }
+  if (thisStart >= thisEnd) {
+    return -1
+  }
+  if (start >= end) {
+    return 1
+  }
+
+  start >>>= 0
+  end >>>= 0
+  thisStart >>>= 0
+  thisEnd >>>= 0
+
+  if (this === target) return 0
+
+  var x = thisEnd - thisStart
+  var y = end - start
+  var len = Math.min(x, y)
+
+  var thisCopy = this.slice(thisStart, thisEnd)
+  var targetCopy = target.slice(start, end)
+
+  for (var i = 0; i < len; ++i) {
+    if (thisCopy[i] !== targetCopy[i]) {
+      x = thisCopy[i]
+      y = targetCopy[i]
+      break
+    }
+  }
+
+  if (x < y) return -1
+  if (y < x) return 1
+  return 0
+}
+
+// Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
+// OR the last index of `val` in `buffer` at offset <= `byteOffset`.
+//
+// Arguments:
+// - buffer - a Buffer to search
+// - val - a string, Buffer, or number
+// - byteOffset - an index into `buffer`; will be clamped to an int32
+// - encoding - an optional encoding, relevant is val is a string
+// - dir - true for indexOf, false for lastIndexOf
+function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
+  // Empty buffer means no match
+  if (buffer.length === 0) return -1
+
+  // Normalize byteOffset
+  if (typeof byteOffset === 'string') {
+    encoding = byteOffset
+    byteOffset = 0
+  } else if (byteOffset > 0x7fffffff) {
+    byteOffset = 0x7fffffff
+  } else if (byteOffset < -0x80000000) {
+    byteOffset = -0x80000000
+  }
+  byteOffset = +byteOffset  // Coerce to Number.
+  if (isNaN(byteOffset)) {
+    // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
+    byteOffset = dir ? 0 : (buffer.length - 1)
+  }
+
+  // Normalize byteOffset: negative offsets start from the end of the buffer
+  if (byteOffset < 0) byteOffset = buffer.length + byteOffset
+  if (byteOffset >= buffer.length) {
+    if (dir) return -1
+    else byteOffset = buffer.length - 1
+  } else if (byteOffset < 0) {
+    if (dir) byteOffset = 0
+    else return -1
+  }
+
+  // Normalize val
+  if (typeof val === 'string') {
+    val = Buffer.from(val, encoding)
+  }
+
+  // Finally, search either indexOf (if dir is true) or lastIndexOf
+  if (Buffer.isBuffer(val)) {
+    // Special case: looking for empty string/buffer always fails
+    if (val.length === 0) {
+      return -1
+    }
+    return arrayIndexOf(buffer, val, byteOffset, encoding, dir)
+  } else if (typeof val === 'number') {
+    val = val & 0xFF // Search for a byte value [0-255]
+    if (Buffer.TYPED_ARRAY_SUPPORT &&
+        typeof Uint8Array.prototype.indexOf === 'function') {
+      if (dir) {
+        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)
+      } else {
+        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)
+      }
+    }
+    return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)
+  }
+
+  throw new TypeError('val must be string, number or Buffer')
+}
+
+function arrayIndexOf (arr, val, byteOffset, encoding, dir) {
+  var indexSize = 1
+  var arrLength = arr.length
+  var valLength = val.length
+
+  if (encoding !== undefined) {
+    encoding = String(encoding).toLowerCase()
+    if (encoding === 'ucs2' || encoding === 'ucs-2' ||
+        encoding === 'utf16le' || encoding === 'utf-16le') {
+      if (arr.length < 2 || val.length < 2) {
+        return -1
+      }
+      indexSize = 2
+      arrLength /= 2
+      valLength /= 2
+      byteOffset /= 2
+    }
+  }
+
+  function read (buf, i) {
+    if (indexSize === 1) {
+      return buf[i]
+    } else {
+      return buf.readUInt16BE(i * indexSize)
+    }
+  }
+
+  var i
+  if (dir) {
+    var foundIndex = -1
+    for (i = byteOffset; i < arrLength; i++) {
+      if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
+        if (foundIndex === -1) foundIndex = i
+        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize
+      } else {
+        if (foundIndex !== -1) i -= i - foundIndex
+        foundIndex = -1
+      }
+    }
+  } else {
+    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength
+    for (i = byteOffset; i >= 0; i--) {
+      var found = true
+      for (var j = 0; j < valLength; j++) {
+        if (read(arr, i + j) !== read(val, j)) {
+          found = false
+          break
+        }
+      }
+      if (found) return i
+    }
+  }
+
+  return -1
+}
+
+Buffer.prototype.includes = function includes (val, byteOffset, encoding) {
+  return this.indexOf(val, byteOffset, encoding) !== -1
+}
+
+Buffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, true)
+}
+
+Buffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, false)
+}
+
+function hexWrite (buf, string, offset, length) {
+  offset = Number(offset) || 0
+  var remaining = buf.length - offset
+  if (!length) {
+    length = remaining
+  } else {
+    length = Number(length)
+    if (length > remaining) {
+      length = remaining
+    }
+  }
+
+  // must be an even number of digits
+  var strLen = string.length
+  if (strLen % 2 !== 0) throw new TypeError('Invalid hex string')
+
+  if (length > strLen / 2) {
+    length = strLen / 2
+  }
+  for (var i = 0; i < length; ++i) {
+    var parsed = parseInt(string.substr(i * 2, 2), 16)
+    if (isNaN(parsed)) return i
+    buf[offset + i] = parsed
+  }
+  return i
+}
+
+function utf8Write (buf, string, offset, length) {
+  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)
+}
+
+function asciiWrite (buf, string, offset, length) {
+  return blitBuffer(asciiToBytes(string), buf, offset, length)
+}
+
+function latin1Write (buf, string, offset, length) {
+  return asciiWrite(buf, string, offset, length)
+}
+
+function base64Write (buf, string, offset, length) {
+  return blitBuffer(base64ToBytes(string), buf, offset, length)
+}
+
+function ucs2Write (buf, string, offset, length) {
+  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)
+}
+
+Buffer.prototype.write = function write (string, offset, length, encoding) {
+  // Buffer#write(string)
+  if (offset === undefined) {
+    encoding = 'utf8'
+    length = this.length
+    offset = 0
+  // Buffer#write(string, encoding)
+  } else if (length === undefined && typeof offset === 'string') {
+    encoding = offset
+    length = this.length
+    offset = 0
+  // Buffer#write(string, offset[, length][, encoding])
+  } else if (isFinite(offset)) {
+    offset = offset | 0
+    if (isFinite(length)) {
+      length = length | 0
+      if (encoding === undefined) encoding = 'utf8'
+    } else {
+      encoding = length
+      length = undefined
+    }
+  // legacy write(string, encoding, offset, length) - remove in v0.13
+  } else {
+    throw new Error(
+      'Buffer.write(string, encoding, offset[, length]) is no longer supported'
+    )
+  }
+
+  var remaining = this.length - offset
+  if (length === undefined || length > remaining) length = remaining
+
+  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {
+    throw new RangeError('Attempt to write outside buffer bounds')
+  }
+
+  if (!encoding) encoding = 'utf8'
+
+  var loweredCase = false
+  for (;;) {
+    switch (encoding) {
+      case 'hex':
+        return hexWrite(this, string, offset, length)
+
+      case 'utf8':
+      case 'utf-8':
+        return utf8Write(this, string, offset, length)
+
+      case 'ascii':
+        return asciiWrite(this, string, offset, length)
+
+      case 'latin1':
+      case 'binary':
+        return latin1Write(this, string, offset, length)
+
+      case 'base64':
+        // Warning: maxLength not taken into account in base64Write
+        return base64Write(this, string, offset, length)
+
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return ucs2Write(this, string, offset, length)
+
+      default:
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+        encoding = ('' + encoding).toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+
+Buffer.prototype.toJSON = function toJSON () {
+  return {
+    type: 'Buffer',
+    data: Array.prototype.slice.call(this._arr || this, 0)
+  }
+}
+
+function base64Slice (buf, start, end) {
+  if (start === 0 && end === buf.length) {
+    return base64.fromByteArray(buf)
+  } else {
+    return base64.fromByteArray(buf.slice(start, end))
+  }
+}
+
+function utf8Slice (buf, start, end) {
+  end = Math.min(buf.length, end)
+  var res = []
+
+  var i = start
+  while (i < end) {
+    var firstByte = buf[i]
+    var codePoint = null
+    var bytesPerSequence = (firstByte > 0xEF) ? 4
+      : (firstByte > 0xDF) ? 3
+      : (firstByte > 0xBF) ? 2
+      : 1
+
+    if (i + bytesPerSequence <= end) {
+      var secondByte, thirdByte, fourthByte, tempCodePoint
+
+      switch (bytesPerSequence) {
+        case 1:
+          if (firstByte < 0x80) {
+            codePoint = firstByte
+          }
+          break
+        case 2:
+          secondByte = buf[i + 1]
+          if ((secondByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)
+            if (tempCodePoint > 0x7F) {
+              codePoint = tempCodePoint
+            }
+          }
+          break
+        case 3:
+          secondByte = buf[i + 1]
+          thirdByte = buf[i + 2]
+          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)
+            if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
+              codePoint = tempCodePoint
+            }
+          }
+          break
+        case 4:
+          secondByte = buf[i + 1]
+          thirdByte = buf[i + 2]
+          fourthByte = buf[i + 3]
+          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)
+            if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
+              codePoint = tempCodePoint
+            }
+          }
+      }
+    }
+
+    if (codePoint === null) {
+      // we did not generate a valid codePoint so insert a
+      // replacement char (U+FFFD) and advance only 1 byte
+      codePoint = 0xFFFD
+      bytesPerSequence = 1
+    } else if (codePoint > 0xFFFF) {
+      // encode to utf16 (surrogate pair dance)
+      codePoint -= 0x10000
+      res.push(codePoint >>> 10 & 0x3FF | 0xD800)
+      codePoint = 0xDC00 | codePoint & 0x3FF
+    }
+
+    res.push(codePoint)
+    i += bytesPerSequence
+  }
+
+  return decodeCodePointsArray(res)
+}
+
+// Based on http://stackoverflow.com/a/22747272/680742, the browser with
+// the lowest limit is Chrome, with 0x10000 args.
+// We go 1 magnitude less, for safety
+var MAX_ARGUMENTS_LENGTH = 0x1000
+
+function decodeCodePointsArray (codePoints) {
+  var len = codePoints.length
+  if (len <= MAX_ARGUMENTS_LENGTH) {
+    return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
+  }
+
+  // Decode in chunks to avoid "call stack size exceeded".
+  var res = ''
+  var i = 0
+  while (i < len) {
+    res += String.fromCharCode.apply(
+      String,
+      codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
+    )
+  }
+  return res
+}
+
+function asciiSlice (buf, start, end) {
+  var ret = ''
+  end = Math.min(buf.length, end)
+
+  for (var i = start; i < end; ++i) {
+    ret += String.fromCharCode(buf[i] & 0x7F)
+  }
+  return ret
+}
+
+function latin1Slice (buf, start, end) {
+  var ret = ''
+  end = Math.min(buf.length, end)
+
+  for (var i = start; i < end; ++i) {
+    ret += String.fromCharCode(buf[i])
+  }
+  return ret
+}
+
+function hexSlice (buf, start, end) {
+  var len = buf.length
+
+  if (!start || start < 0) start = 0
+  if (!end || end < 0 || end > len) end = len
+
+  var out = ''
+  for (var i = start; i < end; ++i) {
+    out += toHex(buf[i])
+  }
+  return out
+}
+
+function utf16leSlice (buf, start, end) {
+  var bytes = buf.slice(start, end)
+  var res = ''
+  for (var i = 0; i < bytes.length; i += 2) {
+    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)
+  }
+  return res
+}
+
+Buffer.prototype.slice = function slice (start, end) {
+  var len = this.length
+  start = ~~start
+  end = end === undefined ? len : ~~end
+
+  if (start < 0) {
+    start += len
+    if (start < 0) start = 0
+  } else if (start > len) {
+    start = len
+  }
+
+  if (end < 0) {
+    end += len
+    if (end < 0) end = 0
+  } else if (end > len) {
+    end = len
+  }
+
+  if (end < start) end = start
+
+  var newBuf
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    newBuf = this.subarray(start, end)
+    newBuf.__proto__ = Buffer.prototype
+  } else {
+    var sliceLen = end - start
+    newBuf = new Buffer(sliceLen, undefined)
+    for (var i = 0; i < sliceLen; ++i) {
+      newBuf[i] = this[i + start]
+    }
+  }
+
+  return newBuf
+}
+
+/*
+ * Need to make sure that buffer isn't trying to write out of bounds.
+ */
+function checkOffset (offset, ext, length) {
+  if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')
+  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')
+}
+
+Buffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var val = this[offset]
+  var mul = 1
+  var i = 0
+  while (++i < byteLength && (mul *= 0x100)) {
+    val += this[offset + i] * mul
+  }
+
+  return val
+}
+
+Buffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) {
+    checkOffset(offset, byteLength, this.length)
+  }
+
+  var val = this[offset + --byteLength]
+  var mul = 1
+  while (byteLength > 0 && (mul *= 0x100)) {
+    val += this[offset + --byteLength] * mul
+  }
+
+  return val
+}
+
+Buffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 1, this.length)
+  return this[offset]
+}
+
+Buffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  return this[offset] | (this[offset + 1] << 8)
+}
+
+Buffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  return (this[offset] << 8) | this[offset + 1]
+}
+
+Buffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return ((this[offset]) |
+      (this[offset + 1] << 8) |
+      (this[offset + 2] << 16)) +
+      (this[offset + 3] * 0x1000000)
+}
+
+Buffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset] * 0x1000000) +
+    ((this[offset + 1] << 16) |
+    (this[offset + 2] << 8) |
+    this[offset + 3])
+}
+
+Buffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var val = this[offset]
+  var mul = 1
+  var i = 0
+  while (++i < byteLength && (mul *= 0x100)) {
+    val += this[offset + i] * mul
+  }
+  mul *= 0x80
+
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+  return val
+}
+
+Buffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var i = byteLength
+  var mul = 1
+  var val = this[offset + --i]
+  while (i > 0 && (mul *= 0x100)) {
+    val += this[offset + --i] * mul
+  }
+  mul *= 0x80
+
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+  return val
+}
+
+Buffer.prototype.readInt8 = function readInt8 (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 1, this.length)
+  if (!(this[offset] & 0x80)) return (this[offset])
+  return ((0xff - this[offset] + 1) * -1)
+}
+
+Buffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  var val = this[offset] | (this[offset + 1] << 8)
+  return (val & 0x8000) ? val | 0xFFFF0000 : val
+}
+
+Buffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  var val = this[offset + 1] | (this[offset] << 8)
+  return (val & 0x8000) ? val | 0xFFFF0000 : val
+}
+
+Buffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset]) |
+    (this[offset + 1] << 8) |
+    (this[offset + 2] << 16) |
+    (this[offset + 3] << 24)
+}
+
+Buffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset] << 24) |
+    (this[offset + 1] << 16) |
+    (this[offset + 2] << 8) |
+    (this[offset + 3])
+}
+
+Buffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+  return ieee754.read(this, offset, true, 23, 4)
+}
+
+Buffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+  return ieee754.read(this, offset, false, 23, 4)
+}
+
+Buffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 8, this.length)
+  return ieee754.read(this, offset, true, 52, 8)
+}
+
+Buffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 8, this.length)
+  return ieee754.read(this, offset, false, 52, 8)
+}
+
+function checkInt (buf, value, offset, ext, max, min) {
+  if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance')
+  if (value > max || value < min) throw new RangeError('"value" argument is out of bounds')
+  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+}
+
+Buffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) {
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+    checkInt(this, value, offset, byteLength, maxBytes, 0)
+  }
+
+  var mul = 1
+  var i = 0
+  this[offset] = value & 0xFF
+  while (++i < byteLength && (mul *= 0x100)) {
+    this[offset + i] = (value / mul) & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) {
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+    checkInt(this, value, offset, byteLength, maxBytes, 0)
+  }
+
+  var i = byteLength - 1
+  var mul = 1
+  this[offset + i] = value & 0xFF
+  while (--i >= 0 && (mul *= 0x100)) {
+    this[offset + i] = (value / mul) & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)
+  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+  this[offset] = (value & 0xff)
+  return offset + 1
+}
+
+function objectWriteUInt16 (buf, value, offset, littleEndian) {
+  if (value < 0) value = 0xffff + value + 1
+  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) {
+    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
+      (littleEndian ? i : 1 - i) * 8
+  }
+}
+
+Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value & 0xff)
+    this[offset + 1] = (value >>> 8)
+  } else {
+    objectWriteUInt16(this, value, offset, true)
+  }
+  return offset + 2
+}
+
+Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 8)
+    this[offset + 1] = (value & 0xff)
+  } else {
+    objectWriteUInt16(this, value, offset, false)
+  }
+  return offset + 2
+}
+
+function objectWriteUInt32 (buf, value, offset, littleEndian) {
+  if (value < 0) value = 0xffffffff + value + 1
+  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) {
+    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
+  }
+}
+
+Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset + 3] = (value >>> 24)
+    this[offset + 2] = (value >>> 16)
+    this[offset + 1] = (value >>> 8)
+    this[offset] = (value & 0xff)
+  } else {
+    objectWriteUInt32(this, value, offset, true)
+  }
+  return offset + 4
+}
+
+Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 24)
+    this[offset + 1] = (value >>> 16)
+    this[offset + 2] = (value >>> 8)
+    this[offset + 3] = (value & 0xff)
+  } else {
+    objectWriteUInt32(this, value, offset, false)
+  }
+  return offset + 4
+}
+
+Buffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) {
+    var limit = Math.pow(2, 8 * byteLength - 1)
+
+    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+  }
+
+  var i = 0
+  var mul = 1
+  var sub = 0
+  this[offset] = value & 0xFF
+  while (++i < byteLength && (mul *= 0x100)) {
+    if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
+      sub = 1
+    }
+    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) {
+    var limit = Math.pow(2, 8 * byteLength - 1)
+
+    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+  }
+
+  var i = byteLength - 1
+  var mul = 1
+  var sub = 0
+  this[offset + i] = value & 0xFF
+  while (--i >= 0 && (mul *= 0x100)) {
+    if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
+      sub = 1
+    }
+    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)
+  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+  if (value < 0) value = 0xff + value + 1
+  this[offset] = (value & 0xff)
+  return offset + 1
+}
+
+Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value & 0xff)
+    this[offset + 1] = (value >>> 8)
+  } else {
+    objectWriteUInt16(this, value, offset, true)
+  }
+  return offset + 2
+}
+
+Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 8)
+    this[offset + 1] = (value & 0xff)
+  } else {
+    objectWriteUInt16(this, value, offset, false)
+  }
+  return offset + 2
+}
+
+Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value & 0xff)
+    this[offset + 1] = (value >>> 8)
+    this[offset + 2] = (value >>> 16)
+    this[offset + 3] = (value >>> 24)
+  } else {
+    objectWriteUInt32(this, value, offset, true)
+  }
+  return offset + 4
+}
+
+Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+  if (value < 0) value = 0xffffffff + value + 1
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 24)
+    this[offset + 1] = (value >>> 16)
+    this[offset + 2] = (value >>> 8)
+    this[offset + 3] = (value & 0xff)
+  } else {
+    objectWriteUInt32(this, value, offset, false)
+  }
+  return offset + 4
+}
+
+function checkIEEE754 (buf, value, offset, ext, max, min) {
+  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+  if (offset < 0) throw new RangeError('Index out of range')
+}
+
+function writeFloat (buf, value, offset, littleEndian, noAssert) {
+  if (!noAssert) {
+    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
+  }
+  ieee754.write(buf, value, offset, littleEndian, 23, 4)
+  return offset + 4
+}
+
+Buffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {
+  return writeFloat(this, value, offset, true, noAssert)
+}
+
+Buffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {
+  return writeFloat(this, value, offset, false, noAssert)
+}
+
+function writeDouble (buf, value, offset, littleEndian, noAssert) {
+  if (!noAssert) {
+    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
+  }
+  ieee754.write(buf, value, offset, littleEndian, 52, 8)
+  return offset + 8
+}
+
+Buffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {
+  return writeDouble(this, value, offset, true, noAssert)
+}
+
+Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {
+  return writeDouble(this, value, offset, false, noAssert)
+}
+
+// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
+Buffer.prototype.copy = function copy (target, targetStart, start, end) {
+  if (!start) start = 0
+  if (!end && end !== 0) end = this.length
+  if (targetStart >= target.length) targetStart = target.length
+  if (!targetStart) targetStart = 0
+  if (end > 0 && end < start) end = start
+
+  // Copy 0 bytes; we're done
+  if (end === start) return 0
+  if (target.length === 0 || this.length === 0) return 0
+
+  // Fatal error conditions
+  if (targetStart < 0) {
+    throw new RangeError('targetStart out of bounds')
+  }
+  if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds')
+  if (end < 0) throw new RangeError('sourceEnd out of bounds')
+
+  // Are we oob?
+  if (end > this.length) end = this.length
+  if (target.length - targetStart < end - start) {
+    end = target.length - targetStart + start
+  }
+
+  var len = end - start
+  var i
+
+  if (this === target && start < targetStart && targetStart < end) {
+    // descending copy from end
+    for (i = len - 1; i >= 0; --i) {
+      target[i + targetStart] = this[i + start]
+    }
+  } else if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
+    // ascending copy from start
+    for (i = 0; i < len; ++i) {
+      target[i + targetStart] = this[i + start]
+    }
+  } else {
+    Uint8Array.prototype.set.call(
+      target,
+      this.subarray(start, start + len),
+      targetStart
+    )
+  }
+
+  return len
+}
+
+// Usage:
+//    buffer.fill(number[, offset[, end]])
+//    buffer.fill(buffer[, offset[, end]])
+//    buffer.fill(string[, offset[, end]][, encoding])
+Buffer.prototype.fill = function fill (val, start, end, encoding) {
+  // Handle string cases:
+  if (typeof val === 'string') {
+    if (typeof start === 'string') {
+      encoding = start
+      start = 0
+      end = this.length
+    } else if (typeof end === 'string') {
+      encoding = end
+      end = this.length
+    }
+    if (val.length === 1) {
+      var code = val.charCodeAt(0)
+      if (code < 256) {
+        val = code
+      }
+    }
+    if (encoding !== undefined && typeof encoding !== 'string') {
+      throw new TypeError('encoding must be a string')
+    }
+    if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
+      throw new TypeError('Unknown encoding: ' + encoding)
+    }
+  } else if (typeof val === 'number') {
+    val = val & 255
+  }
+
+  // Invalid ranges are not set to a default, so can range check early.
+  if (start < 0 || this.length < start || this.length < end) {
+    throw new RangeError('Out of range index')
+  }
+
+  if (end <= start) {
+    return this
+  }
+
+  start = start >>> 0
+  end = end === undefined ? this.length : end >>> 0
+
+  if (!val) val = 0
+
+  var i
+  if (typeof val === 'number') {
+    for (i = start; i < end; ++i) {
+      this[i] = val
+    }
+  } else {
+    var bytes = Buffer.isBuffer(val)
+      ? val
+      : utf8ToBytes(new Buffer(val, encoding).toString())
+    var len = bytes.length
+    for (i = 0; i < end - start; ++i) {
+      this[i + start] = bytes[i % len]
+    }
+  }
+
+  return this
+}
+
+// HELPER FUNCTIONS
+// ================
+
+var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g
+
+function base64clean (str) {
+  // Node strips out invalid characters like \n and \t from the string, base64-js does not
+  str = stringtrim(str).replace(INVALID_BASE64_RE, '')
+  // Node converts strings with length < 2 to ''
+  if (str.length < 2) return ''
+  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
+  while (str.length % 4 !== 0) {
+    str = str + '='
+  }
+  return str
+}
+
+function stringtrim (str) {
+  if (str.trim) return str.trim()
+  return str.replace(/^\s+|\s+$/g, '')
+}
+
+function toHex (n) {
+  if (n < 16) return '0' + n.toString(16)
+  return n.toString(16)
+}
+
+function utf8ToBytes (string, units) {
+  units = units || Infinity
+  var codePoint
+  var length = string.length
+  var leadSurrogate = null
+  var bytes = []
+
+  for (var i = 0; i < length; ++i) {
+    codePoint = string.charCodeAt(i)
+
+    // is surrogate component
+    if (codePoint > 0xD7FF && codePoint < 0xE000) {
+      // last char was a lead
+      if (!leadSurrogate) {
+        // no lead yet
+        if (codePoint > 0xDBFF) {
+          // unexpected trail
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+          continue
+        } else if (i + 1 === length) {
+          // unpaired lead
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+          continue
+        }
+
+        // valid lead
+        leadSurrogate = codePoint
+
+        continue
+      }
+
+      // 2 leads in a row
+      if (codePoint < 0xDC00) {
+        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+        leadSurrogate = codePoint
+        continue
+      }
+
+      // valid surrogate pair
+      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000
+    } else if (leadSurrogate) {
+      // valid bmp char, but last char was a lead
+      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+    }
+
+    leadSurrogate = null
+
+    // encode utf8
+    if (codePoint < 0x80) {
+      if ((units -= 1) < 0) break
+      bytes.push(codePoint)
+    } else if (codePoint < 0x800) {
+      if ((units -= 2) < 0) break
+      bytes.push(
+        codePoint >> 0x6 | 0xC0,
+        codePoint & 0x3F | 0x80
+      )
+    } else if (codePoint < 0x10000) {
+      if ((units -= 3) < 0) break
+      bytes.push(
+        codePoint >> 0xC | 0xE0,
+        codePoint >> 0x6 & 0x3F | 0x80,
+        codePoint & 0x3F | 0x80
+      )
+    } else if (codePoint < 0x110000) {
+      if ((units -= 4) < 0) break
+      bytes.push(
+        codePoint >> 0x12 | 0xF0,
+        codePoint >> 0xC & 0x3F | 0x80,
+        codePoint >> 0x6 & 0x3F | 0x80,
+        codePoint & 0x3F | 0x80
+      )
+    } else {
+      throw new Error('Invalid code point')
+    }
+  }
+
+  return bytes
+}
+
+function asciiToBytes (str) {
+  var byteArray = []
+  for (var i = 0; i < str.length; ++i) {
+    // Node's code seems to be doing this and not & 0x7F..
+    byteArray.push(str.charCodeAt(i) & 0xFF)
+  }
+  return byteArray
+}
+
+function utf16leToBytes (str, units) {
+  var c, hi, lo
+  var byteArray = []
+  for (var i = 0; i < str.length; ++i) {
+    if ((units -= 2) < 0) break
+
+    c = str.charCodeAt(i)
+    hi = c >> 8
+    lo = c % 256
+    byteArray.push(lo)
+    byteArray.push(hi)
+  }
+
+  return byteArray
+}
+
+function base64ToBytes (str) {
+  return base64.toByteArray(base64clean(str))
+}
+
+function blitBuffer (src, dst, offset, length) {
+  for (var i = 0; i < length; ++i) {
+    if ((i + offset >= dst.length) || (i >= src.length)) break
+    dst[i + offset] = src[i]
+  }
+  return i
+}
+
+function isnan (val) {
+  return val !== val // eslint-disable-line no-self-compare
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(102)))
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.byteLength = byteLength
+exports.toByteArray = toByteArray
+exports.fromByteArray = fromByteArray
+
+var lookup = []
+var revLookup = []
+var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
+
+var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+for (var i = 0, len = code.length; i < len; ++i) {
+  lookup[i] = code[i]
+  revLookup[code.charCodeAt(i)] = i
+}
+
+// Support decoding URL-safe base64 strings, as Node.js does.
+// See: https://en.wikipedia.org/wiki/Base64#URL_applications
+revLookup['-'.charCodeAt(0)] = 62
+revLookup['_'.charCodeAt(0)] = 63
+
+function getLens (b64) {
+  var len = b64.length
+
+  if (len % 4 > 0) {
+    throw new Error('Invalid string. Length must be a multiple of 4')
+  }
+
+  // Trim off extra bytes after placeholder bytes are found
+  // See: https://github.com/beatgammit/base64-js/issues/42
+  var validLen = b64.indexOf('=')
+  if (validLen === -1) validLen = len
+
+  var placeHoldersLen = validLen === len
+    ? 0
+    : 4 - (validLen % 4)
+
+  return [validLen, placeHoldersLen]
+}
+
+// base64 is 4/3 + up to two characters of the original data
+function byteLength (b64) {
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+}
+
+function _byteLength (b64, validLen, placeHoldersLen) {
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+}
+
+function toByteArray (b64) {
+  var tmp
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
+
+  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
+
+  var curByte = 0
+
+  // if there are placeholders, only get up to the last complete 4 chars
+  var len = placeHoldersLen > 0
+    ? validLen - 4
+    : validLen
+
+  for (var i = 0; i < len; i += 4) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 18) |
+      (revLookup[b64.charCodeAt(i + 1)] << 12) |
+      (revLookup[b64.charCodeAt(i + 2)] << 6) |
+      revLookup[b64.charCodeAt(i + 3)]
+    arr[curByte++] = (tmp >> 16) & 0xFF
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  if (placeHoldersLen === 2) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 2) |
+      (revLookup[b64.charCodeAt(i + 1)] >> 4)
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  if (placeHoldersLen === 1) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 10) |
+      (revLookup[b64.charCodeAt(i + 1)] << 4) |
+      (revLookup[b64.charCodeAt(i + 2)] >> 2)
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  return arr
+}
+
+function tripletToBase64 (num) {
+  return lookup[num >> 18 & 0x3F] +
+    lookup[num >> 12 & 0x3F] +
+    lookup[num >> 6 & 0x3F] +
+    lookup[num & 0x3F]
+}
+
+function encodeChunk (uint8, start, end) {
+  var tmp
+  var output = []
+  for (var i = start; i < end; i += 3) {
+    tmp =
+      ((uint8[i] << 16) & 0xFF0000) +
+      ((uint8[i + 1] << 8) & 0xFF00) +
+      (uint8[i + 2] & 0xFF)
+    output.push(tripletToBase64(tmp))
+  }
+  return output.join('')
+}
+
+function fromByteArray (uint8) {
+  var tmp
+  var len = uint8.length
+  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
+  var parts = []
+  var maxChunkLength = 16383 // must be multiple of 3
+
+  // go through the array every three bytes, we'll deal with trailing stuff later
+  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
+    parts.push(encodeChunk(
+      uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
+    ))
+  }
+
+  // pad the end with zeros, but make sure to not forget the extra bytes
+  if (extraBytes === 1) {
+    tmp = uint8[len - 1]
+    parts.push(
+      lookup[tmp >> 2] +
+      lookup[(tmp << 4) & 0x3F] +
+      '=='
+    )
+  } else if (extraBytes === 2) {
+    tmp = (uint8[len - 2] << 8) + uint8[len - 1]
+    parts.push(
+      lookup[tmp >> 10] +
+      lookup[(tmp >> 4) & 0x3F] +
+      lookup[(tmp << 2) & 0x3F] +
+      '='
+    )
+  }
+
+  return parts.join('')
+}
+
+
+/***/ }),
+/* 104 */
+/***/ (function(module, exports) {
+
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = ((value * c) - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+
+
+/***/ }),
+/* 105 */
+/***/ (function(module, exports) {
+
+var toString = {}.toString;
+
+module.exports = Array.isArray || function (arr) {
+  return toString.call(arr) == '[object Array]';
+};
+
+
+/***/ }),
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11188,7 +13599,7 @@ exports.clearFiltersAction = clearFiltersAction;
 
 
 
-var isObject = __webpack_require__(102);
+var isObject = __webpack_require__(107);
 
 function isObjectObject(o) {
   return isObject(o) === true
@@ -11219,150 +13630,12 @@ module.exports = function isPlainObject(o) {
 
 
 /***/ }),
-/* 102 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /*!
  * isobject <https://github.com/jonschlinkert/isobject>
- *
- * Copyright (c) 2014-2015, Jon Schlinkert.
- * Licensed under the MIT License.
- */
-
-
-
-var isArray = __webpack_require__(103);
-
-module.exports = function isObject(val) {
-  return val != null && typeof val === 'object' && isArray(val) === false;
-};
-
-
-/***/ }),
-/* 103 */
-/***/ (function(module, exports) {
-
-var toString = {}.toString;
-
-module.exports = Array.isArray || function (arr) {
-  return toString.call(arr) == '[object Array]';
-};
-
-
-/***/ }),
-/* 104 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*!
- * shallow-clone <https://github.com/jonschlinkert/shallow-clone>
- *
- * Copyright (c) 2015-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
-
-
-
-var isObject = __webpack_require__(47);
-var mixin = __webpack_require__(105);
-var typeOf = __webpack_require__(49);
-
-/**
- * Shallow copy an object, array or primitive.
- *
- * @param  {any} `val`
- * @return {any}
- */
-
-function clone(val) {
-  var type = typeOf(val);
-  if (clone.hasOwnProperty(type)) {
-    return clone[type](val);
-  }
-  return val;
-}
-
-clone.array = function cloneArray(arr) {
-  return arr.slice();
-};
-
-clone.date = function cloneDate(date) {
-  return new Date(+date);
-};
-
-clone.object = function cloneObject(obj) {
-  if (isObject(obj)) {
-    return mixin({}, obj);
-  } else {
-    return obj;
-  }
-};
-
-clone.regexp = function cloneRegExp(re) {
-  var flags = '';
-  flags += re.multiline ? 'm' : '';
-  flags += re.global ? 'g' : '';
-  flags += re.ignorecase ? 'i' : '';
-  return new RegExp(re.source, flags);
-};
-
-/**
- * Expose `clone`
- */
-
-module.exports = clone;
-
-
-/***/ }),
-/* 105 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var isObject = __webpack_require__(47);
-var forIn = __webpack_require__(48);
-
-function mixin(target, objects) {
-  if (!isObject(target)) {
-    throw new TypeError('mixin-object expects the first argument to be an object.');
-  }
-  var len = arguments.length, i = 0;
-  while (++i < len) {
-    var obj = arguments[i];
-    if (isObject(obj)) {
-      forIn(obj, copy, target);
-    }
-  }
-  return target;
-}
-
-/**
- * copy properties from the source object to the
- * target object.
- *
- * @param  {*} `value`
- * @param  {String} `key`
- */
-
-function copy(value, key) {
-  this[key] = value;
-}
-
-/**
- * Expose `mixin`
- */
-
-module.exports = mixin;
-
-/***/ }),
-/* 106 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*!
- * for-own <https://github.com/jonschlinkert/for-own>
  *
  * Copyright (c) 2014-2017, Jon Schlinkert.
  * Released under the MIT License.
@@ -11370,20 +13643,13 @@ module.exports = mixin;
 
 
 
-var forIn = __webpack_require__(48);
-var hasOwn = Object.prototype.hasOwnProperty;
-
-module.exports = function forOwn(obj, fn, thisArg) {
-  forIn(obj, function(val, key) {
-    if (hasOwn.call(obj, key)) {
-      return fn.call(thisArg, obj[key], key, obj);
-    }
-  });
+module.exports = function isObject(val) {
+  return val != null && typeof val === 'object' && Array.isArray(val) === false;
 };
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11408,8 +13674,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var InformationComponent_1 = __webpack_require__(108);
-var Widget_1 = __webpack_require__(9);
+var InformationComponent_1 = __webpack_require__(109);
+var Widget_1 = __webpack_require__(10);
 /**
  * Information
  */
@@ -11453,7 +13719,7 @@ exports["default"] = (function (settings) { return new Information(settings); })
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11470,7 +13736,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var Template_1 = __webpack_require__(7);
+var Template_1 = __webpack_require__(8);
 /**
  * Result Information Component
  */
@@ -11510,7 +13776,7 @@ exports["default"] = InformationComponent;
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11535,8 +13801,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var MultipleFilterComponent_1 = __webpack_require__(110);
-var Widget_1 = __webpack_require__(9);
+var MultipleFilterComponent_1 = __webpack_require__(111);
+var Widget_1 = __webpack_require__(10);
 /**
  * Multiple Filter
  */
@@ -11587,7 +13853,7 @@ exports["default"] = (function (settings) { return new MultipleFilter(settings);
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11604,12 +13870,12 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var MultipleFilterActions_1 = __webpack_require__(111);
-var Helpers_1 = __webpack_require__(112);
-var Template_1 = __webpack_require__(7);
-var ShowMoreComponent_1 = __webpack_require__(113);
-var defaultTemplates_1 = __webpack_require__(114);
-var apisearch_1 = __webpack_require__(12);
+var MultipleFilterActions_1 = __webpack_require__(112);
+var Helpers_1 = __webpack_require__(113);
+var Template_1 = __webpack_require__(8);
+var ShowMoreComponent_1 = __webpack_require__(114);
+var defaultTemplates_1 = __webpack_require__(115);
+var apisearch_1 = __webpack_require__(13);
 /**
  * Filter Component
  */
@@ -11811,13 +14077,13 @@ exports["default"] = MultipleFilterComponent;
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
-var cloneDeep = __webpack_require__(11);
+var cloneDeep = __webpack_require__(12);
 var Constants_1 = __webpack_require__(5);
 var Container_1 = __webpack_require__(6);
 /**
@@ -11881,7 +14147,7 @@ exports.filterAction = filterAction;
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11915,14 +14181,14 @@ exports.manageCurrentFilterItems = manageCurrentFilterItems;
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var Template_1 = __webpack_require__(7);
+var Template_1 = __webpack_require__(8);
 /**
  * Show more component
  *
@@ -11944,7 +14210,7 @@ exports["default"] = ShowMoreComponent;
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11954,7 +14220,7 @@ exports.defaultItemTemplate = "\n    <input \n        type=\"checkbox\" \n      
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11979,8 +14245,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var PaginationComponent_1 = __webpack_require__(116);
-var Widget_1 = __webpack_require__(9);
+var PaginationComponent_1 = __webpack_require__(117);
+var Widget_1 = __webpack_require__(10);
 /**
  * Pagination
  */
@@ -12025,7 +14291,7 @@ exports["default"] = (function (settings) { return new Pagination(settings); });
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12042,10 +14308,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var Template_1 = __webpack_require__(7);
-var PaginationActions_1 = __webpack_require__(117);
-var NavigationComponent_1 = __webpack_require__(118);
-var Helpers_1 = __webpack_require__(119);
+var Template_1 = __webpack_require__(8);
+var PaginationActions_1 = __webpack_require__(118);
+var NavigationComponent_1 = __webpack_require__(119);
+var Helpers_1 = __webpack_require__(120);
 /**
  * Pagination Component
  */
@@ -12162,13 +14428,13 @@ exports["default"] = PaginationComponent;
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
-var cloneDeep = __webpack_require__(11);
+var cloneDeep = __webpack_require__(12);
 var Constants_1 = __webpack_require__(5);
 var Container_1 = __webpack_require__(6);
 /**
@@ -12199,14 +14465,14 @@ exports.paginationChangeAction = paginationChangeAction;
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var Template_1 = __webpack_require__(7);
+var Template_1 = __webpack_require__(8);
 /**
  * Arrow navigation component
  */
@@ -12221,7 +14487,7 @@ exports["default"] = NavigationComponent;
 
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12316,7 +14582,7 @@ exports.getEnd = getEnd;
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12341,8 +14607,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var ResultComponent_1 = __webpack_require__(121);
-var Widget_1 = __webpack_require__(9);
+var ResultComponent_1 = __webpack_require__(122);
+var Widget_1 = __webpack_require__(10);
 /**
  * Result
  */
@@ -12392,7 +14658,7 @@ exports["default"] = (function (settings) { return new Result(settings); });
 
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12417,10 +14683,10 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var Template_1 = __webpack_require__(7);
-var defaultTemplates_1 = __webpack_require__(122);
-var ResultActions_1 = __webpack_require__(123);
-var ItemUUID_1 = __webpack_require__(10);
+var Template_1 = __webpack_require__(8);
+var defaultTemplates_1 = __webpack_require__(123);
+var ResultActions_1 = __webpack_require__(124);
+var ItemUUID_1 = __webpack_require__(11);
 /**
  * Result Component
  */
@@ -12506,7 +14772,7 @@ exports["default"] = ResultComponent;
 
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12516,13 +14782,13 @@ exports.defaultItemsListTemplate = "\n    <ul>\n    {{#items}}\n        <li clas
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
-var cloneDeep = __webpack_require__(11);
+var cloneDeep = __webpack_require__(12);
 var Constants_1 = __webpack_require__(5);
 var Container_1 = __webpack_require__(6);
 /**
@@ -12579,7 +14845,7 @@ exports.configureQuery = configureQuery;
 
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12604,8 +14870,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var SearchInputComponent_1 = __webpack_require__(125);
-var Widget_1 = __webpack_require__(9);
+var SearchInputComponent_1 = __webpack_require__(126);
+var Widget_1 = __webpack_require__(10);
 /**
  * SearchInput
  */
@@ -12699,7 +14965,7 @@ exports["default"] = (function (settings) { return new SearchInput(settings); })
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12724,8 +14990,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var SearchInputActions_1 = __webpack_require__(126);
-var Template_1 = __webpack_require__(7);
+var SearchInputActions_1 = __webpack_require__(127);
+var Template_1 = __webpack_require__(8);
 /**
  * SearchInput Component
  */
@@ -12815,13 +15081,13 @@ exports["default"] = SearchInputComponent;
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
-var cloneDeep = __webpack_require__(11);
+var cloneDeep = __webpack_require__(12);
 var Constants_1 = __webpack_require__(5);
 var Container_1 = __webpack_require__(6);
 /**
@@ -12853,7 +15119,7 @@ exports.simpleSearchAction = simpleSearchAction;
 
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12878,8 +15144,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var SortByComponent_1 = __webpack_require__(128);
-var Widget_1 = __webpack_require__(9);
+var SortByComponent_1 = __webpack_require__(129);
+var Widget_1 = __webpack_require__(10);
 /**
  * SortBy
  */
@@ -12915,7 +15181,7 @@ exports["default"] = (function (settings) { return new SortBy(settings); });
 
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12932,7 +15198,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var preact_1 = __webpack_require__(1);
-var SortByActions_1 = __webpack_require__(129);
+var SortByActions_1 = __webpack_require__(130);
 /**
  * SortBy Filter Component
  */
@@ -12989,7 +15255,7 @@ exports["default"] = SortByComponent;
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12998,8 +15264,8 @@ exports.__esModule = true;
 /**
  * SortBy actions
  */
-var apisearch_1 = __webpack_require__(12);
-var cloneDeep = __webpack_require__(11);
+var apisearch_1 = __webpack_require__(13);
+var cloneDeep = __webpack_require__(12);
 var Constants_1 = __webpack_require__(5);
 var Container_1 = __webpack_require__(6);
 /**
@@ -13049,7 +15315,7 @@ function splitQueryValue(string) {
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13065,7 +15331,7 @@ Object.defineProperty(exports, "__esModule", {
 var resultSearchTemplate = exports.resultSearchTemplate = "\n    {{#items}}\n    <div class=\"col-12 col-sm-6 col-md-6 col-lg-4\">\n        <a href=\"{{metadata.url}}\" onclick=\"window.location.reload(true)\" class=\"c-search__resultItem\">\n            <h2 class=\"c-search__resultItemTitle\">\n                <span>{{metadata.title}}</span>\n                \n                <span class=\"c-search__resultItemCategory\">\n                    {{metadata.category}}\n                </span>\n            </h2>\n            {{#metadata.description}}\n            <p class=\"c-search__resultItemDescription\">\n                {{metadata.description}}\n            </p>\n            {{/metadata.description}}\n            <div class=\"c-search__resultItemLangList\">\n                {{#metadata.languages}}\n                    <div class=\"c-search__resultItemLang c-search__resultItemLang--{{.}}\">\n                        {{.}}\n                    </div>\n                {{/metadata.languages}}\n            </div>\n        </a>\n    </div>\n    {{/items}}\n    {{^items}}\n    <div class=\"col-sm-12\">\n        <div class=\"c-search__emptyResult\">\n            <i class=\"fa fa-meh-o\" aria-hidden=\"true\"></i>\n            <h2 class=\"c-search__emptyResultTitle\">No results found</h2>\n            \n            <ul class=\"c-search__emptyResultSuggestions\">\n                <li class=\"c-search__emptyResultSuggestion\">\n                    Maybe you need <a href=\"http://localhost:1234/docs/first-steps.html\"> a starting point</a>, \n                </li>\n                <li class=\"c-search__emptyResultSuggestion\">\n                    <a href=\"http://localhost:1234/docs/integrations.html\">see the Api Reference</a>, \n                </li>\n                <li class=\"c-search__emptyResultSuggestion\">\n                    <a href=\"http://localhost:1234/docs/ui.html\">build a custom search</a>.\n                </li>\n            </ul>\n        </div>\n    </div>\n    {{/items}}\n";
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports) {
 
 const apisearchConfig = {
@@ -13079,7 +15345,7 @@ module.exports = apisearchConfig;
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13089,15 +15355,15 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _burger = __webpack_require__(133);
+var _burger = __webpack_require__(134);
 
 var _burger2 = _interopRequireDefault(_burger);
 
-var _goUp = __webpack_require__(134);
+var _goUp = __webpack_require__(135);
 
 var _goUp2 = _interopRequireDefault(_goUp);
 
-var _language = __webpack_require__(135);
+var _language = __webpack_require__(136);
 
 var _language2 = _interopRequireDefault(_language);
 
@@ -13114,7 +15380,7 @@ dom.mount = function () {
 exports.default = dom;
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13143,7 +15409,7 @@ var burgerAction = function burgerAction() {
 exports.default = burgerAction;
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13170,7 +15436,7 @@ var goUpAction = exports.goUpAction = function goUpAction() {
 exports.default = goUpAction;
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13182,7 +15448,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _jsCookie = __webpack_require__(136);
+var _jsCookie = __webpack_require__(137);
 
 var _jsCookie2 = _interopRequireDefault(_jsCookie);
 
@@ -13340,7 +15606,7 @@ var LanguageSelector = function () {
 exports.default = LanguageSelector;
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
